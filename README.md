@@ -34,3 +34,7 @@ Similarly to the Xcode instructions above, it may be necessary to create a symbo
 Running
 -------
 Copy the `game/estrangedact1` folder to `steam/steamapps/sourcemods`.
+
+Allowed Usages
+--------------
+Please see [LICENSE.md](LICENSE.md) for allowed usages of the code.
