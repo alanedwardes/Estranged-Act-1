@@ -35,6 +35,10 @@ Running
 -------
 Copy the `game/estrangedact1` folder to `steam/steamapps/sourcemods`.
 
-Allowed Usages
+Using the Code
 --------------
-Please see [LICENSE.md](LICENSE.md) for allowed usages of the code.
+We'd love for you to use the code! See [LICENSE.md](LICENSE.md) for more information.
+
+Contributing
+------------
+If you would like to contribute to the code, feel free to submit a pull request, or raise an issue.
