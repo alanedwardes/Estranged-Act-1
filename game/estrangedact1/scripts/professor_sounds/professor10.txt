@@ -1,0 +1,72 @@
+professor.10.01maybethroughtown
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\10\01maybethroughtown.wav"
+}
+
+professor.10.02bthisisouronlychance
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\10\02bthisisouronlychance.wav"
+}
+
+professor.10.02cgo
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\10\02cgo.wav"
+}
+
+professor.10.02dgo
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\10\02dgo.wav"
+}
+
+professor.10.02egettothesatellite
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\10\02egettothesatellite.wav"
+}
+
+professor.10.02quicktheventillation
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\10\02quicktheventillation.wav"
+}
+
+professor.10.03nowaiticanexplain
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\10\03nowaiticanexplain.wav"
+}
+
+professor.10.04no
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\10\04no.wav"
+}
+
+professor.10.05pain
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\10\05pain.wav"
+}
+

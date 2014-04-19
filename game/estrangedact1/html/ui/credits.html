@@ -1,0 +1,868 @@
+﻿<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<link rel="stylesheet" href="../lib/ui.css"/>
+		<style>
+			#fader
+			{
+				height:100%;
+				width:100%;
+				position:fixed;
+				left:0px;
+				top:0px;
+				z-index:99;
+				background:black;
+			}
+		
+			html, body
+			{
+				height:100%;
+				width:100%;
+			}
+			body
+			{
+				background:#111;
+				font-family:EstrangedSerif, EstrangedSansSerif;
+				color:#ddd;
+				margin:0px auto;
+				font-size:24px;
+				text-align:center;
+				text-shadow:0px 0px 10px black;
+			}
+			
+			::-webkit-scrollbar
+			{
+				width:0px;
+				height:0px;
+			}
+			
+			#controls
+			{
+				font-family:sans-serif;
+				z-index:99;
+				position:fixed;
+				top:20px;
+				left:30px;
+				font-size:50px;
+			}
+			
+			.red, #controls a.active
+			{
+				color:rgb(151, 51, 51);
+			}
+			
+			#controls a
+			{
+				color:#eee;
+				text-decoration:none;
+			}
+			
+			#controls a:hover
+			{
+				opacity:0.75;
+			}
+			
+			hr
+			{
+				background:rgb(151, 51, 51); 
+				clear:both; 
+				float:none; 
+				width:100%; 
+				height:2px;
+				border:none; 
+			}
+			a
+			{
+				text-decoration:none;
+				color:#777;
+			}
+			a:hover
+			{
+				color:rgb(151, 51, 51);
+			}
+			p
+			{
+				margin:5px 0px;
+			}
+			h1, h2, h3, h4
+			{
+				color:white;
+				font-family:EstrangedSansSerifTitle, EstrangedSerif;
+				font-weight:normal;
+				text-transform:uppercase;
+				text-align:center;
+				display:block;
+				margin:20px 0px;
+			}
+			h1 .url, h2 .url, h3 .url, h4 .url
+			{
+				text-transform:none;
+				font-size:16px;
+				padding:5px;
+				font-family:EstrangedSansSerif;
+				display:block;
+			}
+			h1
+			{
+				font-size:90px;
+			}
+			#scroller
+			{
+				width:60%;
+				overflow-y:scroll;
+				margin:auto;
+				height:100%;
+			}
+			.wings
+			{
+				overflow:hidden;
+				text-align:center;
+				margin:0px;
+			}
+			.wings:before, .wings:after
+			{
+				background-color:rgb(151, 51, 51);
+				content:"";
+				box-shadow:0px 0px 10px black;
+				display:inline-block;
+				height:2px;
+				position:relative;
+				vertical-align:middle;
+				width:50%;
+			}
+			.wings:before
+			{
+				right:0.5em;
+				margin-left:-50%;
+			}
+			.wings:after
+			{
+				left:0.5em;
+				margin-right:-50%;
+			}
+			.filler
+			{
+				width:100%;
+				height:100%;
+			}
+			.half.filler
+			{
+				height:50%;
+			}
+			.spacer
+			{
+				height:64px;
+			}
+			.doublespacer
+			{
+				height:128px;
+			}
+			.left
+			{
+				float:left;
+				width:50%;
+			}
+			.right
+			{
+				float:right;
+				width:50%;
+			}
+			.nameblock
+			{
+				margin:20px 0px;
+			}
+			.left, .center, .spacer, .filler, .doublespacer
+			{
+				clear:both;
+			}
+			.note
+			{
+				font-size:20px;
+				background:rgb(151, 51, 51);
+				padding:10px;
+			}
+			a:hover img, .steam:hover
+			{
+				color:rgb(151, 51, 51);
+			}
+			ul li
+			{
+				text-align:left;
+				margin-left:200px;
+				margin-top:10px;
+			}
+			.steam
+			{
+				padding-right:25px;
+				background:url('./assets/steam.png') right center no-repeat;
+			}
+			h2 .steam
+			{
+				color:white;
+				height:28px;
+				width:16px;
+			}
+			.vignette
+			{
+				position:fixed;
+				width:100%;
+				height:10%;
+				left:0px;
+				right:0px;
+			}
+			.vignette.top
+			{
+				top:0px;
+			}
+			.vignette.bottom
+			{
+				bottom:0px;
+			}
+			.flag
+			{
+				width:16px;
+				height:11px;
+				box-shadow:0px 0px 10px black;
+				background:url("assets/flags.png") no-repeat;
+				display:inline-block;
+			}
+			.flag.flag-ad {background-position: -16px 0}
+			.flag.flag-ae {background-position: -32px 0}
+			.flag.flag-af {background-position: -48px 0}
+			.flag.flag-ag {background-position: -64px 0}
+			.flag.flag-ai {background-position: -80px 0}
+			.flag.flag-al {background-position: -96px 0}
+			.flag.flag-am {background-position: -112px 0}
+			.flag.flag-an {background-position: -128px 0}
+			.flag.flag-ao {background-position: -144px 0}
+			.flag.flag-ar {background-position: -160px 0}
+			.flag.flag-as {background-position: -176px 0}
+			.flag.flag-at {background-position: -192px 0}
+			.flag.flag-au {background-position: -208px 0}
+			.flag.flag-aw {background-position: -224px 0}
+			.flag.flag-az {background-position: -240px 0}
+			.flag.flag-ba {background-position: 0 -11px}
+			.flag.flag-bb {background-position: -16px -11px}
+			.flag.flag-bd {background-position: -32px -11px}
+			.flag.flag-be {background-position: -48px -11px}
+			.flag.flag-bf {background-position: -64px -11px}
+			.flag.flag-bg {background-position: -80px -11px}
+			.flag.flag-bh {background-position: -96px -11px}
+			.flag.flag-bi {background-position: -112px -11px}
+			.flag.flag-bj {background-position: -128px -11px}
+			.flag.flag-bm {background-position: -144px -11px}
+			.flag.flag-bn {background-position: -160px -11px}
+			.flag.flag-bo {background-position: -176px -11px}
+			.flag.flag-br {background-position: -192px -11px}
+			.flag.flag-bs {background-position: -208px -11px}
+			.flag.flag-bt {background-position: -224px -11px}
+			.flag.flag-bv {background-position: -240px -11px}
+			.flag.flag-bw {background-position: 0 -22px}
+			.flag.flag-by {background-position: -16px -22px}
+			.flag.flag-bz {background-position: -32px -22px}
+			.flag.flag-ca {background-position: -48px -22px}
+			.flag.flag-catalonia {background-position: -64px -22px}
+			.flag.flag-cd {background-position: -80px -22px}
+			.flag.flag-cf {background-position: -96px -22px}
+			.flag.flag-cg {background-position: -112px -22px}
+			.flag.flag-ch {background-position: -128px -22px}
+			.flag.flag-ci {background-position: -144px -22px}
+			.flag.flag-ck {background-position: -160px -22px}
+			.flag.flag-cl {background-position: -176px -22px}
+			.flag.flag-cm {background-position: -192px -22px}
+			.flag.flag-cn {background-position: -208px -22px}
+			.flag.flag-co {background-position: -224px -22px}
+			.flag.flag-cr {background-position: -240px -22px}
+			.flag.flag-cu {background-position: 0 -33px}
+			.flag.flag-cv {background-position: -16px -33px}
+			.flag.flag-cw {background-position: -32px -33px}
+			.flag.flag-cy {background-position: -48px -33px}
+			.flag.flag-cz {background-position: -64px -33px}
+			.flag.flag-de {background-position: -80px -33px}
+			.flag.flag-dj {background-position: -96px -33px}
+			.flag.flag-dk {background-position: -112px -33px}
+			.flag.flag-dm {background-position: -128px -33px}
+			.flag.flag-do {background-position: -144px -33px}
+			.flag.flag-dz {background-position: -160px -33px}
+			.flag.flag-ec {background-position: -176px -33px}
+			.flag.flag-ee {background-position: -192px -33px}
+			.flag.flag-eg {background-position: -208px -33px}
+			.flag.flag-eh {background-position: -224px -33px}
+			.flag.flag-england {background-position: -240px -33px}
+			.flag.flag-er {background-position: 0 -44px}
+			.flag.flag-es {background-position: -16px -44px}
+			.flag.flag-et {background-position: -32px -44px}
+			.flag.flag-eu {background-position: -48px -44px}
+			.flag.flag-fi {background-position: -64px -44px}
+			.flag.flag-fj {background-position: -80px -44px}
+			.flag.flag-fk {background-position: -96px -44px}
+			.flag.flag-fm {background-position: -112px -44px}
+			.flag.flag-fo {background-position: -128px -44px}
+			.flag.flag-fr {background-position: -144px -44px}
+			.flag.flag-ga {background-position: -160px -44px}
+			.flag.flag-gb {background-position: -176px -44px}
+			.flag.flag-gd {background-position: -192px -44px}
+			.flag.flag-ge {background-position: -208px -44px}
+			.flag.flag-gf {background-position: -224px -44px}
+			.flag.flag-gg {background-position: -240px -44px}
+			.flag.flag-gh {background-position: 0 -55px}
+			.flag.flag-gi {background-position: -16px -55px}
+			.flag.flag-gl {background-position: -32px -55px}
+			.flag.flag-gm {background-position: -48px -55px}
+			.flag.flag-gn {background-position: -64px -55px}
+			.flag.flag-gp {background-position: -80px -55px}
+			.flag.flag-gq {background-position: -96px -55px}
+			.flag.flag-gr {background-position: -112px -55px}
+			.flag.flag-gs {background-position: -128px -55px}
+			.flag.flag-gt {background-position: -144px -55px}
+			.flag.flag-gu {background-position: -160px -55px}
+			.flag.flag-gw {background-position: -176px -55px}
+			.flag.flag-gy {background-position: -192px -55px}
+			.flag.flag-hk {background-position: -208px -55px}
+			.flag.flag-hm {background-position: -224px -55px}
+			.flag.flag-hn {background-position: -240px -55px}
+			.flag.flag-hr {background-position: 0 -66px}
+			.flag.flag-ht {background-position: -16px -66px}
+			.flag.flag-hu {background-position: -32px -66px}
+			.flag.flag-ic {background-position: -48px -66px}
+			.flag.flag-id {background-position: -64px -66px}
+			.flag.flag-ie {background-position: -80px -66px}
+			.flag.flag-il {background-position: -96px -66px}
+			.flag.flag-im {background-position: -112px -66px}
+			.flag.flag-in {background-position: -128px -66px}
+			.flag.flag-io {background-position: -144px -66px}
+			.flag.flag-iq {background-position: -160px -66px}
+			.flag.flag-ir {background-position: -176px -66px}
+			.flag.flag-is {background-position: -192px -66px}
+			.flag.flag-it {background-position: -208px -66px}
+			.flag.flag-je {background-position: -224px -66px}
+			.flag.flag-jm {background-position: -240px -66px}
+			.flag.flag-jo {background-position: 0 -77px}
+			.flag.flag-jp {background-position: -16px -77px}
+			.flag.flag-ke {background-position: -32px -77px}
+			.flag.flag-kg {background-position: -48px -77px}
+			.flag.flag-kh {background-position: -64px -77px}
+			.flag.flag-ki {background-position: -80px -77px}
+			.flag.flag-km {background-position: -96px -77px}
+			.flag.flag-kn {background-position: -112px -77px}
+			.flag.flag-kp {background-position: -128px -77px}
+			.flag.flag-kr {background-position: -144px -77px}
+			.flag.flag-kurdistan {background-position: -160px -77px}
+			.flag.flag-kw {background-position: -176px -77px}
+			.flag.flag-ky {background-position: -192px -77px}
+			.flag.flag-kz {background-position: -208px -77px}
+			.flag.flag-la {background-position: -224px -77px}
+			.flag.flag-lb {background-position: -240px -77px}
+			.flag.flag-lc {background-position: 0 -88px}
+			.flag.flag-li {background-position: -16px -88px}
+			.flag.flag-lk {background-position: -32px -88px}
+			.flag.flag-lr {background-position: -48px -88px}
+			.flag.flag-ls {background-position: -64px -88px}
+			.flag.flag-lt {background-position: -80px -88px}
+			.flag.flag-lu {background-position: -96px -88px}
+			.flag.flag-lv {background-position: -112px -88px}
+			.flag.flag-ly {background-position: -128px -88px}
+			.flag.flag-ma {background-position: -144px -88px}
+			.flag.flag-mc {background-position: -160px -88px}
+			.flag.flag-md {background-position: -176px -88px}
+			.flag.flag-me {background-position: -192px -88px}
+			.flag.flag-mg {background-position: -208px -88px}
+			.flag.flag-mh {background-position: -224px -88px}
+			.flag.flag-mk {background-position: -240px -88px}
+			.flag.flag-ml {background-position: 0 -99px}
+			.flag.flag-mm {background-position: -16px -99px}
+			.flag.flag-mn {background-position: -32px -99px}
+			.flag.flag-mo {background-position: -48px -99px}
+			.flag.flag-mp {background-position: -64px -99px}
+			.flag.flag-mq {background-position: -80px -99px}
+			.flag.flag-mr {background-position: -96px -99px}
+			.flag.flag-ms {background-position: -112px -99px}
+			.flag.flag-mt {background-position: -128px -99px}
+			.flag.flag-mu {background-position: -144px -99px}
+			.flag.flag-mv {background-position: -160px -99px}
+			.flag.flag-mw {background-position: -176px -99px}
+			.flag.flag-mx {background-position: -192px -99px}
+			.flag.flag-my {background-position: -208px -99px}
+			.flag.flag-mz {background-position: -224px -99px}
+			.flag.flag-na {background-position: -240px -99px}
+			.flag.flag-nc {background-position: 0 -110px}
+			.flag.flag-ne {background-position: -16px -110px}
+			.flag.flag-nf {background-position: -32px -110px}
+			.flag.flag-ng {background-position: -48px -110px}
+			.flag.flag-ni {background-position: -64px -110px}
+			.flag.flag-nl {background-position: -80px -110px}
+			.flag.flag-no {background-position: -96px -110px}
+			.flag.flag-np {background-position: -112px -110px}
+			.flag.flag-nr {background-position: -128px -110px}
+			.flag.flag-nu {background-position: -144px -110px}
+			.flag.flag-nz {background-position: -160px -110px}
+			.flag.flag-om {background-position: -176px -110px}
+			.flag.flag-pa {background-position: -192px -110px}
+			.flag.flag-pe {background-position: -208px -110px}
+			.flag.flag-pf {background-position: -224px -110px}
+			.flag.flag-pg {background-position: -240px -110px}
+			.flag.flag-ph {background-position: 0 -121px}
+			.flag.flag-pk {background-position: -16px -121px}
+			.flag.flag-pl {background-position: -32px -121px}
+			.flag.flag-pm {background-position: -48px -121px}
+			.flag.flag-pn {background-position: -64px -121px}
+			.flag.flag-pr {background-position: -80px -121px}
+			.flag.flag-ps {background-position: -96px -121px}
+			.flag.flag-pt {background-position: -112px -121px}
+			.flag.flag-pw {background-position: -128px -121px}
+			.flag.flag-py {background-position: -144px -121px}
+			.flag.flag-qa {background-position: -160px -121px}
+			.flag.flag-re {background-position: -176px -121px}
+			.flag.flag-ro {background-position: -192px -121px}
+			.flag.flag-rs {background-position: -208px -121px}
+			.flag.flag-ru {background-position: -224px -121px}
+			.flag.flag-rw {background-position: -240px -121px}
+			.flag.flag-sa {background-position: 0 -132px}
+			.flag.flag-sb {background-position: -16px -132px}
+			.flag.flag-sc {background-position: -32px -132px}
+			.flag.flag-scotland {background-position: -48px -132px}
+			.flag.flag-sd {background-position: -64px -132px}
+			.flag.flag-se {background-position: -80px -132px}
+			.flag.flag-sg {background-position: -96px -132px}
+			.flag.flag-sh {background-position: -112px -132px}
+			.flag.flag-si {background-position: -128px -132px}
+			.flag.flag-sk {background-position: -144px -132px}
+			.flag.flag-sl {background-position: -160px -132px}
+			.flag.flag-sm {background-position: -176px -132px}
+			.flag.flag-sn {background-position: -192px -132px}
+			.flag.flag-so {background-position: -208px -132px}
+			.flag.flag-somaliland {background-position: -224px -132px}
+			.flag.flag-sr {background-position: -240px -132px}
+			.flag.flag-ss {background-position: 0 -143px}
+			.flag.flag-st {background-position: -16px -143px}
+			.flag.flag-sv {background-position: -32px -143px}
+			.flag.flag-sx {background-position: -48px -143px}
+			.flag.flag-sy {background-position: -64px -143px}
+			.flag.flag-sz {background-position: -80px -143px}
+			.flag.flag-tc {background-position: -96px -143px}
+			.flag.flag-td {background-position: -112px -143px}
+			.flag.flag-tf {background-position: -128px -143px}
+			.flag.flag-tg {background-position: -144px -143px}
+			.flag.flag-th {background-position: -160px -143px}
+			.flag.flag-tj {background-position: -176px -143px}
+			.flag.flag-tk {background-position: -192px -143px}
+			.flag.flag-tl {background-position: -208px -143px}
+			.flag.flag-tm {background-position: -224px -143px}
+			.flag.flag-tn {background-position: -240px -143px}
+			.flag.flag-to {background-position: 0 -154px}
+			.flag.flag-tr {background-position: -16px -154px}
+			.flag.flag-tt {background-position: -32px -154px}
+			.flag.flag-tv {background-position: -48px -154px}
+			.flag.flag-tw {background-position: -64px -154px}
+			.flag.flag-tz {background-position: -80px -154px}
+			.flag.flag-ua {background-position: -96px -154px}
+			.flag.flag-ug {background-position: -112px -154px}
+			.flag.flag-um {background-position: -128px -154px}
+			.flag.flag-us {background-position: -144px -154px}
+			.flag.flag-uy {background-position: -160px -154px}
+			.flag.flag-uz {background-position: -176px -154px}
+			.flag.flag-va {background-position: -192px -154px}
+			.flag.flag-vc {background-position: -208px -154px}
+			.flag.flag-ve {background-position: -224px -154px}
+			.flag.flag-vg {background-position: -240px -154px}
+			.flag.flag-vi {background-position: 0 -165px}
+			.flag.flag-vn {background-position: -16px -165px}
+			.flag.flag-vu {background-position: -32px -165px}
+			.flag.flag-wales {background-position: -48px -165px}
+			.flag.flag-wf {background-position: -64px -165px}
+			.flag.flag-ws {background-position: -80px -165px}
+			.flag.flag-ye {background-position: -96px -165px}
+			.flag.flag-yt {background-position: -112px -165px}
+			.flag.flag-za {background-position: -128px -165px}
+			.flag.flag-zanzibar {background-position: -144px -165px}
+			.flag.flag-zm {background-position: -160px -165px}
+			.flag.flag-zw {background-position: -176px -165px}
+		</style>
+		<script src="../lib/jquery/jquery.min.js"></script>
+		<script src="../lib/ae.js"></script>
+		<script>
+			var RATE = 32;
+			var AMOUNT = 2.5;
+			
+			var start = 0;
+			var interval = null;
+			var currentAmount = AMOUNT;
+			var controlsFadeTimer = null;
+		
+			$(document).ready(function(){
+				ae.loadLanguages("../..");
+				
+				$('#fader').fadeOut(2000);
+				
+				interval = setInterval(function(){
+					var isAtBottom = start >= scroller.scrollHeight - scroller.offsetHeight && currentAmount > 0;
+					var isAtTop = start < 0 && currentAmount < 0;
+					if (isAtBottom)
+					{
+						ae.listenToExitEvents();
+						stopScrolling();
+					}
+					else if (isAtTop)
+					{
+						stopScrolling();
+					}
+					else
+					{
+						start += currentAmount;
+						document.getElementById('scroller').scrollTop = start;
+					}
+				}, RATE);
+				
+				$('#controls a').click(function(e){
+					// make sure the controls are visible
+					// so keyboard events can't get here early
+					if (!$(this).is(":visible")) return;
+					
+					if (currentAmount != 0)
+					{
+						stopScrolling();
+					}
+					else
+					{
+						$(this).addClass('active');
+						
+						var direction = $(this).attr('id');
+						if (direction == 'down')
+						{
+							currentAmount = AMOUNT;
+						}
+						else
+						{
+							currentAmount = -AMOUNT * 2;
+						}
+					}
+					
+					e.preventDefault();
+					return false;
+				});
+				
+				// fade in the up/down controls after a
+				// delay so people get a chance to see
+				// the splash
+				setTimeout(function(){
+					$('#controls').fadeIn();
+				}, 10000);
+				
+				$(window).bind('mousewheel', function(e){
+					e.preventDefault();
+					return false;
+				});
+				
+				ae.callbackListeners.keyCodeReleased.push(function(keyCode){
+					switch (keyCode)
+					{
+						case ae.KEY_DOWN:
+						case ae.KEY_XBUTTON_DOWN:
+						case ae.KEY_PAGEDOWN:
+							$('#down').click();
+							break;
+						case ae.KEY_UP:
+						case ae.KEY_XBUTTON_UP:
+						case ae.KEY_PAGEUP:
+							$('#up').click();
+							break;
+					}
+					e.preventDefault();
+					return false;
+				});
+				
+				$('#scroller a').click(function(){
+					if ($(this).attr('href').match('estranged://'))
+					{
+						stopScrolling();
+					}
+				});
+				
+				/*
+				Hack to order tester's names (this was to order them in HTML)
+				var testers = [];
+				$('#testers p').each(function(){
+					testers.push([$(this).text(), $(this)[0].outerHTML]);
+				});
+				
+				testers.sort(function(thing1, thing2){
+					var name1 = thing1[0].trim().split(' ');
+					var name2 = thing2[0].trim().split(' ');
+					var sn1 = name1[name1.length-1];
+					var sn2 = name2[name2.length-1];
+					
+					if(sn1 < sn2) return -1;
+					if(sn1 > sn2) return 1;
+					return 0;
+				});
+				
+				var t = [];
+				for (i in testers)
+				{
+					t.push(testers[i][1]);
+				}
+				
+				console.log(t.join('\r\n'))*/
+			});
+			
+			function stopScrolling()
+			{
+				if (currentAmount != 0)
+				{
+					$('#up, #down').removeClass('active');
+					currentAmount = 0;
+				}
+			}
+	  </script>
+	</head>
+	<body>
+		<div id="fader"></div>
+	
+		<div id="controls" class="hide">
+			<p><a id="up" href="#">&#9650;</a></p>
+			<p><a id="down" href="#" class="active">&#9660;</a></p>
+		</div>
+		
+		<div id="scroller">
+	
+			<div class="filler"></div>
+			
+			<h1 class="loc">GameTitle</h1>
+			
+			<h2 class="loc wings">GameSubtitle</h2>
+			
+			<div class="spacer"></div>
+			
+			<div class="left nameblock">
+				<h2><a class="steam" href="estranged://openuser/31675019">Alan Edwardes</a><a class="url" href="estranged://overlay/http://www.alanedwardes.com/">www.alanedwardes.com</a></h2>
+				<p class="loc">CreditsCreator</p>
+				<p class="loc">CreditsProjectLead</p>
+				<p class="loc">CreditsLevelDesigner</p>
+				<p class="loc">CreditsProgrammer</p>
+				<p class="loc">CreditsStoryDesigner</p>
+				<p class="loc">CreditsTextureArtist</p>
+			</div>
+			
+			<div class="right nameblock">
+				<h2><a class="steam" href="estranged://openuser/29502225">Christiaan Bakker</a><a class="url" href="estranged://overlay/http://www.anicator.com/">www.anicator.com</a></h2>
+				<p class="loc">CreditsLevelDesigner</p>
+				<p class="loc">CreditsProgrammer</p>
+				<p class="loc">CreditsTextureArtist</p>
+				<p class="loc">CreditsModelArtist</p>
+				<p class="loc">CreditsShaderArtist</p>
+				<p class="loc">CreditsLeadMusician</p>
+			</div>
+			
+			<div class="doublespacer"></div>
+			
+			<h3 class="wings loc">CreditsTeam</h3>
+			
+			<div class="left nameblock">
+				<h2><a class="steam" href="estranged://openuser/65328491">François Desforges</a></h2>
+				<p class="loc">CreditsLevelDesigner</p>
+			</div>
+			
+			<div class="right nameblock">
+				<h2><a class="steam" href="estranged://openuser/15396818">Dima Kudria</a></h2>
+				<p class="loc">CreditsLevelDesigner</p>
+			</div>
+			
+			<div class="left nameblock">
+				<h2><a class="steam" href="estranged://openuser/37129668">Nicolas Paulat</a></h2>
+				<p class="loc">CreditsModelArtist</p>
+			</div>
+			
+			<div class="right nameblock">
+				<h2><a class="steam" href="estranged://openuser/20818262">Tom Wright</a><a class="url" href="estranged://overlay/http://tomwrightsound.com/">www.tomwrightsound.com</a></h2>
+				<p class="loc">CreditsAudioDesigner</p>
+			</div>
+			
+			<div class="spacer"></div>
+			
+			<h3 class="wings loc">CreditsWithThanksTo</h3>
+			
+			<div class="spacer"></div>
+			
+			<div class="left nameblock">
+				<h2><a class="steam" href="estranged://openuser/32780550">Arthur Alcântara</a><a class="url" href="estranged://overlay/http://www.x2-network.com/">www.x2-network.com</a></h2>
+				<p class="loc">CreditsMirrorHosting</p>
+			</div>
+			
+			<div class="right nameblock">
+				<h2><a class="steam" href="estranged://openuser/29500537">Martin Bakker</a></h2>
+				<p class="loc">CreditsGuitarSamples</p>
+			</div>
+			
+			<div class="left nameblock">
+				<h2><a class="steam" href="estranged://openuser/29768893">Jacob Brown</a></h2>
+				<p class="loc">CreditsLevelDesigner</p>
+			</div>
+			
+			<div class="right nameblock">
+				<h2><a class="steam" href="estranged://openuser/35539800">Oliver Fisher</a><a class="url" href="estranged://overlay/http://of13.co.uk/">of13.co.uk</a></h2>
+				<p><span class="loc">CreditsLevelDesigner</span></p>
+			</div>
+			
+			<div class="left nameblock">
+				<h2><a class="steam" href="estranged://openuser/87238953">William Freeman</a></h2>
+				<p class="loc">CreditsPhotographer</p>
+			</div>
+			
+			<div class="right nameblock">
+				<h2>Alexander Renfert</h2>
+				<p class="loc">CreditsOculusRift</p>
+			</div>
+			
+			<div class="left nameblock">
+				<h2><a class="steam" href="estranged://openuser/33667552">David Song</a></h2>
+				<p class="loc">CreditsModelArtist</p>
+			</div>
+			
+			<div class="right nameblock">
+				<h2><a class="steam" href="estranged://openuser/20818262">Drew Watts</a><a class="url" href="estranged://overlay/http://www.drewwatts.net/">www.drewwatts.net</a></h2>
+				<p class="loc">CreditsShaderArtist</p>
+			</div>
+			
+			<div class="center nameblock">
+				<h2><a class="steam" href="estranged://openuser/85485370">João Gomes</a></h2>
+				<p class="loc">CreditsTester</p>
+			</div>
+			
+			<div class="spacer"></div>
+			
+			<h3 class="wings loc">CreditsVoices</h3>
+			
+			<div class="spacer"></div>
+			
+			<div class="left nameblock">
+				<h2><a class="steam" href="estranged://openuser/31675019">Alan Edwardes</a></h2>
+				<p>John Derril</p>
+			</div>
+			
+			<div class="right nameblock">
+				<h2><a class="steam" href="estranged://openuser/48119983">Gregory Wasdyke</a></h2>
+				<p class="loc">CreditsOmnicorpThug</p>
+			</div>
+			
+			<div class="left nameblock">
+				<h2>Mitchell Lucas<a class="url" href="estranged://overlay/http://www.mitchellslucas.com/">www.mitchellslucas.com</a></h2>
+				<p>George Richmond</p>
+			</div>
+			
+			<div class="right nameblock">
+				<h2>Katie Edwardes</h2>
+				<p class="loc">CreditsOmnicorpBroadcaster</p>
+			</div>
+			
+			<div class="left nameblock">
+				<h2><a class="steam" href="estranged://openuser/31856865">John Guglielmi</a></h2>
+				<p class="loc">CreditsOmnicorpThug</p>
+			</div>
+			
+			<div class="right nameblock">
+				<h2 class="loc">CreditsPreviousVoices</h2>
+				<p><a class="steam" href="estranged://openuser/82901322">Ryan McNulty</a></p>
+				<p><a class="steam" href="estranged://openuser/2428807">Erik Nygren</a></p>
+				<p>Linda Eliasson</p>
+			</div>
+			
+			<div class="spacer"></div>
+			
+			<h3 class="wings loc">CreditsTranslators</h3>
+			
+			<div class="spacer"></div>
+			
+			<div class="center nameblock">
+				<h2><span class="loc">CreditsSteamTranslation</span></h2>
+				<p>
+					<span class="flag flag-br"></span>
+					<span class="flag flag-bg"></span>
+					<span class="flag flag-cz"></span>
+					<span class="flag flag-dk"></span>
+					<span class="flag flag-nl"></span>
+					<span class="flag flag-fi"></span>
+					<span class="flag flag-fr"></span>
+					<span class="flag flag-de"></span>
+					<span class="flag flag-gr"></span>
+					<span class="flag flag-hu"></span>
+					<span class="flag flag-it"></span>
+					<span class="flag flag-jp"></span>
+				</p>
+				<p>
+					<span class="flag flag-kr"></span>
+					<span class="flag flag-no"></span>
+					<span class="flag flag-pl"></span>
+					<span class="flag flag-pt"></span>
+					<span class="flag flag-ro"></span>
+					<span class="flag flag-ru"></span>
+					<span class="flag flag-es"></span>
+					<span class="flag flag-se"></span>
+					<span class="flag flag-cn"></span>
+					<span class="flag flag-tw"></span>
+					<span class="flag flag-tr"></span>
+					<span class="flag flag-ua"></span>
+					<span class="flag flag-vn"></span>
+				</p>
+				<p>&nbsp;</p>
+				<p><a class="url" href="estranged://overlay/http://translation.steampowered.com/">translation.steampowered.com</a></p>
+			</div>
+			
+			<div class="spacer"></div>
+			
+			<h4 class="loc">CreditsWithThanksTo</h4>
+			
+			<p><a class="steam" href="estranged://openuser/65137417">Raúl Cantora</a> • <a class="steam" href="estranged://openuser/70989448">Eliazăr-Cosmin Cioinegel</a></p>
+			<p><a class="steam" href="estranged://openuser/65328491">François Desforges</a> • <a class="steam" href="estranged://openuser/66758741">Niels Ferdinand</a></p>
+			<p><a class="steam" href="estranged://openuser/11935399">Andrea Franceschi</a> • <a class="steam" href="estranged://openuser/85485370">João Gomes</a></p>
+			<p><a class="steam" href="estranged://openuser/64684282">Casper Hilmand</a> • <a class="steam" href="estranged://openuser/80791273">Áron Hegymegi Kiss</a></p>
+			<p><a class="steam" href="estranged://openuser/65704131">Sarvan Naganathar</a> • <a class="steam" href="estranged://openuser/12051276">Mathias Olsson</a></p>
+			<p><a class="steam" href="estranged://openuser/37418936">Andrey Pomorov</a> • <a class="steam" href="estranged://openuser/36441223">Riccardo Rapuano</a></p>
+			<p><a class="steam" href="estranged://openuser/75223883">Lars Schilling</a> • <a class="steam" href="estranged://openuser/36305431">王凯</a></p> 
+			
+			<div class="spacer"></div>
+			
+			<h3 class="wings loc">CreditsTesters</h3>
+			
+			<div class="spacer"></div>
+			
+			<p><a class="steam" href="estranged://openuser/128552620">Lukas Babrauskas</a> • <a class="steam" href="estranged://openuser/16502255">Sébastien Blancou</a></p>
+			<p><a class="steam" href="estranged://openuser/48531609">Lyall Campbell</a> • <a class="steam" href="estranged://openuser/67377869">Başoldea Cosmin</a></p>
+			<p><a class="steam" href="estranged://openuser/70692508">Samuel B. Driver </a> • <a class="steam" href="estranged://openuser/34802094">Marcel van Duyn</a></p>
+			<p><a class="steam" href="estranged://openuser/40400057">Michael Edwardes</a> • <a class="steam" href="estranged://openuser/6333081">Gabriel Freitas</a></p>
+			<p><a class="steam" href="estranged://openuser/108265994">Arthur Galimullin</a> • <a class="steam" href="estranged://openuser/53788993">Georgi Georgiev</a></p>
+			<p><a class="steam" href="estranged://openuser/26294211">Sahil Guseynov</a> • Mike Hawke</p>
+			<p><a class="steam" href="estranged://openuser/29993504">Nathan Johnson</a> • <a class="steam" href="estranged://openuser/38189011">Anthony Kaydalov</a></p>
+			<p><a class="steam" href="estranged://openuser/141468748">Alphonse Kim</a> • <a class="steam" href="estranged://openuser/23627378">Dave King</a></p>
+			<p><a class="steam" href="estranged://openuser/9861351">Nicolas Kirsch</a> • <a class="steam" href="estranged://openuser/93132798">Maximilian Liening</a></p>
+			<p><a class="steam" href="estranged://openuser/9998624">Bernardo Lopes</a> • <a class="steam" href="estranged://openuser/20771907">Sylvain M.</a></p>
+			<p><a class="steam" href="estranged://openuser/23481009">Victor Macry</a> • <a class="steam" href="estranged://openuser/56177204">Roman Mayko </a></p>
+			<p>Hannah McIntear • <a class="steam" href="estranged://openuser/61253719">Mikhail Miladovich </a></p>
+			<p><a class="steam" href="estranged://openuser/32178843">Alexander Mladich</a> • <a class="steam" href="estranged://openuser/95097550">Grant Nichols </a></p>
+			<p><a class="steam" href="estranged://openuser/24020379">Pedro Nunes</a> • <a class="steam" href="estranged://openuser/24014210">Joris Palings</a></p>
+			<p><a class="steam" href="estranged://openuser/44996522">Jang Hoon Park</a> • <a class="steam" href="estranged://openuser/61510986">Jeffrey Parsons</a></p>
+			<p><a class="steam" href="estranged://openuser/37129668">Nicolas Paulat</a> • <a class="steam" href="estranged://openuser/30912941">Murilo Ricci</a></p>
+			<p><a class="steam" href="estranged://openuser/77615189">Dan Roddis</a> • <a class="steam" href="estranged://openuser/81870164">Samantha Shainoff</a></p>
+			<p><a class="steam" href="estranged://openuser/29965798">Alexander Shtefan</a> • <a class="steam" href="estranged://openuser/35631149">Joshua Skrinnikoff</a></p>
+			<p><a class="steam" href="estranged://openuser/19570436">Marcin Strzyż</a> • <a class="steam" href="estranged://openuser/23496011">Petro Miikkael Tissari</a></p>
+			<p>Michael Tsarouhas • <a class="steam" href="estranged://openuser/38355553">William Tuttle</a></p>
+			<p><a class="steam" href="estranged://openuser/79496171">Josh Vedder</a> • <a class="steam" href="estranged://openuser/26633995">Rozhkov Vladimir</a></p>
+			<p><a class="steam" href="estranged://openuser/79618453">Emil Olai Waagbo</a> • <a class="steam" href="estranged://openuser/116459251">Ugnius Žigas</a></p>
+			
+			<h4>The Beta Testers Collective<a class="url" href="estranged://overlay/http://betatesterscollective.com/">betatesterscollective.com</a></h4>
+			
+			<p>Ade</p>
+			<p><a class="steam" href="estranged://openuser/10331213">Shaun Friend</a> • <a class="steam" href="estranged://openuser/10552485">Tom Hall</a></p>
+			
+			<div class="spacer"></div>
+			
+			<div class="half filler"></div>
+			
+			<h3><a class="loc" href="estranged://close">CreditsMainMenu</a></h3>
+			
+			<div class="half filler"></div>
+		
+		</div>
+	</body>
+</html>

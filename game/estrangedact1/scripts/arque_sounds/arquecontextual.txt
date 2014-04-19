@@ -1,0 +1,7 @@
+arque.contextual.curfew
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*arque\contextual\curfew.wav"
+}

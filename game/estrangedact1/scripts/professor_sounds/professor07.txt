@@ -1,0 +1,8 @@
+professor.07.01ahgreat
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"*professor\07\01ahgreat.wav"
+}
+

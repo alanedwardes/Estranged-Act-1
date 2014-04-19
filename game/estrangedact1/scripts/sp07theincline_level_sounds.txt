@@ -1,0 +1,23 @@
+waterpipe_stream01
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_NORM
+	wave		"anicator\machines\waterpipe_stream01.wav"
+}
+
+waterpipe_stream01_stop
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_NORM
+	wave		"anicator\machines\waterpipe_stream01_stop.wav"
+}
+
+07sting
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\07sting.wav"
+}

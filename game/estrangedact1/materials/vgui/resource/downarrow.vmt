@@ -1,0 +1,6 @@
+"unlitgeneric"
+{
+	"$basetexture"	"vgui/resource/downarrow"
+	"$translucent" 1
+	"$surfaceprop"	"default"
+}

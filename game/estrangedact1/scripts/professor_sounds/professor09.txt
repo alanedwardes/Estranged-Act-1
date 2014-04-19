@@ -1,0 +1,80 @@
+professor.09.01alrightihopesomeone
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\09\01alrightihopesomeone.wav"
+}
+
+professor.09.02thisisprofessorgeorge
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\09\02thisisprofessorgeorge.wav"
+}
+
+professor.09.03ohwellthatsweird
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\09\03ohwellthatsweird.wav"
+}
+
+professor.09.04huhdidtheyoverride
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\09\04huhdidtheyoverride.wav"
+}
+
+professor.09.05illclearitjusttobe
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\09\05illclearitjusttobe.wav"
+}
+
+professor.09.06theresnothingthere
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\09\06theresnothingthere.wav"
+}
+
+professor.09.07themessageisnt
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\09\07themessageisnt.wav"
+}
+
+professor.09.08iwonderwhereonearth
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\09\08iwonderwhereonearth.wav"
+}
+
+professor.09.09theresaveryoldsatellite
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\09\09theresaveryoldsatellite.wav"
+}
+
+professor.09.10itmustbe
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\09\10itmustbe.wav"
+}
+

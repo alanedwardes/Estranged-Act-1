@@ -1,0 +1,80 @@
+hutman.06.01lookbeforeyougo
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\06\01lookbeforeyougo.wav"
+}
+
+hutman.06.02icamehere
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\06\02icamehere.wav"
+}
+
+hutman.06.03threemonthsago
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\06\03threemonthsago.wav"
+}
+
+hutman.06.04aroundthetime
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\06\04aroundthetime.wav"
+}
+
+hutman.06.05wegotseparated
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\06\05wegotseparated.wav"
+}
+
+hutman.06.06please
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\06\06please.wav"
+}
+
+hutman.06.07ifyoufindthem
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\06\07ifyoufindthem.wav"
+}
+
+hutman.06.08keepthemsafe
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\06\08keepthemsafe.wav"
+}
+
+hutman.06.09gasp
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\06\09gasp.wav"
+}
+
+hutman.06.10dowhaticouldnt
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\06\10dowhaticouldnt.wav"
+}
+

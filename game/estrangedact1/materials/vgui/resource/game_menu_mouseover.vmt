@@ -1,0 +1,8 @@
+"unlitgeneric"
+{
+	"$basetexture" 		"vgui\resource\game_menu_mouseover"
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$ignorez" 1
+	"$no_fullbright" "1"
+}

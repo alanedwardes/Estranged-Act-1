@@ -1,0 +1,43 @@
+"outland_ep01.sled_1st_slip"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_120dB"
+
+	"wave"			"ambient/levels/outland/ol01_sled_1st_slip.wav"
+}
+
+"outland_ep01.sledthrufence_impact"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_120dB"
+
+	"wave"			"ambient/levels/outland/ol01_sledthrufence_impact.wav"
+}
+
+"outland_ep01.ol03_binsqueak03_med"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_120dB"
+
+	"wave"			"ambient/levels/outland/ol03_binsqueak03_med.wav"
+}
+
+"outland_ep01.ol03_binsqueak03_short"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_120dB"
+
+	"wave"			"ambient/levels/outland/ol03_binsqueak03_short.wav"
+}

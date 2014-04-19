@@ -1,0 +1,7 @@
+"unlitgeneric"
+{
+	"$basetexture" 		"vgui\resource\icon_folder_selected"
+	"$ignorez"		1
+	"$translucent" 1
+}
+

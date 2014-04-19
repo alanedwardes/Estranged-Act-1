@@ -1,0 +1,5 @@
+"unlitgeneric"
+{
+	"$baseTexture" "vgui/menu/feedback"
+	"$vertexalpha" 1
+}

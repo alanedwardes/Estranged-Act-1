@@ -1,0 +1,96 @@
+hutman.contextual.distress01
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\contextual\distress01.wav"
+}
+
+hutman.contextual.distress02
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\contextual\distress02.wav"
+}
+
+hutman.contextual.distress03
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\contextual\distress03.wav"
+}
+
+hutman.contextual.distress04
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\contextual\distress04.wav"
+}
+
+hutman.contextual.distress05
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\contextual\distress05.wav"
+}
+
+hutman.contextual.distress06
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\contextual\distress06.wav"
+}
+
+hutman.contextual.extra01
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\contextual\extra01.wav"
+}
+
+hutman.contextual.extra02
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\contextual\extra02.wav"
+}
+
+hutman.contextual.hutlost01
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\contextual\hutlost01.wav"
+}
+
+hutman.contextual.hutnag01
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\contextual\hutnag01.wav"
+}
+
+hutman.contextual.hutnag02
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\contextual\hutnag02.wav"
+}
+
+hutman.contextual.hutnag03
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\contextual\hutnag03.wav"
+}
+

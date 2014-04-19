@@ -1,0 +1,236 @@
+*
+{
+	outline:none;
+	font-family:EstrangedSansSerif !important;
+}
+
+p
+{
+	margin:10px 0px;
+}
+
+.ui-widget-header
+{
+	font-weight:normal;
+}
+
+.ui-button
+{
+	background:white !important;
+	border:0px solid transparent !important;
+}
+
+.alert_window .ui-dialog-titlebar
+{
+	background:rgb(150, 0, 0);
+	text-align:center;
+}
+.alert_window .ui-dialog-titlebar-close
+{
+	display:none;
+}
+.alert_window
+{
+	background-image:-webkit-linear-gradient(rgb(200, 50, 50) 0%, rgb(50, 0, 0) 100%);
+}
+.alert_window .warning
+{
+	width:100%;
+	height:100%;
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-size:cover;
+	text-align:center;
+}
+@-webkit-keyframes blink
+{
+	0% { opacity:.25; }
+	50% { opacity: 1; }
+	100% { opacity:.25; }
+}
+.alert_window .warning div
+{
+    -webkit-animation: blink 0.5s linear infinite;
+    -moz-animation: blink 0.5s linear infinite;
+    animation: blink 0.5s linear infinite;
+	padding-top:3%;
+	font-family:Arial;
+	text-shadow:1px 1px 0px black;
+	font-weight:bold;
+	font-size:26px;
+}
+.alert_window .warning button
+{
+	margin-top:2%;
+}
+html
+{
+	height:100%;
+}
+body
+{
+	color:#fff;
+	background-image:url(background.png);
+	background-size: cover;
+	background-color:#222;
+	background-repeat:no-repeat;
+	background-position:center center;
+	overflow:hidden;
+}
+.icon.selected
+{
+	background:rgba(255, 255, 255, 0.25);
+	box-shadow:0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+.icon
+{
+	padding:5px 10px;
+	display:block;
+	border-radius:5px;
+	text-align:center;
+	cursor:pointer;
+	text-decoration:none;
+	color:white;
+	font-size:14px;
+	position:absolute;
+}
+.icon img
+{
+	cursor:pointer;
+	max-height:120px;
+	max-width:120px;
+}
+.icon span
+{
+	display:block;
+	cursor:pointer;
+	text-shadow:0px 0px 4px black;
+	height:20px;
+}
+
+.error
+{
+	background:red;
+	color:white;
+	padding:10px;
+	margin:20px 0px;
+}
+
+.dialog
+{
+	display:none;
+}
+
+.hide
+{
+	display:none;
+}
+
+.center
+{
+	text-align:center;
+}
+
+.quote
+{
+	padding:10px;
+	background:#555;
+}
+
+input
+{
+	color:white;
+	background:#555;
+	border:1px solid red;
+	padding:5px;
+}
+
+.dialog .ui-button
+{
+	min-width:75px;
+}
+
+.ui-button
+{
+	padding:5px 10px;
+}
+
+#mail-left h4, #mail-right h4
+{
+	margin:0px;
+}
+
+#mail-left
+{
+	margin-top:10px;
+	width:25%;
+	float:left;
+}
+
+#mail-right
+{
+	margin-top:10px;
+	width:70%;
+	float:right;
+}
+
+.card
+{
+	padding:5px;
+	margin-bottom:5px;
+}
+
+.card:hover
+{
+	background:#555;
+}
+
+.card.selected
+{
+	background:#eee;
+	color:#000;
+}
+
+.card h4
+{
+	font-size:14px;
+}
+
+.card span
+{
+	font-size:12px;
+}
+
+.email
+{
+	padding:0px 5px;
+	display:none;
+}
+
+.email blockquote
+{
+	margin:20px;
+	background:rgba(0, 0, 0, 0.4);
+	padding:1px 10px;
+	font-style:italic;
+}
+
+.email h4
+{
+	font-size:20px;
+}
+
+.email .from, .email .to
+{
+	font-size:12px;
+}
+
+.info
+{
+	position:fixed;
+	font-size:16px;
+	padding:5px 20px;
+	background:rgba(0, 0, 0, 0.5);
+	right:0px;
+	bottom:0px;
+}

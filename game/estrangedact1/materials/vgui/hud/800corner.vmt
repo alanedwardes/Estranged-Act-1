@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "vgui/hud/800corner"
+ "$bumpmap" "dud_normal"
+}

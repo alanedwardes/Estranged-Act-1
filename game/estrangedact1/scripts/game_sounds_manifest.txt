@@ -1,0 +1,84 @@
+game_sounds_manifest
+{
+	"precache_file"		"scripts/game_sounds.txt"
+	"precache_file"		"scripts/game_sounds_ui.txt"
+	"precache_file"		"scripts/game_sounds_player.txt"
+	
+	/////////////////////////////////////////////////////////////////////////////
+	// ESTRANGED CHARACTERS
+	/////////////////////////////////////////////////////////////////////////////
+	// George Richmond
+	/////////////////////////////////////////////////////////////////////////////
+	"precache_file"		"scripts/professor_sounds/professor01.txt"
+	"precache_file"		"scripts/professor_sounds/professor02.txt"
+	"precache_file"		"scripts/professor_sounds/professor03.txt"
+	"precache_file"		"scripts/professor_sounds/professor04.txt"
+	"precache_file"		"scripts/professor_sounds/professor05.txt"
+	"precache_file"		"scripts/professor_sounds/professor06.txt"
+	"precache_file"		"scripts/professor_sounds/professor07.txt"
+	"precache_file"		"scripts/professor_sounds/professor08.txt"
+	"precache_file"		"scripts/professor_sounds/professor09.txt"
+	"precache_file"		"scripts/professor_sounds/professor10.txt"
+	"precache_file"		"scripts/professor_sounds/unknown01.txt"
+	/////////////////////////////////////////////////////////////////////////////
+	// John Derril
+	/////////////////////////////////////////////////////////////////////////////
+	"precache_file"		"scripts/hutman_sounds/hutman01.txt"
+	"precache_file"		"scripts/hutman_sounds/hutman02.txt"
+	"precache_file"		"scripts/hutman_sounds/hutman03.txt"
+	"precache_file"		"scripts/hutman_sounds/hutman04.txt"
+	"precache_file"		"scripts/hutman_sounds/hutman05.txt"
+	"precache_file"		"scripts/hutman_sounds/hutman06.txt"
+	"precache_file"		"scripts/hutman_sounds/hutman07.txt"
+	"precache_file"		"scripts/hutman_sounds/hutmancontextual.txt"
+	/////////////////////////////////////////////////////////////////////////////
+	// Arque
+	/////////////////////////////////////////////////////////////////////////////
+	"precache_file"		"scripts/capturer_sounds/capturer01.txt"
+	"precache_file"		"scripts/arque_sounds/arquecontextual.txt"
+	"precache_file"		"scripts/arque_sounds/guards.txt"
+	/////////////////////////////////////////////////////////////////////////////
+
+	// ae - TODO: stop using this map-oriented format
+	"precache_file"		"scripts/sp04thetunnel_level_sounds.txt"
+	"precache_file"		"scripts/sp07theincline_level_sounds.txt"
+	"precache_file"		"scripts/sp08theincline_level_sounds.txt"
+	"precache_file"		"scripts/sp09thebase_level_sounds.txt"
+	"precache_file"		"scripts/game_sounds_main.txt"
+	
+	// Weapon sounds
+	"precache_file"		"scripts/game_sounds_weapons.txt"
+
+	// HL2 World, Ambient Generic, Items, Physics, Vehicles
+	"precache_file"		"scripts/game_sounds_world.txt"
+	"precache_file"		"scripts/game_sounds_ambient_generic.txt"
+	"precache_file"		"scripts/game_sounds_items.txt"
+	"precache_file"		"scripts/game_sounds_physics.txt"
+	"precache_file"		"scripts/game_sounds_vehicles.txt"
+
+	// E3 level sounds
+	"precache_file"		"scripts/level_sounds_e3_c17.txt"
+	"precache_file"		"scripts/level_sounds_e3_town.txt"
+	"precache_file"		"scripts/level_sounds_e3_bugbait.txt"
+
+	// Game level sounds
+	"precache_file"		"scripts/level_sounds_eli_lab.txt"
+	"precache_file"		"scripts/level_sounds_trainyard.txt"
+	"precache_file"		"scripts/level_sounds_k_lab.txt"
+	"precache_file"		"scripts/level_sounds_k_lab2.txt"
+	"precache_file"		"scripts/level_sounds_coast.txt"
+	"precache_file"		"scripts/level_sounds_novaprospekt.txt"
+	"precache_file"		"scripts/level_sounds_streetwar.txt"
+	"precache_file"		"scripts/level_sounds_streetwar2.txt"
+	"precache_file"		"scripts/level_sounds_breencast.txt"
+	"precache_file"		"scripts/level_sounds_citadel.txt"
+	"precache_file"		"scripts/level_sounds_canals.txt"
+	"precache_file"		"scripts/level_sounds_ravenholm.txt"
+	"precache_file"		"scripts/level_sounds_ravenholm2.txt"
+	"precache_file"		"scripts/level_sounds_canals2.txt"
+
+	// NPC Sounds
+	"precache_file"		"scripts/npc_sounds_zombie.txt"
+	"precache_file"		"scripts/npc_sounds_omniguards.txt"
+	"precache_file"		"scripts/npc_sounds_birds.txt"
+}

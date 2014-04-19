@@ -1,0 +1,88 @@
+professor.04.01ohtherangeperfect
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\04\01ohtherangeperfect.wav"
+}
+
+professor.04.02wellneedsomthingmore
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\04\02wellneedsomthingmore.wav"
+}
+
+professor.04.03youcanpractiseifyouwant
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\04\03youcanpractiseifyouwant.wav"
+}
+
+professor.04.04bakesaleinjuly
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\04\04bakesaleinjuly.wav"
+}
+
+professor.04.05ohthats
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\04\05ohthats.wav"
+}
+
+professor.04.06sothatsthefoodguy
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\04\06sothatsthefoodguy.wav"
+}
+
+professor.04.07fascinating
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\04\07fascinating.wav"
+}
+
+professor.04.08what
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\04\08what.wav"
+}
+
+professor.04.09wellthatonesold
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\04\09wellthatonesold.wav"
+}
+
+professor.04.10somebodyshouldtakethatonedown
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\04\10somebodyshouldtakethatonedown.wav"
+}
+
+professor.04.11youfinished
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\04\11youfinished.wav"
+}
+

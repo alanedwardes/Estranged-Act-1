@@ -1,0 +1,15 @@
+elevator.music
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		")anicator\lift_music.wav"
+}
+
+elevator.ding
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\lift_ding.wav"
+}

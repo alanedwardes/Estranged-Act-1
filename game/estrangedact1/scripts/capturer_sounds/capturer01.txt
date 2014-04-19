@@ -1,0 +1,247 @@
+capturer.01ayouawakeyet
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\01ayouawakeyet.wav"
+}
+
+capturer.01bhello
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\01bhello.wav"
+}
+
+capturer.01cimtalkingtoyou
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\01cimtalkingtoyou.wav"
+}
+
+capturer.01dyesyou
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\01dyesyou.wav"
+}
+
+capturer.02therewego
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\02therewego.wav"
+}
+
+capturer.03youfeelalright
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\03youfeelalright.wav"
+}
+
+capturer.04yousure
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\04yousure.wav"
+}
+
+capturer.05wewouldnt
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\05wewouldnt.wav"
+}
+
+capturer.06sothequestion
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\06sothequestion.wav"
+}
+
+capturer.07whyisa
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\07whyisa.wav"
+}
+
+capturer.08fisherman
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\08fisherman.wav"
+}
+
+capturer.09allthewaydownhere
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\09allthewaydownhere.wav"
+}
+
+capturer.10ohanddont
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\10ohanddont.wav"
+}
+
+capturer.11itookawayyour
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\11itookawayyour.wav"
+}
+
+capturer.12farbeitfromme
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\12farbeitfromme.wav"
+}
+
+capturer.13yourequitethe
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\13yourequitethe.wav"
+}
+
+capturer.14wevebeentracking
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\14wevebeentracking.wav"
+}
+
+capturer.15toobad
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\15toobad.wav"
+}
+
+capturer.16speakingoftime
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\16speakingoftime.wav"
+}
+
+capturer.17myshiftended
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\17myshiftended.wav"
+}
+
+capturer.18somakeyourself
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\18somakeyourself.wav"
+}
+
+capturer.19youllbedead
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\19youllbedead.wav"
+}
+
+capturer.20itsme
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\20itsme.wav"
+}
+
+capturer.21hesawake
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\21hesawake.wav"
+}
+
+capturer.22noicouldnt
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\22noicouldnt.wav"
+}
+
+capturer.23itiedhim
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\23itiedhim.wav"
+}
+
+capturer.24yeahifhecan
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\24yeahifhecan.wav"
+}
+
+capturer.25idiot
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\25idiot.wav"
+}
+
+capturer.26noyoulisten
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\26noyoulisten.wav"
+}
+
+capturer.27noyourenot
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\27noyourenot.wav"
+}
+
+capturer.heydontmove
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*capturer\heydontmove.wav"
+}

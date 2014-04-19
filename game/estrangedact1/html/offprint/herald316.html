@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<link rel="stylesheet" href="../lib/ui.css"/>
+		<style>
+			*
+			{
+				padding:0px;
+				margin:0px;
+			}
+			hr
+			{
+				background:black; 
+				clear:both; 
+				width:100%; 
+				height:5px;
+				border:none; 
+			}
+			
+			body
+			{
+				overflow:hidden;
+			}
+			
+			#content
+			{
+				position:fixed;
+				width:100%;
+				font-family:'Georgia', serif;
+				height:100%;
+				overflow:auto;
+				font-size:18px;
+				background:transparent;
+			}
+			
+			#innercontent
+			{
+				padding:10px;
+				max-width:960px;
+				margin:0px auto;
+			}
+			
+			.sub
+			{
+				text-transform:uppercase;
+				font-size:14px;
+				font-family:Arial;
+				font-weight:bold;
+				padding:10px 0px;
+				text-align:center;
+			}
+			.sub.left
+			{
+				text-align:left;
+			}
+			blockquote
+			{
+				font-family:'Arial Black', sans-serif;
+				font-size:22px;
+				text-transform:uppercase;
+				padding-bottom:10px;
+				text-align:center;
+			}
+			h1, h2, h3
+			{
+				text-transform:uppercase;
+			}
+			h1
+			{
+				letter-spacing:-5px;
+				border-top:5px solid black;
+				border-bottom:5px solid black;
+				padding:20px 0px;
+				text-align:center;
+				font-size:75px;
+				font-weight:normal;
+			}
+			h2
+			{
+				font-family:'Impact', sans-serif;
+				text-align:center;
+				padding:20px 0px;
+				font-size:75px;
+			}
+			h3
+			{
+				float:left;
+				line-height:28px;
+				padding:10px 0px;
+				width:250px;
+				font-size:20px;
+				font-family:'Arial', sans-serif;
+			}
+			p.start:first-letter
+			{
+				font-size:25px;
+				padding:0px 2px;
+				background:#eee;
+			}
+			p
+			{
+				font-size:18px;
+				line-height:28px;
+				padding:10px 0px;
+			}
+			.inset.right
+			{
+				float:right;
+				padding-left:10px;
+				padding-bottom:10px;
+			}
+			p.small
+			{
+				font-size:14px;
+			}
+		</style>
+		<script src="../lib/jquery/jquery.min.js"></script>
+		<script src="../lib/ae.js"></script>
+		<script>
+			$(document).ready(function(){
+				ae.listenToExitEvents();
+			
+				var content = $('#content').get(0);
+				ae.callbackListeners.keyCodeReleased.push(function(keyCode){
+					switch (keyCode)
+					{
+						case ae.KEY_DOWN:
+						case ae.KEY_XBUTTON_DOWN:
+						case ae.KEY_PAGEDOWN:
+							content.scrollTop += 200;
+							break;
+						case ae.KEY_UP:
+						case ae.KEY_XBUTTON_UP:
+						case ae.KEY_PAGEUP:
+							content.scrollTop -= 200;
+							break;
+					}
+				});
+				ae.showExitHint();
+				ae.loadLanguages("../..");
+			});
+		</script>
+	</head>
+	<body>
+		<div id="content" tabindex="-1">
+			<div id="innercontent">
+				<p class="sub loc">WentworthHeraldTagline</p>
+				<h1 class="loc">WentworthHeraldTitle</h1>
+				
+				<h2 class="loc">LighthouseDecomissionedTitle</h2>
+				<img class="inset right" src="./assets/lighthouse.png" alt=""/>
+				<p class="start loc">LighthouseDecomissionedParagraph1</p>
+				<p class="loc">LighthouseDecomissionedParagraph2</p>
+				<p class="loc">LighthouseDecomissionedParagraph3</p>
+				<blockquote class="loc">LighthouseDecomissionedQuote</blockquote>
+				<p class="loc">LighthouseDecomissionedParagraph4</p>
+				<p class="loc">LighthouseDecomissionedParagraph5</p>
+				<p class="sub left loc">MoreOnPage7</p>
+				
+				<hr/>
+				
+				<div style="width:300px;text-align:center" class="inset right">
+					<h2 class="loc">LostTitle</h2>
+					<img width="200" src="./assets/lost.png" alt=""/>
+					<p class="small start loc">LostParagraph1</p>
+					<hr/>
+				</div>
+				
+				<h2 class="loc">ScarecrowCompetitionTitle</h2>
+				<p class="start loc">ScarecrowCompetitionParagraph1</p>
+				<p class="loc">ScarecrowCompetitionParagraph2</p>
+				<p class="loc">ScarecrowCompetitionParagraph3</p>
+				<p class="loc">ScarecrowCompetitionParagraph4</p>
+				<p class="loc">ScarecrowCompetitionParagraph5</p>
+				<p class="sub left loc">MoreOnPage10</p>
+				
+				<hr/>
+				
+				<h3 class="loc">OmnicorpTitle</h3>
+				<p class="start loc">OmnicorpParagraph1</p>
+				
+				<hr/>
+			</div>
+		</div>
+	</body>
+</html>

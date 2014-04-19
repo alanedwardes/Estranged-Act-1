@@ -1,0 +1,7 @@
+"unlitgeneric"
+{
+	"$basetexture" 		"vgui\screens\vgui_button_disabled"
+	"$additive"		1
+//	"$vertexcolor"		1
+	"$ignorez"		1
+}

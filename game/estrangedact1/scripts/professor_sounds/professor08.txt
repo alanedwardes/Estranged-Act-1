@@ -1,0 +1,8 @@
+professor.08.01thereyouare
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\08\01thereyouare.wav"
+}
+

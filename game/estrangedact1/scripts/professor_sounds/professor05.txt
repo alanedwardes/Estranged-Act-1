@@ -1,0 +1,48 @@
+professor.05.01itsfunnyisntit
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\05\01itsfunnyisntit.wav"
+}
+
+professor.05.02youvegottheweapon
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\05\02youvegottheweapon.wav"
+}
+
+professor.05.03damnlookatthisplace
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\05\03damnlookatthisplace.wav"
+}
+
+professor.05.04greatletssee
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\05\04greatletssee.wav"
+}
+
+professor.05.05ah
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\05\05ah.wav"
+}
+
+professor.05.06goodthinking
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\05\06goodthinking.wav"
+}
+

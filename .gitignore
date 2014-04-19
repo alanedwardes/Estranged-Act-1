@@ -1,0 +1,14 @@
+game/estrangedact1/cfg/config.cfg
+*.vcxproj
+game/estrangedact1/cfg/server_blacklist.txt
+game/estrangedact1/gamestate.txt
+game/estrangedact1/modelsounds.cache
+game/estrangedact1/sound/sound.cache
+*.filters
+*.user
+*.vpc_crc
+*.opensdf
+*.sdf
+*.sln
+*.dt
+game/estrangedact1/maps/

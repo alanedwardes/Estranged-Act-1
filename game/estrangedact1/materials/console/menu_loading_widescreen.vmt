@@ -1,0 +1,5 @@
+unlitgeneric
+{
+	$basetexture console/menu_loading_widescreen
+	$vertexalpha 1
+}

@@ -1,0 +1,7 @@
+"unlitgeneric"
+{
+	"$basetexture" "vgui\circle"
+	"$translucent" 1
+	"$ignorez" 1
+	"$vertexcolor" 1
+}

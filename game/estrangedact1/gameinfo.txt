@@ -1,0 +1,25 @@
+GameInfo
+{
+	Game 			"Estranged: Act I - From Github Source"
+	Type			singleplayer_only
+	NoDifficulty	1
+	GameData		estranged.fgd
+	
+	FileSystem
+	{
+		SteamAppId		261820
+		SearchPaths
+		{
+			// VPK
+			game									|gameinfo_path|estranged_pack.vpk
+		
+			// Estranged loose files and binaries
+			game+mod+mod_write+default_write_path	|gameinfo_path|.
+			gamebin									|gameinfo_path|bin
+			
+			// Platform
+			platform								|all_source_engine_paths|platform/platform_misc.vpk
+			platform								|all_source_engine_paths|platform
+		}
+	}
+}

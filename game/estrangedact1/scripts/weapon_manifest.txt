@@ -1,0 +1,8 @@
+weapon_manifest
+{
+	"file"		"scripts/weapon_cubemap.txt"
+	"file"		"scripts/weapon_hammer.txt"
+	"file"		"scripts/weapon_pistol.txt"
+	"file"		"scripts/weapon_shotgun.txt"
+	"file"		"scripts/weapon_smg1.txt"
+}

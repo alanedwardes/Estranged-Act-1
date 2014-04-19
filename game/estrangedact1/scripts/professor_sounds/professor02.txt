@@ -1,0 +1,32 @@
+professor.02.01canyougetmeoutofhere
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\02\01canyougetmeoutofhere.wav"
+}
+
+professor.02.02theremightbeone
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\02\02theremightbeone.wav"
+}
+
+professor.02.03nothingwhataboutthatbody
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\02\03nothingwhataboutthatbody.wav"
+}
+
+professor.02.04ahexcellentopenthedoor
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\02\04ahexcellentopenthedoor.wav"
+}
+

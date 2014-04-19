@@ -1,0 +1,16 @@
+professor.01.01whattheheyheyohthankgod
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\01\01whattheheyheyohthankgod.wav"
+}
+
+professor.01.02nocomeback
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\01\02nocomeback.wav"
+}
+

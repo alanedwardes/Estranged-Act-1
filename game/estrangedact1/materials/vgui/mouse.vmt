@@ -1,0 +1,6 @@
+"unlitgeneric"
+{
+	// Original shader: BaseTexture
+	"$basetexture" "vgui\mouse"
+	"$no_fullbright" "1"
+}

@@ -1,0 +1,2 @@
+i'm a little MOTD, short and stout
+here's my handle, here's my EOF

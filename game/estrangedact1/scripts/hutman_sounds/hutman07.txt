@@ -1,0 +1,8 @@
+hutman.07.01goodluck
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\07\01goodluck.wav"
+}
+

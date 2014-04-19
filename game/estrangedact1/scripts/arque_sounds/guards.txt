@@ -1,0 +1,7 @@
+omnicorp.unknown_guards.hey
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*omnicorp\unknown_guards\hey.wav"
+}

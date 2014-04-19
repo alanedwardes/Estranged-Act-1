@@ -1,0 +1,80 @@
+professor.06.01hangonletmecheck
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\06\01hangonletmecheck.wav"
+}
+
+professor.06.02dammit
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\06\02dammit.wav"
+}
+
+professor.06.03weneedittobestable
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\06\03weneedittobestable.wav"
+}
+
+professor.06.04ahh
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\06\04ahh.wav"
+}
+
+professor.06.05someoneleftthemselves
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\06\05someoneleftthemselves.wav"
+}
+
+professor.06.06icantdoanything
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\06\06icantdoanything.wav"
+}
+
+professor.06.07canyougoupthere
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\06\07canyougoupthere.wav"
+}
+
+professor.06.08aillmeetyou
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\06\08aillmeetyou.wav"
+}
+
+professor.06.08bcanyougoup
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\06\08bcanyougoup.wav"
+}
+
+professor.06.08youllhavetogoup
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*professor\06\08youllhavetogoup.wav"
+}
+

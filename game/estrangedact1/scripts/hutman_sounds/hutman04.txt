@@ -1,0 +1,56 @@
+hutman.04.01iwasgoingtofind
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\04\01iwasgoingtofind.wav"
+}
+
+hutman.04.02abut
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\04\02abut.wav"
+}
+
+hutman.04.02bwell
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\04\02bwell.wav"
+}
+
+hutman.04.03itsabitlate
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\04\03itsabitlate.wav"
+}
+
+hutman.04.04youneedtodoit
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\04\04youneedtodoit.wav"
+}
+
+hutman.04.05ifyouvegotanychance
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\04\05ifyouvegotanychance.wav"
+}
+
+hutman.04.06thisisit
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\04\06thisisit.wav"
+}
+

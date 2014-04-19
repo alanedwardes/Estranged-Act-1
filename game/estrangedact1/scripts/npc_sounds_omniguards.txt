@@ -1,0 +1,8 @@
+"Omniguard.Punch"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.95"
+	"pitch"			"PITCH_NORM"
+	"soundlevel"	"SNDLVL_NORM"
+	"wave"			"npc/omniguard/punch.wav"
+}

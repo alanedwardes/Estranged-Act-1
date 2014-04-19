@@ -1,0 +1,6 @@
+"unlitgeneric"
+{
+	"$basetexture" "vgui/dashed_line"
+	"$vertexcolor" 1	
+	"$alphatest" 1
+}

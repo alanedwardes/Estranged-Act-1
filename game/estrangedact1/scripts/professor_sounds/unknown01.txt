@@ -1,0 +1,23 @@
+unknown.10.01giveyourselvesup
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*omnicorp\unknown_guards\01giveyourselvesup.wav"
+}
+
+unknown.10.02shutup
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*omnicorp\unknown_guards\02shutup.wav"
+}
+
+unknown.10.03findtheotherguy
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*omnicorp\unknown_guards\03findtheotherguy.wav"
+}

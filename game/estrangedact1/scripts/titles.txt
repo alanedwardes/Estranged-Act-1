@@ -1,0 +1,35 @@
+// Position command $position x y 
+// x & y are from 0 to 1 to be screen resolution independent
+// -1 means center in each dimension
+// Effect command $effect <effect number>
+// effect 0 is fade in/fade out
+// effect 1 is flickery credits
+// effect 2 is write out (training room)
+// Text color r g b command $color
+// fadein time fadeout time / hold time
+// $fadein (message fade in time - per character in effect 2)
+// $fadeout (message fade out time)
+// $holdtime (stay on the screen for this long)
+
+// In-Game messages
+$position -1 0.75
+// Fade in/out effect
+$effect 0
+// This is the final color
+$color 255 255 255
+// This is the time it takes to fade
+$fadein 0.5
+// How long to hold the message on the screen
+$holdtime 2.0
+// How long it takes to fade out the message after holding
+$fadeout 0.5
+
+GAMESAVING
+{
+...
+}
+
+GAMESAVED
+{
+#Estranged_Game_Saved
+}

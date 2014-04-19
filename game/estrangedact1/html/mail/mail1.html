@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../lib/jquery.ui/css/jquery.ui.all.css" />
+		<link rel="stylesheet" href="mail.css" />
+		<link rel="stylesheet" href="../lib/ui.css" />
+		<script src="../lib/jquery/jquery.min.js"></script>
+		<script src="../lib/jquery.ui/js/jquery-ui.js"></script>
+		<script src="../lib/ae.js"></script>
+		<script src="mail.js"></script>
+		<script>
+			var emailIcon = new Icon('IconEmail', 'email', 'email.png', 200, 150);
+			var generatorIcon = new Icon('DialogGenerator', 'unlock', 'unlock.png', 400, 150);
+			
+			emailIcon.neighbors = { up: 0, down: 0, left: generatorIcon, right: generatorIcon };
+			generatorIcon.neighbors = { up: 0, down: 0, left: emailIcon, right: emailIcon };
+			
+			var icons = [emailIcon, generatorIcon];
+			
+			$(document).ready(function(){
+				StartMail();
+				
+				var bodyWidth = $(document.body).width();
+				var bodyHeight = $(document.body).height();
+				var dialogWidth = bodyWidth / 1.25;
+				var dialogHeight = bodyHeight / 1.25;
+				var dialogPosition = [(bodyWidth / 2) - (dialogWidth / 2), (bodyHeight / 2) - (dialogHeight / 2)];
+				
+				$("#dialog-generator").dialog({
+					dialogClass: "alert_window",
+					modal: true,
+					autoOpen: false,
+					closeOnEscape: false,
+					draggable: false,
+					resizable: false,
+					width: dialogWidth,
+					height: dialogHeight,
+					position: dialogPosition
+				});
+				
+				ae.callbackListeners.enteredGamepadText.push(function(input){
+					$('#secret-answer-input').val(input);
+					checkPassword();
+				});
+				
+				// Localise last
+				ae.loadLanguages('../..');
+			});
+			
+			function geneatorDisconnect()
+			{
+				blockAllInput = true;
+				$("#dialog-generator").dialog('close');
+			
+				$('.bluescreen').show();
+				
+				ae.trigger(1);
+				
+				setTimeout(function(){ $('#bsmem').hide(); }, 50);
+				setTimeout(function(){ $('#bsmem').show(); }, 60);
+				setTimeout(function(){ $('#bsmem').hide(); }, 65);
+				setTimeout(function(){ $('#bsmem').show(); }, 100);
+				setTimeout(function(){ $('#bsmem').hide(); }, 200);
+				setTimeout(function(){ $('#bsmem').show(); }, 350);
+				setTimeout(function(){ $('#bsmem').hide(); }, 750);
+				setTimeout(function(){ $('#bsblackout').css('background', 'black'); }, 900);
+				setTimeout(function(){ ae.close(); }, 1200);
+			}
+			
+			function checkPassword()
+			{
+				var enteredAnswer = $('#secret-answer-input').val();
+				if (enteredAnswer.toLowerCase() == $('#secretPetName').text().toLowerCase())
+				{
+					$("#dialog-unlock").dialog('close');
+					$("#dialog-generator").dialog('open');
+				}
+				else
+				{
+					$('#incorrect-answer').show();
+				}
+			}
+	  </script>
+	  <style>
+		#bsmem
+		{
+			position:fixed;
+			left:20px;
+			top:20%;
+			font-family:monospace !important;
+			font-size:20px;
+			width:40%;
+			z-index:99;
+		}
+		#bsblackout
+		{
+			position:fixed;
+			z-index:98;
+			width:100%;
+			height:100%;
+			background-image:-webkit-radial-gradient(rgb(50, 20, 200) 0%, rgb(0, 0, 50) 100%);
+		}
+	  </style>
+	</head>
+	<body>
+		<div id="bsmem" class="bluescreen hide">ARQUEOSERR_0xFFFFFF LOC:<br/><br/>69 20 61 6d 20 65 73 74 72 61 6e 67 65 64 2c 20 69 20 61 6d 20 61 6c 6f 6e 65 2e 20 69 20 61 6d 20 65 73 74 72 61 6e 67 65 64 2c 20 69 27 6d 20 6e 6f 74 20 67 6f 69 6e 67 20 68 6f 6d 65 2e<br/><br/>ACCESS_VIOLATION_HEAP_TRANSPOSE<br/>&#9646;</div>
+		<div id="bsblackout" class="bluescreen hide"></div>
+	
+		<div id="secretPetName" class="hide loc">SecretPetName</div>
+	
+		<div class="dialog" id="dialog-email" title="YantoWardAccount">
+			<div id="mail-left">
+				<div class="card">
+					<h4 class="loc">Pets_R_Us_Update</h4>
+					<span class="loc">Pets_R_Us_UpdateSummary</span>
+				</div>
+				<div class="card">
+					<h4 class="loc">WhatIsThatSmell</h4>
+					<span class="loc">Srsly</span>
+				</div>
+				<div class="card">
+					<h4 class="loc">HaveYouSeenMyLunch</h4>
+					<span class="loc">HaveYouSeenMyLunchSummary</span>
+				</div>
+			</div>
+			<div id="mail-right">
+				<div class="email">
+					<h4 class="loc">Pets_R_Us_Update</h4>
+					<div class="from loc">Pets_R_Us_From</div>
+					<div class="body">
+						<p class="loc">Pets_R_Us_Line1</p>
+						<p class="loc">Pets_R_Us_Line2</p>
+						<p class="loc">Pets_R_Us_Line3</p>
+						<p class="loc">Pets_R_Us_Line4</p>
+						<p class="loc">Pets_R_Us_Line5</p>
+					</div>
+				</div>
+				<div class="email">
+					<h4 class="loc">WhatIsThatSmell</h4>
+					<div class="from loc">NigelHeathcoat</div>
+					<div class="body">
+						<p class="loc">Srsly</p>
+					</div>
+				</div>
+				<div class="email">
+					<h4 class="loc">HaveYouSeenMyLunch</h4>
+					<div class="from loc">FrancisRobella</div>
+					<div class="body">
+						<p class="loc">FrancisRobellaLine1</p>
+						<p class="loc">FrancisRobellaLine2</p>
+						<p class="loc">FrancisRobellaLine3</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="dialog" id="dialog-unlock" title="DialogGenerator">
+			<div id="password-entry">
+				<p class="loc">PleaseEnterSecretAnswer</p>
+				<p id="secret-question-label" class="quote loc">NameOfPet</p>
+				<form action="#" onsubmit="checkPassword();return false;">
+					<input onfocus="ae.controllerTextInput(document.getElementById('secret-question-label').innerHTML);" type="text" id="secret-answer-input" value=""/>
+					<button class="loc">OK</button>
+				</form>
+				<div id="incorrect-answer" class="loc hide error">Incorrect</div>
+			</div>
+		</div>
+		
+		<div id="dialog-generator" class="hide" title="DialogGenerator">
+			<div class="warning" style="background-image:url(generator.svg)">
+				<div class="loc">DialogGeneratorOverHeat</div>
+				<button onkeydown="geneatorDisconnect();" onclick="geneatorDisconnect();" class="loc">DialogGeneratorDisconnect</button>
+			</div>
+		</div>
+		
+		<div class="info">
+			<p><span class="loc">Workstation</span> 247</p>
+			<p class="loc">YantoWardName</p>
+			<p class="loc">YantoWardAccount</p>
+		</div>
+	</body>
+</html>

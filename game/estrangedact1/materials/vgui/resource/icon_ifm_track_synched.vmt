@@ -1,0 +1,7 @@
+"unlitgeneric"
+{
+	"$basetexture" 		"vgui\resource\icon_ifm_track_synched"
+	"$ignorez"		1
+	"$translucent" 1
+}
+

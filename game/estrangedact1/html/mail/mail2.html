@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../lib/jquery.ui/css/jquery.ui.all.css" />
+		<link rel="stylesheet" href="mail.css" />
+		<link rel="stylesheet" href="../lib/ui.css" />
+		<script src="../lib/jquery/jquery.min.js"></script>
+		<script src="../lib/jquery.ui/js/jquery-ui.js"></script>
+		<script src="../lib/ae.js"></script>
+		<script src="mail.js"></script>
+		<script>
+			var emailIcon = new Icon('IconEmail', 'email', 'email.png', 315, 100);
+			var image1 = new Icon('Image1', 'sunset', 'sunset.jpg', 100, 100);
+			var image2 = new Icon('Image2', 'cat', 'cat.jpg', 450, 250);
+			var image3 = new Icon('Image3', 'truck', 'truck.jpg', 650, 100);
+			var image4 = new Icon('Image4', 'cat2', 'cat2.jpg', 100, 250);
+			var image5 = new Icon('Image5', 'cat3', 'cat3.jpg', 450, 100);
+			var image6 = new Icon('Image6', 'cat4', 'cat4.jpg', 100, 400);
+			var image7 = new Icon('Image7', 'cat5', 'cat5.jpg', 650, 250);
+			var catVideo = new Icon('Image8', 'cat6', 'cat6.jpg', 600, 400);
+		
+			emailIcon.neighbors = { up: 0, down: 0, left: image1, right: image5 };
+			image1.neighbors = { up: image6, down: image4, left: image3, right: emailIcon };
+			image2.neighbors = { up: image5, down: catVideo, left: emailIcon, right: image7 };
+			image3.neighbors = { up: catVideo, down: image7, left: image5, right: image1 };
+			image4.neighbors = { up: image1, down: image6, left: image7, right: emailIcon };
+			image5.neighbors = { up: catVideo, down: image2, left: emailIcon, right: image3 };
+			image6.neighbors = { up: image4, down: image1, left: image7, right: emailIcon };
+			image7.neighbors = { up: image3, down: catVideo, left: image2, right: image4 };
+			catVideo.neighbors = { up: image7, down: image3, left: image2, right: image7 };
+		
+			var icons = [emailIcon, image1, image2, image3, image4, image5, image6, image7, catVideo];
+			
+			$(document).ready(function(){
+				StartMail();
+				ae.showExitHint();
+				ae.loadLanguages('../..');
+			});
+	  </script>
+	</head>
+	<body>
+		<div class="dialog" id="dialog-email" title="ChristianPlitheName">
+			<div id="mail-left">
+				<div class="card">
+					<h4 class="loc">HandledTheManagerTitle</h4>
+					<span class="loc">HandledTheManagerSummary</span>
+				</div>
+				<div class="card">
+					<h4 class="loc">MeetMeTitle</h4>
+					<span class="loc">MeetMeSummary</span>
+				</div>
+				<div class="card">
+					<h4 class="loc">WilliamShortTitle</h4>
+					<span class="loc">WilliamShortSummary</span>
+				</div>
+				<div class="card">
+					<h4 class="loc">LunchRoomTitle</h4>
+					<span class="loc">LunchRoomSummary</span>
+				</div>
+			</div>
+			<div id="mail-right">
+				<div class="email">
+					<h4 class="loc">HandledTheManagerTitle</h4>
+					<div class="from loc">AdmirerAccount</div>
+					<div class="body">
+						<p class="loc">HandledTheManagerLine1</p>
+						<p class="loc">AdmirerName</p>
+					</div>
+				</div>
+				<div class="email">
+					<h4 class="loc">MeetMeTitle</h4>
+					<div class="from loc">AdmirerAccount</div>
+					<div class="body">
+						<p class="loc">MeetMeLine1</p>
+						<p class="loc">MeetMeLine2</p>
+						<p class="loc">AdmirerName</p>
+					</div>
+				</div>
+				<div class="email">
+					<h4 class="loc">WilliamShortTitle</h4>
+					<div class="from loc">WilliamShortAccount</div>
+					<div class="body">
+						<p class="loc">WilliamShortLine1</p>
+						<p class="loc">WilliamShortLine2</p>
+						<p class="loc">WilliamShortLine3</p>
+						<blockquote>
+							<p class="loc">ChrisLine1</p>
+							<p class="loc">ChrisLine2</p>
+							<p class="loc">ChrisLine3</p>
+							<blockquote>
+								<p class="loc">LunchRoomLine1</p>
+								<p class="loc">AdmirerName</p>
+							</blockquote>
+							<p class="loc">ChrisLine4</p>
+							<p class="loc">ChrisLine5</p>
+						</blockquote>
+						<p class="loc">WilliamShortSig</p>
+					</div>
+				</div>
+				<div class="email">
+					<h4 class="loc">LunchRoomTitle</h4>
+					<div class="from loc">AdmirerAccount</div>
+					<div class="body">
+						<p class="loc">LunchRoomLine1</p>
+						<p class="loc">AdmirerName</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="info">
+			<p><span class="loc">Workstation</span> 792</p>
+			<p class="loc">ChristianPlitheName</p>
+			<p class="loc">ChristianPlitheAccount</p>
+		</div>
+		
+		<div class="dialog" id="dialog-cat" title="Image1">
+			<div class="center">
+				<img src="cat.jpg"/>
+			</div>
+		</div>
+		
+		<div class="dialog" id="dialog-sunset" title="Image2">
+			<div class="center">
+				<img src="sunset.jpg"/>
+			</div>
+		</div>
+		
+		<div class="dialog" id="dialog-truck" title="Image3">
+			<div class="center">
+				<img src="truck.jpg"/>
+			</div>
+		</div>
+		
+		<div class="dialog" id="dialog-cat2" title="Image4">
+			<div class="center">
+				<img src="cat2.jpg"/>
+			</div>
+		</div>
+		
+		<div class="dialog" id="dialog-cat3" title="Image5">
+			<div class="center">
+				<img src="cat3.jpg"/>
+			</div>
+		</div>
+		
+		<div class="dialog" id="dialog-cat4" title="Image6">
+			<div class="center">
+				<img src="cat4.jpg"/>
+			</div>
+		</div>
+		
+		<div class="dialog" id="dialog-cat5" title="Image7">
+			<div class="center">
+				<img src="cat5.jpg"/>
+			</div>
+		</div>
+		
+		<div class="dialog" id="dialog-cat6" title="Image8">
+			<div class="center">
+				<script>
+					$(document).ready(function(){
+						var catVideo = $('#catvideo').get(0);
+						$("#dialog-cat6").dialog({
+							open: function(e, ui)
+							{
+								ae.trigger(1);
+								catVideo.play();
+							},
+							close: function(e, ui)
+							{
+								catVideo.pause();
+								catVideo.currentTime = 0;
+							}
+						});
+					});
+				</script>
+				<p><video id="catvideo" poster="cat6.png" muted="muted" loop>
+					<source src="cat6.webm" type="video/webm">
+				</video></p>
+			</div>
+		</div>
+	</body>
+</html>

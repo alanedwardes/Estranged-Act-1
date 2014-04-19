@@ -1,0 +1,70 @@
+lunchroom.music
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		")anicator\lunchmusic.wav"
+}
+omnicorp_radio.comm1.01.contact1
+{
+	channel		CHAN_VOICE
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_TALKING
+	wave		"*anicator\securityradio_01_01.contact1.wav"
+}
+omnicorp_radio.comm1.02.contact2
+{
+	channel		CHAN_VOICE
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_TALKING
+	wave		"*anicator\securityradio_01_02.contact2.wav"
+}
+omnicorp_radio.comm1.03.joeypost1
+{
+	channel		CHAN_VOICE
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_TALKING
+	wave		"*anicator\securityradio_01_03.joeypost1.wav"
+}
+omnicorp_radio.comm1.04.confirmnojoey
+{
+	channel		CHAN_VOICE
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_TALKING
+	wave		"*anicator\securityradio_01_04.confirmnojoey.wav"
+}
+omnicorp_radio.comm1.05.lunchresponse
+{
+	channel		CHAN_VOICE
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_TALKING
+	wave		"*anicator\securityradio_01_05.lunchresponse.wav"
+}
+omnicorp_radio.comm1.06.mentionbob
+{
+	channel		CHAN_VOICE
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_TALKING
+	wave		"*anicator\securityradio_01_06.mentionbob.wav"
+}
+omnicorp_radio.comm1.07.fatbob
+{
+	channel		CHAN_VOICE
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_TALKING
+	wave		"*anicator\securityradio_01_07.fatbob.wav"
+}
+omnicorp_radio.comm1.08.yup
+{
+	channel		CHAN_VOICE
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_TALKING
+	wave		"*anicator\securityradio_01_08.yup.wav"
+}
+omnicorp_radio.comm1.09.fatsoon
+{
+	channel		CHAN_VOICE
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_TALKING
+	wave		"*anicator\securityradio_01_09.fatsoon.wav"
+}

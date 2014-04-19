@@ -1,0 +1,445 @@
+//Stingers
+music.stinger_07_01
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\events\stinger_07_01.mp3"
+}
+music.detected_zombie1
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\events\detected_zombie1.mp3"
+}
+
+//Normal music
+music.present_postvent
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\present_postvent.mp3"
+}
+music.present
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\present.mp3"
+}
+music.present_ventdrop
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\present_ventdrop.mp3"
+}
+music.sunrays
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\sunrays.mp3"
+}
+music.shaft_credits
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\shaft_credits.mp3"
+}
+music.tipped
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\tipped.mp3"
+}
+music.the_yard
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\the_yard.mp3"
+}
+// TODOTODO: rename me
+music.heartbeat
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\tranquility.mp3"
+}
+music.intro_swim
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\surface_ambience.mp3"
+}
+music.forest_stinger
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\forest_stinger.mp3"
+}
+music.drains_detected
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\drains_detected.mp3"
+}
+music.train_warehouse
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\train_warehouse.mp3"
+}
+music.sewer_drumcombo
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\sewer_drumcombo.mp3"
+}
+music.tension
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\tension.mp3"
+}
+music.bridge_danger
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\bridge_danger.mp3"
+}
+music.mellow_theme_short
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\mellow_theme_short.mp3"
+}
+music.menu_loading
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\mellow_theme_short.mp3"
+}
+music.outlet_curious
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\outlet_curious.mp3"
+}
+music.outlet_bg
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\death_trap.mp3"
+}
+music.outlet_tunnel_vision
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\tunnel_vision.mp3"
+}
+music.credits
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\trailer_music_credits.mp3"
+}
+
+//Warehouse music
+music.warehouse.calm
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\warehouse\warehouse_calm.mp3"
+}
+music.warehouse.calmbass
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\warehouse\warehouse_calmbass.mp3"
+}
+music.warehouse.battle
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NONE
+	wave		"#*music\warehouse\warehouse_battle.mp3"
+}
+
+//End of music section//
+
+
+Hud.Hint
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel	SNDLVL_NORM
+	wave		"ambient\blink.wav"
+}
+ambient.blink
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel	SNDLVL_NORM
+	wave		"ambient\blink.wav"
+}
+ambient.metal_smash
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel	SNDLVL_NORM
+	wave		"ambient\metal_smash.wav"
+}
+ambient.glass_bounce
+{
+	channel		CHAN_AUTO
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_NORM
+	wave		"ambient\glass_bounce.wav"
+}
+ambient.door_knock
+{
+	channel		CHAN_AUTO
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_NORM
+	wave		"ambient\door_knock.wav"
+}
+ambient.radio_noise
+{
+	channel		CHAN_AUTO
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_NORM
+	wave		"ambient\radio_noise.wav"
+}
+ambient.fan_loop
+{
+	channel		CHAN_AUTO
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_NORM
+	wave		"ambient\fan_loop.wav"
+}
+ambient.radio_buzz
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*general\radio_buzz.wav"
+}
+ambient.radio_buzz2
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*general\radio_buzz2.wav"
+}
+water.rivulet
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"ambient\levels\canals\water_rivulet_loop2.wav"
+}
+car.start
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"ambient\car_start.wav"
+}
+car.accelerate
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"ambient\car_accelerate.wav"
+}
+car.engine_loop
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"ambient\car_engine_loop.wav"
+}
+button.ae_button01
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\ae_button01.wav"
+}
+button.button_rez01
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"buttons\button_rez_01.wav"
+}
+button.button_rez_01_deny
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"buttons\button_rez_01_deny.wav"
+}
+metal.ae_metal_gen01
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\physics\metal\ae_metal_gen01.wav"
+}
+metal.ae_metal_gen02
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\physics\metal\ae_metal_gen02.wav"
+}
+metal.ae_metal_gen03
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\physics\metal\ae_metal_gen03.wav"
+}
+metal.ae_metal_gen04
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\physics\metal\ae_metal_gen04.wav"
+}
+metal.ae_metal_gen05
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\physics\metal\ae_metal_gen05.wav"
+}
+metal.ae_metal_gen06
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\physics\metal\ae_metal_gen06.wav"
+}
+metal.ae_metal_gen07
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\physics\metal\ae_metal_gen07.wav"
+}
+metal.ae_metal_hit01
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\physics\metal\ae_metal_hit01.wav"
+}
+metal.ae_metal_hit02
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\physics\metal\ae_metal_hit02.wav"
+}
+metal.ae_screaming_metal01
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\physics\metal\ae_screaming_metal.wav"
+}
+metal.ae_screaming_metal02
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\physics\metal\ae_screaming_metal02.wav"
+}
+strange_explosion2
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"weapons\strange_explosion2.wav"
+}
+anicator.thunder_strike
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"anicator\thunder_strike.wav"
+}
+ambient.wind_gust_door_slam
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"ambient\wind_gust_door_slam.wav"
+}
+ambient.water_gush_rumble
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"ambient\water_gush_rumble.wav"
+}
+ambient.sliding_door_open
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"ambient\ol03_slidingoverhead_open.wav"
+}
+pigeon.fly_away
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"npc\pigeon\fly_away.wav"
+}
+crow.cave_crow
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"npc\crow\cave_crow.wav"
+}
+light.buzz_short
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"general\light_buzz_mono_short.wav"
+	pitch		90,105
+}
+wind_gust
+{
+	channel		CHAN_AUTO
+	pitch 		PITCH_NORM
+	soundlevel 	SNDLVL_NORM
+	wave		"ambient\wind_gust.wav"
+}

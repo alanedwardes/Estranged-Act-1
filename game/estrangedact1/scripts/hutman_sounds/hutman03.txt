@@ -1,0 +1,56 @@
+hutman.03.01imsorry
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\03\01imsorry.wav"
+}
+
+hutman.03.02theislandis
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\03\02theislandis.wav"
+}
+
+hutman.03.03ivebeenworking
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\03\03ivebeenworking.wav"
+}
+
+hutman.03.04thatswhenthis
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\03\04thatswhenthis.wav"
+}
+
+hutman.03.05iwasattackedbeforeimanaged
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\03\05iwasattackedbeforeimanaged.wav"
+}
+
+hutman.03.06acompanycalledarqueareblocking
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\03\06acompanycalledarqueareblocking.wav"
+}
+
+hutman.03.07damncurfewmessage
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\03\07damncurfewmessage.wav"
+}
+

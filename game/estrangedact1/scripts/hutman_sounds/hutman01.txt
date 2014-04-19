@@ -1,0 +1,16 @@
+hutman.01.01heyareyouokay
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\01\01heyareyouokay.wav"
+}
+
+hutman.01.02comeonup
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\01\02comeonup.wav"
+}
+

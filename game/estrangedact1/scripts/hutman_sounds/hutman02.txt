@@ -1,0 +1,72 @@
+hutman.02.01iraninto
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\02\01iraninto.wav"
+}
+
+hutman.02.02excusethemess
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\02\02excusethemess.wav"
+}
+
+hutman.02.03thatwasyour
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\02\03thatwasyour.wav"
+}
+
+hutman.02.04ididntexpect
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\02\04ididntexpect.wav"
+}
+
+hutman.02.05letsgetinside
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\02\05letsgetinside.wav"
+}
+
+hutman.02.06thatssome
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\02\06thatssome.wav"
+}
+
+hutman.02.07interestingparking
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\02\07interestingparking.wav"
+}
+
+hutman.02.08imjohn
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\02\08imjohn.wav"
+}
+
+hutman.02.09johnderril
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\02\09johnderril.wav"
+}
+

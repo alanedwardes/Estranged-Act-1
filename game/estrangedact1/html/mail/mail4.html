@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../lib/jquery.ui/css/jquery.ui.all.css" />
+		<link rel="stylesheet" href="mail.css" />
+		<link rel="stylesheet" href="../lib/ui.css" />
+		<script src="../lib/jquery/jquery.min.js"></script>
+		<script src="../lib/jquery.ui/js/jquery-ui.js"></script>
+		<script src="../lib/ae.js"></script>
+		<script src="mail.js"></script>
+		<script>
+			var icons = [
+				new Icon('IconEmail', 'email', 'email.png', 500, 50)
+			];
+			
+			$(document).ready(function(){
+				StartMail();
+				ae.showExitHint();
+				ae.loadLanguages('../..');
+			});
+	  </script>
+	</head>
+	<body>
+		<div class="dialog" id="dialog-email" title="DavidGravenAccount">
+			<div id="mail-left">
+				<div class="card">
+					<h4 class="loc">JonathanBillyTitle</h4>
+					<span class="loc">JonathanBillyLine1</span>
+				</div>
+				<div class="card">
+					<h4 class="loc">JeffHerbandTitle</h4>
+					<span class="loc">JeffHerbandSummary</span>
+				</div>
+			</div>
+			<div id="mail-right">
+				<div class="email">
+					<h4 class="loc">JonathanBillyTitle</h4>
+					<div class="from loc">JonathanBillyAccount</div>
+					<div class="body">
+						<p class="loc">JonathanBillyLine1</p>
+						<p class="loc">JonathanBillyLine2</p>
+						<p class="loc">JonathanBillyLine3</p>
+						<p class="loc">JonathanBillyLine4</p>
+					</div>
+				</div>
+				<div class="email">
+					<h4 class="loc">JeffHerbandTitle</h4>
+					<div class="from loc">JeffHerbandAccount</div>
+					<div class="body">
+						<p class="loc">JeffHerbandLine1</p>
+						<p class="loc" style="font-style:italic;font-family:'Segoe Script', Georgia !important;font-size:30px;">JeffHerbandName</p>
+						<p class="loc">JeffHerbandSig</p>
+						<p><span style="font-family:Webdings !important;font-size:20px">P</span> <span class="loc">OnlyPrintIfNecessary</span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="info">
+			<p><span class="loc">Workstation</span> 438</p>
+			<p class="loc">DavidGravenName</p>
+			<p class="loc">DavidGravenAccount</p>
+		</div>
+	</body>
+</html>

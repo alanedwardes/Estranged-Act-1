@@ -1,0 +1,64 @@
+hutman.05.01looktake
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\05\01looktake.wav"
+}
+
+hutman.05.02idontneeditanymore
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\05\02idontneeditanymore.wav"
+}
+
+hutman.05.03youneedtomakeyour
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\05\03youneedtomakeyour.wav"
+}
+
+hutman.05.04gooutoftheback
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\05\04gooutoftheback.wav"
+}
+
+hutman.05.05itwilltakeyoutoariver
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\05\05itwilltakeyoutoariver.wav"
+}
+
+hutman.05.06followtheriver
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\05\06followtheriver.wav"
+}
+
+hutman.05.07andthenyoucanfollow
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\05\07andthenyoucanfollow.wav"
+}
+
+hutman.05.08imsurethatswhere
+{
+	channel		CHAN_VOICE
+	pitch		PITCH_NORM
+	soundlevel	SNDLVL_TALKING
+	wave		"*hutman\05\08imsurethatswhere.wav"
+}
+

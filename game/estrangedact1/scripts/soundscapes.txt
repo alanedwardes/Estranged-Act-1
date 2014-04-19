@@ -1,0 +1,651 @@
+// DSP Effects
+// 0 : "Normal (off)"
+// 1 : "Generic"
+// 2 : "Metal Small"
+// 3 : "Metal Medium"
+// 4 : "Metal Large"
+// 5 : "Tunnel Small"
+// 6 : "Tunnel Medium"
+// 7 : "Tunnel Large"
+// 8 : "Chamber Small"
+// 9 : "Chamber Medium"
+// 10: "Chamber Large"
+// 11: "Bright Small"
+// 12: "Bright Medium"
+// 13: "Bright Large"
+// 14: "Water 1"
+// 15: "Water 2"
+// 16: "Water 3"
+// 17: "Concrete Small"
+// 18: "Concrete Medium"
+// 19: "Concrete Large"
+// 20: "Big 1"
+// 21: "Big 2"
+// 22: "Big 3"
+// 23: "Cavern Small"
+// 24: "Cavern Medium"
+// 25: "Cavern Large"
+// 26: "Weirdo 1"
+// 27: "Weirdo 2"
+// 28: "Weirdo 3"
+
+//	ATTN_NONE		0.0f	
+//	ATTN_NORM		0.8f	75dB
+//	ATTN_IDLE		2.0f	60dB
+//	ATTN_STATIC		1.25f	66dB
+//	ATTN_RICOCHET	1.5f	65dB
+//	ATTN_GUNFIRE	0.27f	140dB
+
+//	SNDLVL_50dB		= 50,	// 3.9
+//	SNDLVL_55dB		= 55,	// 3.0
+//	SNDLVL_IDLE		= 60,	// 2.0
+//	SNDLVL_TALKING	= 60,	// 2.0
+//	SNDLVL_60dB		= 60,	// 2.0
+//	SNDLVL_65dB		= 65,	// 1.5
+//	SNDLVL_STATIC	= 66,	// 1.25
+//	SNDLVL_70dB		= 70,	// 1.0
+//	SNDLVL_NORM		= 75,
+//	SNDLVL_75dB		= 75,	// 0.8
+//	SNDLVL_80dB		= 80,	// 0.7
+//	SNDLVL_85dB		= 85,	// 0.6
+//	SNDLVL_90dB		= 90,	// 0.5
+//	SNDLVL_95dB		= 95,
+//	SNDLVL_100dB	= 100,	// 0.4
+//	SNDLVL_105dB	= 105,
+//	SNDLVL_120dB	= 120,
+//	SNDLVL_130dB	= 130,
+//	SNDLVL_GUNFIRE	= 140,	// 0.27
+//	SNDLVL_140dB	= 140,	// 0.2
+//	SNDLVL_150dB	= 150,	// 0.2
+
+// ESTRANGED soundscapes
+"estranged_warehouse_large"
+{
+	"dsp"	"120"
+	"dsp_volume" "4"
+}
+
+"estranged_looming_hall"
+{
+	"dsp"	"24"
+	"dsp_volume" "0.6"
+
+	"playlooping"
+	{
+		"volume"	"0.5"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"anicator\atmosphere\scapes\drone1_low.mp3"
+	}
+	
+	"playrandom"
+	{
+		"time"		"15,50"
+		"volume"	"0.3,0.7"
+		"pitch"		"100"
+		"attenuation"	"0"
+		
+		"rndwave"
+		{
+			"wave"		"anicator\atmosphere\scapes\whack_slow.mp3"
+			"wave"		"anicator\atmosphere\scapes\whack_slow_fade.mp3"
+			"wave"		"anicator\atmosphere\scapes\whack_slow_low.mp3"
+		}
+	}
+}
+
+"estranged_looming_room"
+{
+	"dsp"	"24"
+	"dsp_volume" "0.3 "
+
+	"playlooping"
+	{
+		"volume"	"0.2"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"anicator\atmosphere\scapes\drone1_lowhighmix.mp3"
+	}
+	
+	"playrandom"
+	{
+		"time"		"15,50"
+		"volume"	"0.1,0.5"
+		"pitch"		"100"
+		"attenuation"	"0"
+		
+		"rndwave"
+		{
+			"wave"		"anicator\atmosphere\scapes\whack_slow.wav"
+			"wave"		"anicator\atmosphere\scapes\whack_slow_fade.wav"
+			"wave"		"anicator\atmosphere\scapes\whack_slow_low.wav"
+		}
+	}
+}
+
+"estranged_looming_hall_top_melo"
+{
+	"dsp"	"24"
+	"dsp_volume" "0.3 "
+
+	"playlooping"
+	{
+		"volume"	"0.4"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"anicator\atmosphere\scapes\drone1_lowhighmix.mp3"
+	}
+	
+	"playrandom"
+	{
+		"time"		"15,50"
+		"volume"	"0.1,0.5"
+		"pitch"		"100"
+		"attenuation"	"0"
+		
+		"rndwave"
+		{
+			"wave"		"anicator\atmosphere\scapes\whack_slow.wav"
+			"wave"		"anicator\atmosphere\scapes\whack_slow_fade.wav"
+			"wave"		"anicator\atmosphere\scapes\whack_slow_low.wav"
+		}
+	}
+	
+	"playrandom"
+	{
+		"time"		"30"
+		"volume"	"0.3,0.6"
+		"pitch"		"100"
+		"attenuation"	"0"
+		
+		"rndwave"
+		{
+			"wave"		"anicator\atmosphere\scapes\drone_melo2.mp3"
+		}
+	}
+}
+
+"estranged_ship_interior"
+{
+	"playlooping"
+	{
+		"volume"	"1.0"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"anicator\atmosphere\rain\boatinsidenoise.mp3"
+	}
+	
+	"playlooping"
+	{
+		"volume"	"1.0"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"ambient\beachwater.mp3"
+	}
+	
+	"playlooping"
+	{
+		"volume"	"1.0"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"ambient\rain_patter.mp3"
+	}
+	
+	"playlooping"
+	{
+		"volume"	"1.0"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"ambient\oceanwavescrushing.mp3"
+	}
+	
+	"playlooping"
+	{
+		"volume"	"0.7"
+		"pitch"		"100"
+		"soundlevel"	"SNDLVL_65dB"
+		
+		"position"	"0" // place on the right near windows in ship
+		
+		"wave"		"anicator\atmosphere\rain\rainwindows.mp3"
+	}
+	
+	"playlooping"
+	{
+		"volume"	"1.0"
+		"pitch"		"100"
+		"soundlevel"	"SNDLVL_65dB"
+		
+		"position"	"1" // place near projected texture light in ship
+		
+		"wave"		"anicator\atmosphere\rain\rainroof.mp3"
+	}
+	
+	"playlooping"
+	{
+		"volume"	"0.4"
+		"pitch"		"100"
+		"soundlevel"	"SNDLVL_65dB"
+		
+		"position"	"2" // place on the left maybe near door so it's a bit too the back for the 5.1 surround people
+		
+		"wave"		"anicator\atmosphere\rain\rainroof2.mp3"
+	}
+}
+
+"estranged_theforest"
+{
+	"dsp"	"1"
+
+	"playrandom"
+	{
+		"volume"	"0.2,0.5"
+		"pitch"		"80,120"
+		"time"		"5.0, 20.0"
+		"pitch"		"80,140"
+		"position"	"random"
+		"soundlevel"	"SNDLVL_140db"
+		"rndwave"
+		{
+			"wave" "ambient/wind/wind_snippet1.wav"
+			"wave" "ambient/wind/wind_snippet2.wav"
+			"wave" "ambient/wind/wind_snippet3.wav"
+			"wave" "ambient/wind/wind_snippet4.wav"
+			"wave" "ambient/wind/wind_snippet5.wav"
+		}
+	}
+
+	"playrandom"
+	{
+		"time"		"8,30"
+		"volume"	"0.2,0.4"
+		"pitch"		"90,115"
+		"position"	"random"
+		"soundlevel"	"SNDLVL_140db"
+		"rndwave"
+		{
+			"wave"	"ambient/levels/canals/swamp_bird1.wav"
+			"wave"	"ambient/levels/canals/swamp_bird2.wav"
+			"wave"	"ambient/levels/canals/swamp_bird3.wav"
+			"wave"	"ambient/levels/canals/swamp_bird4.wav"
+			"wave"	"ambient/levels/canals/swamp_bird5.wav"
+			"wave"	"ambient/levels/canals/swamp_bird6.wav"
+		}
+	}
+
+	"playrandom"
+	{
+		"time"		"7, 16"
+		"volume"	"0.1,0.2"
+		"pitch"		"95,110"
+		"position"	"random"
+		"soundlevel"	"SNDLVL_140db"
+		"rndwave"
+		{
+			"wave"	"ambient/levels/canals/critter1.wav"
+			"wave"	"ambient/levels/canals/critter2.wav"
+			"wave"	"ambient/levels/canals/critter3.wav"
+			"wave"	"ambient/levels/canals/critter4.wav"
+			"wave"	"ambient/levels/canals/critter5.wav"
+			"wave"	"ambient/levels/canals/critter6.wav"
+			"wave"	"ambient/levels/canals/critter7.wav"
+			"wave"	"ambient/levels/canals/critter8.wav"
+		}
+	}
+}
+
+"estranged_thriller_ambient"
+{
+	"playlooping"
+	{
+		"volume"	"1.0"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"ambient\thriller_ambient.mp3"
+	}
+	
+	"playsoundscape"
+	{
+		"name"		"prison.util_fardrips"
+		"volume"	"0.85"
+	}
+}
+
+"estranged_horror_ambient"
+{
+	"playlooping"
+	{
+		"volume"	"1.0"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"ambient\tunnel_ambient.mp3"
+	}
+}
+
+"estranged_corridor"
+{
+	"playsoundscape"
+	{
+		"name"		"d1_canals.waterpuzzleroom"
+		// "position"	"0"
+		"volume"	"0.3"
+	}
+	
+	"playsoundscape"
+	{
+		"name"		"general.concrete_quiet"
+		// "position"	"0"
+		"volume"	"0.3"
+	}
+}
+
+"estranged_infested_area"
+{
+	"playrandom"
+	{
+		"time"		"15, 60"
+		"volume"	"0.05,0.15"
+		"pitch"		"90,110"
+		"position"	"random"
+		"rndwave"
+		{
+			"wave"	"ambient/creatures/town_moan1.wav"
+			"wave"	"ambient/creatures/town_zombie_call1.wav"
+			"wave"	"ambient/creatures/town_scared_breathing1.wav"
+		}
+	}
+
+	"playlooping"
+	{
+		"volume"	"0.4"
+		"pitch"		"50"
+		"wave"		"ambient/atmosphere/tone_alley.wav"
+	}
+
+	"playsoundscape"
+	{
+		"name"		"prison.util_fardrips"
+		"volume"	"0.3"
+	}
+}
+
+// General soundscapes
+
+// This soundscape enables automatic dsp
+
+"automatic"
+{
+	"dsp"	"1"
+	"dsp_volume" "1.0"
+}
+// This soundscape enables automatic dsp at 50% mix - good if you have 
+// a lot of dialog that must be understood at any distance
+
+"automatic_dialog"
+{
+	"dsp"	"1"
+	"dsp_volume" "0.5"
+}
+
+
+// *******************************************************************************
+// ***************** E3_Techdemo_01 - 06 *****************
+
+// e3_techdemo_01
+
+"e3_techdemo_gmanspeaking"
+{
+	"dsp"	"10"
+}
+
+"e3_Techdemo_02"
+{
+	"dsp"	"20"	
+
+	// physics room
+
+	"playlooping"
+	{
+		"volume"	"0.1"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"ambient/machines/courtyard_mach_loop.wav"
+	}
+}
+
+"e3_Techdemo_03"
+{
+	"dsp"	"1"	
+
+}
+
+"e3_Techdemo_05"
+{
+	"dsp"	"10"
+
+	// dripping cave ambient
+
+	"playlooping"
+	{
+		"volume"	"0.23"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"ambient/water/corridor_water.wav"
+	}
+}
+
+"e3_Techdemo_06"
+{
+	"dsp"	"20"	
+
+	// lake
+
+	"playlooping"
+	{
+		"volume"	"0.5"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"ambient/water/lake_water.wav"
+	}
+}
+
+"e3_end"
+{
+	"dsp" "0"
+}
+
+// ***************** E3_Techdemo_01 - 06 *****************
+// *******************************************************************************
+
+
+// ******************   SOUNDSCAPE TEST  ***************************************
+
+
+// No DSP, no ambients
+"Nothing"
+{
+	"dsp"	"0"
+}
+
+"GenericIndoor"
+{
+	"dsp"	"1"
+	"playlooping"
+	{
+		"volume"	"1"
+		"pitch"		"100"
+		"wave"		"ambient/atmosphere/indoor2.wav"
+	}
+}
+
+"GenericOutdoor"
+{
+	"dsp"	"19"
+	"playlooping"
+	{
+		"volume"	"0.25"
+		"wave"		"ambient/atmosphere/indoor2.wav"
+	}
+
+	"playlooping"
+	{
+		"volume"	"0.15"
+		"wave"		"ambient/atmosphere/outdoor2.wav"
+		"pitch"		"100"
+		"position"	"0"
+	}
+	"playsoundscape"
+	{
+		"name"		"d2_depot_cellblock_medium"
+		"volume"	"0.75"
+		"position"	"2"
+	}
+	"playsoundscape"
+	{
+		"name"		"d2_depot_cellblock_medium"
+		"volume"	"0.75"
+		"position"	"2"
+	}
+}
+
+
+
+
+"cabin"
+{
+	"dsp"	"17"
+	"playlooping"
+	{
+		"volume"	"0.5"
+		"pitch"		"100"
+		"wave"		"test/temp/soundscape_test/cabin_ambience.wav"
+	}
+
+	// *** TEST TV ********
+	"playsoundscape"
+	{
+		"name"		"test_tvset"
+		"volume"	"1"
+		"position"	"0"
+	
+	}
+	
+	// ** Tower sticking out of wall
+	"playlooping"
+	{
+		"volume"	"0.6"
+		"wave"		"test/temp/soundscape_test/cabin_wall.wav"
+		"pitch"		"100"
+		"attenuation"	"2"
+		"position"	"1"
+	}
+
+
+	// Random Sounds for Wall
+	"playrandom"
+	{
+		// time, volume, pitch, attenuation are all random intervals ( i.e. minval, maxval )
+		// every 0.5 to 2 seconds
+		"time"		"1,4"
+
+		// at a volume of 0.25 to 0.25
+		"volume"	"0.5,0.8"
+
+		// at a pitch of 90 to 100
+		"pitch"		"80,120"
+
+		// play one of these .wav files randomly each time
+		"rndwave"
+		{
+			"wave"	"test/temp/soundscape_test/wall1.wav"
+			"wave"	"test/temp/soundscape_test/wall2.wav"
+			"wave"	"test/temp/soundscape_test/wall3.wav"
+			"wave"	"test/temp/soundscape_test/wall4.wav"
+		}
+		
+		// omit position for ambient sounds
+		"position"	"1"
+		// only required if "position" is present
+		"attenuation"	"2"
+	}
+
+
+
+}
+
+
+"cabin_outdoor"
+{
+	"dsp"	"20"
+	"playlooping"
+	{
+		"volume"	"1"
+		"pitch"		"100"
+		"wave"		"test/temp/soundscape_test/outdoor.wav"
+	}
+
+	"playrandom"
+	{
+		// time, volume, pitch, attenuation are all random intervals ( i.e. minval, maxval )
+		// every 0.5 to 2 seconds
+		"time"		"0.1, 0.1"
+
+		// at a volume of 0.25 to 0.25
+		"volume"	"0.5,1"
+
+		// at a pitch of 90 to 100
+		"pitch"		"50,120"
+
+		// play one of these .wav files randomly each time
+		"rndwave"
+		{
+			"wave"	"test/temp/soundscape_test/music_snippet1.wav"
+			"wave"	"test/temp/soundscape_test/music_snippet2.wav"
+			//"wave"	"test/temp/soundscape_test/music_snippet3.wav"
+			//"wave"	"test/temp/soundscape_test/music_snippet4.wav"
+			//"wave"	"test/temp/soundscape_test/music_snippet5.wav"
+			//"wave"	"test/temp/soundscape_test/music_snippet6.wav"
+			//"wave"	"test/temp/soundscape_test/music_snippet7.wav"
+			//"wave"	"test/temp/soundscape_test/music_snippet8.wav"
+		}
+		
+
+	}
+
+}
+
+"test_tvset"
+{
+	"dsp"	"1"
+	"playlooping"
+	{
+		"volume"	"0.15"
+		"pitch"		"100"
+
+		"wave"		"test/temp/soundscape_test/tv_music.wav"
+		"position"	"0"
+		"attenuation"	"2"
+
+	}
+
+
+	"playrandom"
+	{
+		"time"		"0.1, 0.3"
+		"volume"	"0.1,0.15"
+		"pitch"		"95,105"
+		"attenuation"	"2"
+		"position"	"0"
+
+		"rndwave"
+		{
+			"wave"	"test/temp/soundscape_test/music_snippet1.wav"
+			"wave"	"test/temp/soundscape_test/music_snippet2.wav"
+			"wave"	"test/temp/soundscape_test/music_snippet3.wav"
+
+		}
+		
+	}
+
+
+}

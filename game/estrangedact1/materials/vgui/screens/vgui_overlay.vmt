@@ -1,0 +1,33 @@
+"Modulate"
+{
+//	"$basetexture" "effects/vguiscreenoverlay"
+	"$basetexture" "vgui/screens/vgui_overlay"
+	"$writez" 1	// force z to be written
+
+	"$texoffset"	"[0 0]"
+	"$texscale"	1
+
+	
+//	"Proxies"
+//	{
+//		"LinearRamp"
+//		{
+//			"resultVar" "$texoffset[0]"
+//			"rate" 2001
+//		}
+//  
+//		"LinearRamp"
+//		{
+//			"resultVar" "$texoffset[1]"
+//			"rate" 0.05
+//		}
+//
+//		"TextureTransform"
+//		{
+//			"scaleVar"		"$texscale"
+//			"translateVar"	"$texoffset"
+//			"resultVar"	"$basetexturetransform"
+//		}
+//	}
+//	
+}

@@ -1,0 +1,11 @@
+"unlitgeneric"
+{
+	"$basetexture" "vgui/zoom"
+	"$translucent" 1
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$ignorez" 1
+	"$no_fullbright" "1"
+
+	"360?$basetexture" "vgui/zoom_360"
+}

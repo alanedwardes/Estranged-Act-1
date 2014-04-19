@@ -1,0 +1,97 @@
+Content I've used for Estranged that I didn't make myself.
+
+= SOUND EFFECTS =
+"Bug zapper" by CGEffex
+	http://www.freesound.org/people/CGEffex/sounds/107004/
+	
+"Crash" sound by sagetyrtle
+	http://www.freesound.org/people/sagetyrtle/sounds/40158/
+	
+"Ocean Waves Crushing" by Luftrum
+	http://www.freesound.org/people/Luftrum/sounds/48412/
+	
+"Rain Patter" by Koops
+	http://www.freesound.org/people/Koops/sounds/17877/
+	
+"Water Miami beach Atlantic" by Dynamicell
+	http://www.freesound.org/people/Dynamicell/sounds/17552/
+	
+"Car Ignition Key - Engine Starting Running Idle 2" by RutgerMuller
+	http://www.freesound.org/people/RutgerMuller/sounds/50898/
+	
+"car loud clip 02" by metamorphmuses
+	http://www.freesound.org/people/metamorphmuses/sounds/38685/
+
+"Thriller Ambient" by unfa
+	http://freesound.org/people/unfa/sounds/157133/
+
+"door open sounds" by MaxDemianAGL
+	http://freesound.org/people/MaxDemianAGL/
+
+"horror ambience" by klankbeeld
+	http://freesound.org/people/klankbeeld/sounds/137109/
+
+"tunnel ambience" by Timbre
+	http://freesound.org/people/Timbre/sounds/75521/
+
+"Creek sound" by dobroide
+        http://www.freesound.org/people/dobroide/sounds/100391/
+
+"Thunder sound" by Erdie
+        http://www.freesound.org/people/Erdie/sounds/23222/
+
+"Rain sound" by Rhumphries
+        http://www.freesound.org/people/RHumphries/sounds/2519/
+
+"Heavy Rain sound" by Reinsamba
+        http://www.freesound.org/people/reinsamba/sounds/17084/ 
+
+
+= MUSIC = 
+"Spacial Winds" by Kevin MacLeod
+	http://incompetech.com/m/c/royalty-free/index.html?keywords=%22spacial+winds%22&Search=Search
+
+"Quinn's Song: The Dance Begins" by Kevin MacLeod
+	http://incompetech.com/m/c/royalty-free/index.html?keywords=Quinn%27s+Song%3A+The+Dance+Begins&Search=Search
+	
+"Tension" by ERH
+	http://www.freesound.org/people/ERH/sounds/30306/
+
+= MODELS =
+"Lift Steuerung / control" by ProgSys
+	http://www.gaming-models.de/index.php/product/417
+"Bäume / trees" by ProgSys
+	http://www.gaming-models.de/index.php/product/394
+"Betten / Beds" by ProgSys
+	http://www.gaming-models.de/index.php/product/357
+"Krankenhaus/hospital equipment" by ProgSys
+	http://www.gaming-models.de/index.php/product/169
+"Anker / anchor by ProgSys
+	http://www.gaming-models.de/index.php/product/170
+"Stromkästen/ Fuse boxes" by ProgSys
+	http://www.gaming-models.de/index.php/product/333
+	
+"Überwachungskamera" by Nikl
+	http://www.gaming-models.de/index.php/product/137
+"mushrooms/Fliegenpilze" by Nikl
+	http://www.gaming-models.de/index.php/product/172
+	
+"Blätterbaum | Canopytree" by Rick_D
+	http://www.gaming-models.de/index.php/product/132
+	
+"Fallen Tree" by Rick_D
+	http://www.gaming-models.de/index.php/product/133
+
+"Czech bus Karosa" by Dinus Saurus
+	http://www.gaming-models.de/index.php/product/401
+
+= FONTS =
+"League Gothic"
+	http://www.theleagueofmoveabletype.com/league-gothic/
+
+"Linden Hill"
+	http://www.theleagueofmoveabletype.com/linden-hill
+
+= CODE =
+"Dynamic RTT shadow angles in Source 2007" by Saul Rennison
+	https://developer.valvesoftware.com/wiki/Dynamic_RTT_shadow_angles_in_Source_2007
