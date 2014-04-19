@@ -1,0 +1,37 @@
+"sdk_unlittwotexture"
+//"Modulate"
+{
+	"$baseTexture"  "effects/bluelaser1"
+	"$Texture2" "effects/bluelaser1_smoke"
+	"$nocull" "1"	
+	"$nodecal" "1"
+	"$additive" "1"
+//	"$translucent" "1"
+	"$no_fullbright" 1
+	"$model" "1"
+	"$nofog" "1"
+//	"$MOD2X" "1"
+
+
+	"Proxies"
+	{
+		"TextureScroll"
+		{
+			"texturescrollvar" "$texture2transform"
+			"texturescrollrate" 1
+			"texturescrollangle" 0
+		}
+
+		"Sine"
+		{
+			"sineperiod"	.06
+			"sinemin"	".3"
+			"sinemax"	".5"
+			"resultVar"	"$alpha"
+		}
+
+	}
+
+
+
+}

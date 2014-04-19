@@ -1,0 +1,8 @@
+"AEFilmGrain"
+{
+	$fbtexture "_rt_FullFrameFB"
+	$noisetexture "texture_samples\noise_ac_rgba"
+	$time "0.0"
+	$noiseamount "2.0"
+	$noisefalloff "30.0"
+}

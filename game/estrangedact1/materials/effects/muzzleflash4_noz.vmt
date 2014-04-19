@@ -1,0 +1,8 @@
+"unlitgeneric"
+{
+	"$basetexture" "effects/muzzleflash4"
+	"$additive" "1"
+	"$vertexcolor" 1
+	"$vertexalpha" "1"
+	"$ignorez" "1"
+}

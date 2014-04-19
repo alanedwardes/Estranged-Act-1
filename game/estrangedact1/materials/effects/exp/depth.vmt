@@ -1,0 +1,4 @@
+"AEDrawDepth"
+{
+	$basetexture "_rt_SSAO_depth"
+}

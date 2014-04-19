@@ -1,0 +1,9 @@
+"unlitgeneric"
+{
+	// Original shader: BaseTimesVertexColorAlphaTest
+	"$basetexture" "effects/fleck_glass2"
+	"$translucent" 1
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$nocull" 1
+}

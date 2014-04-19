@@ -1,0 +1,5 @@
+"unlitgeneric"
+{
+	"$baseTexture" "Effects/security_noise2"
+	"$selfillum" "1"
+}

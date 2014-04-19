@@ -1,0 +1,30 @@
+"sdk_refract"
+{
+
+	"$refractamount" ".04"
+//	"$refracttint" ".25 .47 .32}"
+	"$bluramount" "1"
+	"$ignorez" "1"
+
+	"$scale" "[1 1]"
+
+	"$bumpmap" "dev/water_dudv"
+	"$normalmap" "dev/water_normal"
+	
+	"$bumpframe" "0"
+	"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$normalmap"
+			"animatedtextureframenumvar" "$bumpframe"
+			"animatedtextureframerate" 30.00
+		}
+		"TextureScroll"
+		{
+			"texturescrollvar" "$bumptransform"
+			"texturescrollrate" .1
+			"texturescrollangle" 45.00
+		}
+	}
+}

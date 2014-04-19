@@ -1,0 +1,12 @@
+"unlitgeneric"
+//"Modulate"
+{
+	// Original shader: BaseTimesVertexColorAlphaBlend
+	"$basetexture" "effects/water_splashwake_col"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+//	"$mod2x" "1"
+	"$translucent" "1"
+	"$alpha"	"0.3"
+}
+	

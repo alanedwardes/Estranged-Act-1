@@ -1,0 +1,10 @@
+sdk_refract
+{
+	$model         1
+	$normalmap     effects/glass_refract_normal
+	$dudvmap       effects/glass_refract_dudv
+	$refracttint   "[1 1 1]"
+	$refractamount .15
+	$scale         "[1 1]"
+	$surfaceprop   glass
+}

@@ -1,0 +1,7 @@
+"unlitgeneric"
+{
+	"$basetexture" "effects/laser_citadel1"
+	"$additive" 1
+	"$translucent" 1
+	"$vertexcolor" 1
+}

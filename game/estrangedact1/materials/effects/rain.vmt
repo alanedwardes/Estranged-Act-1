@@ -1,0 +1,17 @@
+sdk_refract
+{
+	$model         1
+	$normalmap     effects/rain_normal
+	$dudvmap       effects/rain_dudv
+	$refracttint   "[1 1 1]"
+	$refractamount .15
+	Proxies
+	{
+		TextureScroll
+		{
+			texturescrollvar $bumpTransform
+			texturescrollrate .4
+			texturescrollangle 270.00
+		}
+	}
+}

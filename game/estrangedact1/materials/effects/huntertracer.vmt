@@ -1,0 +1,5 @@
+"sdk_lightmappedgeneric"
+{
+	// Stop errors.
+	"$basetexture" "dud_normal"
+}

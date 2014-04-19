@@ -1,0 +1,9 @@
+"unlitgeneric"
+{
+	// Original shader: AddTexture
+	"$basetexture" "effects/tesla_glow"
+	"$additive" 1
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"ignoreZ" 1
+}

@@ -1,0 +1,14 @@
+"sdk_lightmappedgeneric"
+{
+	"$basetexture"   "models/anicator/modern_monitor01_screen2"
+	"$surfaceprop"   "glass"
+	"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$basetexture"
+			"animatedtextureframenumvar" "$frame"
+			"animatedtextureframerate" "25.0"
+		}
+	}
+}

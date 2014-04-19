@@ -1,0 +1,10 @@
+"unlitgeneric"
+{
+	// Original shader: BaseTimesVertexColorAlphaBlend
+	"$basetexture" "effects/splashwake4"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+	"$translucent" "1"
+	"$modulate" "1"
+}
+	

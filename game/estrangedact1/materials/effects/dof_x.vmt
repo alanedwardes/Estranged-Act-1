@@ -1,0 +1,7 @@
+"AEDOF"
+{
+	$basetexture "_rt_FullFrameFB"
+	$depthtexture "_rt_SSAO_depth"
+	
+	$range "4000"
+}

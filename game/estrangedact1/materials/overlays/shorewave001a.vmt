@@ -1,0 +1,39 @@
+//"unlitgeneric"
+//"SDK_LightmappedGeneric"
+"sdk_unlittwotexture"
+{
+	"$basetexture" "overlays/shorewave001a"
+	"$texture2"    "overlays/shorewave001a"
+	"$translucent" 1
+//	"$additive" 1
+	"$decal" 1
+//	"$ignorez" 1
+
+	$vertexalpha 1
+
+//  VARS
+
+	"$ScrollRateResult"	1
+
+
+	"Proxies"
+	{
+		"Sine"
+		{
+			"resultVar"	"$ScrollRateResult"
+			"sineperiod"	13
+			"sinemin"	-.007
+			"sinemax"	.007
+		}
+
+		"TextureScroll"
+		{
+			"texturescrollvar" "$basetexturetransform"
+			"texturescrollrate" "$ScrollRateResult"
+			"texturescrollangle" 90
+		}
+
+
+}
+
+}

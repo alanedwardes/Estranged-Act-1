@@ -1,0 +1,5 @@
+"AESSAOBlurY"
+{
+	$basetexture "_rt_SSAO_depth"
+	$ssaotexture "_rt_ssao_result"
+}

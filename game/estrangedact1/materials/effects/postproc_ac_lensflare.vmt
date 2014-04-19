@@ -1,0 +1,13 @@
+"editor_shader"
+{
+	"$shadername"	"postproc_ac_lensflare"
+	"$smallFB"	"_rt_SmallFB0"
+	"$red"		"_rt_SmallFB0"
+	"$green"		"_rt_SmallFB0"
+	"$blue"		"_rt_SmallFB0"
+	"$dusttexture"	"overlays/dust01"
+
+	"$flareintensity" 		 "0.4"
+	"$halointensity" 		"1.0"
+	"$anamorphicintensity"	"0.2"
+}

@@ -1,0 +1,6 @@
+"unlitgeneric"
+{
+	"$vertexcolor" 1
+	"$basetexture" "effects/base"
+	"$alphatest" 1
+}

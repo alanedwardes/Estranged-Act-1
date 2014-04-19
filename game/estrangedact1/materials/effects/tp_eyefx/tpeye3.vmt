@@ -1,0 +1,20 @@
+"unlitgeneric"
+//"Modulate"
+{
+	"$translucent" "1"
+	"$color" ".2"
+	"$additive" "1"
+//	"$mod2x" "1"
+//	"$znearer" 1
+	"$basetexture" "effects/tp_eyefx/3tpeyefx_"
+//	"$basetexture" "effects/tp_eyefx/tp_eyefx-I"
+	"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$basetexture"
+			"animatedtextureframenumvar" "$frame"
+			"animatedtextureframerate" 30
+		}
+	}
+}

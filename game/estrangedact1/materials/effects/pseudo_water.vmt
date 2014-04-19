@@ -1,0 +1,22 @@
+sdk_refract
+{
+	$model        		1
+	$normalmap 			effects/glass_refract_normal
+	$refracttinttexture	effects/pseudo_water
+	$dudvmap			effects/glass_refract_dudv
+	$bottommaterial		nature/water_dx70_beneath
+	$refracttint		"[5 5 5]"
+	$refractamount		.5
+	$bluramount			.5
+	%compilewater		1
+	$surfaceprop		water
+	Proxies
+	{
+		TextureScroll
+		{
+			texturescrollvar	$bumpTransform
+			texturescrollrate	0.01
+			texturescrollangle	0
+		}
+	}
+}

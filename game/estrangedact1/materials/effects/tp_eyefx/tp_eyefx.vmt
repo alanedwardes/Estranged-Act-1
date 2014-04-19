@@ -1,0 +1,19 @@
+"sdk_refract"
+{
+ 
+ 	"$refractamount" ".16"
+ 	"$bluramount" "0"
+//	"$scale" "[1 1]"
+ 	"$dudvmap" "effects/strider_pinch_dudv"
+
+ 	"$normalmap" "effects/strider_pinch_normal"
+	"$bumpframe" "0"
+	"$translucent" "1"
+	"$ignorez" "1"
+}
+
+
+//"VertexLitGeneric"
+//{
+//	"$baseTexture" "Effects/tp_eyefx/tp_eyefx"
+//}

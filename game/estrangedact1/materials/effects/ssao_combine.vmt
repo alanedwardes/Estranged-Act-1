@@ -1,0 +1,5 @@
+"AESSAOCombine"
+{
+	$basetexture "_rt_FullFrameFB"
+	$ssaotexture "_rt_ssao_result"
+}

@@ -1,0 +1,7 @@
+"unlitgeneric"
+{
+	"$basetexture" "effects/strider_muzzle"
+	"$additive" "1"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+}

@@ -1,8 +1,0 @@
-"UnlitGeneric"
-{
-	"$basetexture"	"_rt_gui"
-	"$translucent"	"0" 
-	"$nofog" 1
-	"$nocull" 1
-	$ignorez 1
-}

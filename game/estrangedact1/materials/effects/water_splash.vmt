@@ -1,0 +1,7 @@
+"unlitgeneric"
+{
+	"$basetexture" "effects/water_splash"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+	"$translucent" "1"
+}

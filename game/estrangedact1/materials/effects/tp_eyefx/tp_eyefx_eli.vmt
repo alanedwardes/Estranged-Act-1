@@ -1,0 +1,13 @@
+"unlitgeneric"
+{
+	"$baseTexture" "Effects/tp_eyefx/tp_eyefx_eli"
+	"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$basetexture"
+			"animatedtextureframenumvar" "$frame"
+			"animatedtextureframerate" 8
+		}
+	}
+}

@@ -1,0 +1,48 @@
+"sdk_unlittwotexture"
+//"VertexLitGeneric"
+{
+	"$model" "1"
+	"$basetexture" "effects/combinedisplay002a"
+ "$bumpmap" "dud_normal"
+	"$surfaceprop" "glass"
+	"$texture2"	"models/props_combine/combinescanline"
+	"$selfillum" "1"
+	"$mod2x" "1"
+//	"$additive" "1"
+
+	"Proxies"
+	{
+
+		"Sine"
+		{
+			"resultVar" "$color[0]"
+			"sineperiod" .1
+			"sinemin" .98
+			"sinemax" 1
+		}
+		"Sine"
+		{
+			"resultVar" "$color[1]"
+			"sineperiod" .1
+			"sinemin" .98
+			"sinemax" 1
+		}
+		"Sine"
+		{
+			"resultVar" "$color[2]"
+			"sineperiod" .1
+			"sinemin" .99
+			"sinemax" 1
+		}
+
+		"TextureScroll"
+		{
+			"texturescrollvar" "$texture2transform"
+			"texturescrollrate" 1
+			"texturescrollangle" -90
+		}
+
+
+	}
+
+}

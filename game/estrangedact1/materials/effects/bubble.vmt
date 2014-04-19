@@ -1,0 +1,8 @@
+"unlitgeneric"
+{
+	"$basetexture" "effects/bubble"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+	"$translucent" "1"
+	"$groupbame" "bubble"
+}

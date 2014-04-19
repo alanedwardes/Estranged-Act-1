@@ -1,0 +1,7 @@
+"SDK_LightmappedGeneric"
+{
+	"$basetexture" "overlays/tideline01c"
+	"$translucent" 1
+	"$decal" 1
+	$vertexalpha 1
+}

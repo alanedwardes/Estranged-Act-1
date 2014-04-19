@@ -1,0 +1,7 @@
+"unlitgeneric"
+{
+	"$basetexture" "effects/fleck_wood2"
+	"$vertexcolor" 1
+	"$translucent" 1
+//	"$alphatest" 1
+}

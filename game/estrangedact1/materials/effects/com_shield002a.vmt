@@ -1,0 +1,26 @@
+"sdk_unlittwotexture"
+{
+	"$basetexture" "Effects/com_shield002a"
+	"$texture2" "Effects/com_shield004b"
+	"$translucent" "1"
+	"$additive" 1
+	"$nodecal" 1
+
+	"Proxies"
+	{
+
+
+		"TextureScroll"
+		{
+			"texturescrollvar" "$basetexturetransform"
+			"texturescrollrate" .02
+			"texturescrollangle" 90
+		}
+		"TextureScroll"
+		{
+			"texturescrollvar" "$texture2transform"
+			"texturescrollrate" .04
+			"texturescrollangle" 20
+		}
+	}
+}

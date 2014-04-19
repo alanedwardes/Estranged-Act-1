@@ -1,0 +1,20 @@
+"UnlitGeneric"
+{
+	"$basetexture" "overlays/shorefx/shorewave"
+	"$additive" 1
+	"$decal" 1
+//	"$ignorez" 1
+
+	"Proxies"
+	{
+
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$basetexture"
+			"animatedtextureframenumvar" "$frame"
+			"animatedtextureframerate" 23
+		}
+
+}
+
+}

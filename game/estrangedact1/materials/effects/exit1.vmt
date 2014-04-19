@@ -1,0 +1,17 @@
+"unlitgeneric"
+{
+//	"$spriteorientation" "vp_parallel_oriented"
+//	"$spriteorigin" "[ 0.50 0.50 ]"
+	"$translucent" 1
+	"$basetexture" "effects/exit1"
+//	"$selfillum" 1
+	"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$basetexture"
+			"animatedtextureframenumvar" "$frame"
+			"animatedtextureframerate" 10
+		}
+	}
+}

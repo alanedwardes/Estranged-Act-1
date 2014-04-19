@@ -4,10 +4,13 @@ GameInfo
 	Type			singleplayer_only
 	NoDifficulty	1
 	GameData		estranged.fgd
+	Icon			resource/game
+	Developer		"Alan Edwardes"
+	Developer_URL	"http://alanedwardes.com/estranged/"
 	
 	FileSystem
 	{
-		SteamAppId		261820
+		SteamAppId		243730
 		SearchPaths
 		{
 			// VPK
@@ -16,6 +19,17 @@ GameInfo
 			// Estranged loose files and binaries
 			game+mod+mod_write+default_write_path	|gameinfo_path|.
 			gamebin									|gameinfo_path|bin
+			
+			// Base HL2 Content
+			game									|all_source_engine_paths|hl2/hl2_english.vpk
+			game									|all_source_engine_paths|hl2/hl2_pak.vpk
+			game									|all_source_engine_paths|hl2/hl2_textures.vpk
+			game									|all_source_engine_paths|hl2/hl2_sound_misc.vpk
+			game									|all_source_engine_paths|hl2/hl2_misc.vpk
+			game									|all_source_engine_paths|hl2
+			game									|all_source_engine_paths|ep2/ep2_pak.vpk
+			game									|all_source_engine_paths|episodic/ep1_pak.vpk
+			game									|all_source_engine_paths|sourcetest/sourcetest_pak.vpk
 			
 			// Platform
 			platform								|all_source_engine_paths|platform/platform_misc.vpk

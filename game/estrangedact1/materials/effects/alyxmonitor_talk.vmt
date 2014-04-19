@@ -1,0 +1,29 @@
+"sdk_unlittwotexture"
+{
+	"$basetexture" "effects/alyxmonitor_talk"
+	"$selfillum" 1
+	"$texture2"	"dev/dev_scanline"
+	"$mod2x" "1"
+
+	"Proxies"
+	{
+
+
+
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$basetexture"
+			"animatedtextureframenumvar" "$frame"
+			"animatedtextureframerate" 12 
+		}
+
+
+		"TextureScroll"
+		{
+			"texturescrollvar" "$texture2transform"
+			"texturescrollrate" .16
+			"texturescrollangle" -90
+		}
+
+	}
+}

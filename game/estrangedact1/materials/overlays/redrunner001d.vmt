@@ -1,0 +1,7 @@
+"SDK_LightmappedGeneric"
+{
+	"$basetexture" "overlays/redrunner001d"
+	"$translucent" 1
+	"$decal" 1
+	$vertexalpha 1
+}

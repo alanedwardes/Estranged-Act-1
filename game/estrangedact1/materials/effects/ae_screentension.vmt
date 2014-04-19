@@ -1,0 +1,5 @@
+"AEScreenTension"
+{
+	$fbtexture	"_rt_FullFrameFB"
+	$smallfb	"_rt_SmallFB0"
+}

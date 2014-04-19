@@ -1,0 +1,6 @@
+"AESSAO"
+{
+	$fbtexture "_rt_FullFrameFB"
+	$ssaotexture "_rt_SSAO_depth"
+	$noisetexture "texture_samples\noise_ssao"
+}

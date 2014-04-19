@@ -1,0 +1,6 @@
+"unlitgeneric"
+{
+	"$basetexture" "overlays/dust01"
+	"$nolod" 1
+	"$translucent" 1
+}

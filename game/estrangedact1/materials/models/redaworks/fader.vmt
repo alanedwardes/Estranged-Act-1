@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+	$basetexture	models/redaworks/fader
+	$translucent	1
+	$additive		0
+	$nolod			0
+	$nofog			0
+}

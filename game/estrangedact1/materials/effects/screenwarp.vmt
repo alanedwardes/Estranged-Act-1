@@ -1,0 +1,34 @@
+"sdk_refract"
+{
+ 	"$model" 1
+ 	"$refractamount" "14"
+ 	"$bluramount" "1"
+//	"$REFRACTTINT" "{251 122 231}"
+	"$scale" "[1 1]"
+	"$dudvmap" "dev/water_dudv"
+ 	"$normalmap" "dev/water_normal"
+ 	"$surfaceprop" "water"
+	"$bumpframe" "0"
+	"$nocull" 1
+//	"$envmap" "env_cubemap"
+//	"$envmaptint" "[.1 .1 .1]"
+	"$REFRACTTINTTEXTURE" "models/props_lab/glass_tint001"
+	"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$normalmap"
+			"animatedtextureframenumvar" "$bumpframe"
+			"animatedtextureframerate" 30.00
+		}
+
+
+		"TextureScroll"
+		{
+			"texturescrollvar" "$bumptransform"
+			"texturescrollrate" 11
+			"texturescrollangle" 45.00
+		}
+
+	}
+}

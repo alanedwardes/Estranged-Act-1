@@ -1,0 +1,39 @@
+"water"
+{
+	"$abovewater" 0
+	"%compilewater" 1
+	"$forceexpensive" 1
+	"$reflectentities" 1
+	"%tooltexture" "nature/water_coast01_normal"
+	"$refracttexture" "_rt_WaterRefraction"
+	"$refractamount" "1"
+
+	"$scale" "[7 7]"
+
+	"$bumpmap" "nature/water_coast01_dudv"
+	"$normalmap" "nature/water_coast01_normal"
+
+	"$surfaceprop" "water"
+	"$bumpframe" "0"
+
+	"$fogenable" 1
+	"$fogcolor" "{0 0 0}"
+	"$fogstart" -512.00
+	"$fogend" 400.00
+
+	$underwateroverlay "effects/water_warp01"
+
+	"$scroll1" "[.01 .01 .05]"
+	"$scroll2" "[-.025 .025 .075]"
+
+
+	"Proxies"
+	{
+		"TextureScroll"
+		{
+			"texturescrollvar" "$bumptransform"
+			"texturescrollrate" .05
+			"texturescrollangle" 45.00
+		}
+	}
+}

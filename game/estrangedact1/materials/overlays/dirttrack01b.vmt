@@ -1,0 +1,8 @@
+"SDK_LightmappedGeneric"
+{
+	"$basetexture" "overlays/dirttrack01b"
+	"$translucent" 1
+	"$decal" 1
+	"$surfaceprop" "metal"
+	$vertexalpha 1
+}

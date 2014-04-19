@@ -1,0 +1,14 @@
+"AEColorGrade"
+{
+	//Usage: [R G B]
+	$contrast "[1 1 1]"
+	$brightness "[1 1 1]"
+	
+	//Usage: [Input Minimum, Input Maximum, Output Minimum, Output Maximum]
+	$levels_r "[0.0 0.8 0.03 1.2]"
+	$levels_g "[0.0 0.75 0.0 1.0]"
+	$levels_b "[0.0 1.0 0.05 1.0]"
+	
+	$saturation "0.6"
+	$gamma_amount	"1.0"
+}

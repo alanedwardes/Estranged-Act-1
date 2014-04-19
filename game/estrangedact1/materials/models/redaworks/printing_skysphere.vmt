@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models/redaworks/skysphere"
+	"$selfillum" "1"
+$nofog 1
+
+}

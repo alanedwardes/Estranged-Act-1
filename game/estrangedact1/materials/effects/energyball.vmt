@@ -1,0 +1,7 @@
+"unlitgeneric"
+{
+	// Original shader: AddTexture
+	"$basetexture" "effects/energyball"
+	"$additive" 1
+	"$vertexcolor" 1
+}

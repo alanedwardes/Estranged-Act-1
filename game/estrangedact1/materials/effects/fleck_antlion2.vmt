@@ -1,0 +1,9 @@
+"unlitgeneric"
+{
+	"$basetexture" "effects/fleck_antlion2"
+	"$vertexcolor" 1
+//	"$alphatest" 1
+	"$translucent" 1
+	"$vertexalpha" 1
+	"$nocull" 1
+}

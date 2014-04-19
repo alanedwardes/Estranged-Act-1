@@ -1,0 +1,6 @@
+"unlitgeneric"
+{
+	// Original shader: AddTexture
+	"$basetexture" "effects/tracer_middle"
+	"$additive" 1
+}

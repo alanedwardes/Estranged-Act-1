@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "Effects/tp_eyefx/tp_black"
+ "$bumpmap" "dud_normal"
+}

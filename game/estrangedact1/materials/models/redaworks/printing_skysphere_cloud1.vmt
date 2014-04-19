@@ -1,0 +1,17 @@
+UnlitGeneric
+{
+	$basetexture models/redaworks/skysphere_cloud1
+	$bumpmap models/redaworks/skysphere_normal1
+	$translucent 1
+	$nofog 1
+
+	Proxies
+	{
+		TextureScroll
+		{
+			textureScrollVar	$basetexturetransform
+			textureScrollRate	0.001
+			 textureScrollAngle 100
+		}
+	}
+}

@@ -1,0 +1,22 @@
+"water"
+{
+	"$abovewater" 1
+	"%compilewater" 1
+	"$forceexpensive" 1
+	"$reflectentities" 0
+	"$envmap" "env_cubemap"
+
+	"%tooltexture" "nature/water_frame01_normal"
+
+	"$reflecttexture" "_rt_WaterReflection"
+	"$reflectamount" "1"
+
+	"$scale" "[1 1]"
+	
+	"$bottommaterial" "nature/water_sea01_beneath"
+
+	"$normalmap" "dud_normal"
+
+	"$fogenable" 1
+	"$fogcolor" "{0 0 0}"
+}

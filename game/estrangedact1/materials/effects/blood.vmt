@@ -1,0 +1,7 @@
+"unlitgeneric"
+{
+	"$basetexture" "effects/blood"
+	"$translucent" 1
+	"$vertexalpha" 1
+	"$vertexcolor" 1
+}

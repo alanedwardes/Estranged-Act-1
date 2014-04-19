@@ -1,0 +1,8 @@
+"SDK_LightmappedGeneric"
+{
+	"$basetexture" "overlays/rockslide01a"
+	"$translucent" 1
+	"$decal" 1
+	"$surfaceprop" "gravel"
+	$vertexalpha 1
+}
