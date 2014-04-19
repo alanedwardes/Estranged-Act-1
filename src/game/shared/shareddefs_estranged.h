@@ -8,7 +8,7 @@
 #define ESTRANGED_SCREEN_EXIT_OUTPUT "EISUEO"
 #define ESTRANGED_SCREEN_TRIGGER_OUTPUT "EISUTO"
 #define ESTRANGED_SCREEN_PERSIST_PARAMETERS "EISPP"
-#define ESTRANGED_STATISTICS_ENDPOINT "http://estranged_statistics.alanedwardes.com/?v2"
+#define ESTRANGED_STATISTICS_ENDPOINT "http://www.example.com/statistics_endpoint"
 
 #ifdef CLIENT_DLL
 EXTERN_RECV_TABLE( DT_ColorGradingData );
