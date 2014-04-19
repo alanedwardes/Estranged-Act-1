@@ -46,7 +46,7 @@ float MIN_SCREENSPACE_RAIN_WIDTH = 1;
 
 #ifndef _XBOX
 ConVar r_RainHack( "r_RainHack", "0", FCVAR_CHEAT );
-ConVar r_RainRadius( "r_RainRadius", "1500", FCVAR_CHEAT );
+ConVar r_RainRadius( "r_RainRadius", "2000", FCVAR_CHEAT );
 ConVar r_RainSideVel( "r_RainSideVel", "130", FCVAR_CHEAT, "How much sideways velocity rain gets." );
 
 ConVar r_RainSimulate( "r_RainSimulate", "1", FCVAR_CHEAT, "Enable/disable rain simulation." );
@@ -254,7 +254,7 @@ static bool IsInAir( const Vector& position )
 
 ConVar CClient_Precipitation::s_raindensity( "r_raindensity","0.001", FCVAR_CHEAT);
 ConVar CClient_Precipitation::s_rainwidth( "r_rainwidth", "0.5", FCVAR_CHEAT );
-ConVar CClient_Precipitation::s_rainlength( "r_rainlength", "0.1f", FCVAR_CHEAT );
+ConVar CClient_Precipitation::s_rainlength( "r_rainlength", "0.02f", FCVAR_CHEAT );
 ConVar CClient_Precipitation::s_rainspeed( "r_rainspeed", "600.0f", FCVAR_CHEAT );
 ConVar r_rainalpha( "r_rainalpha", "0.4", FCVAR_CHEAT );
 ConVar r_rainalphapow( "r_rainalphapow", "0.8", FCVAR_CHEAT );

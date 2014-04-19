@@ -453,7 +453,7 @@ void CHudMessage::MessageScanStart( void )
 		m_parms.vguiFontName[ 0 ] )
 	{
 
-		SetFont( vgui::scheme()->GetDefaultScheme(), m_parms.vguiFontName );
+		SetFont( vgui::scheme()->GetScheme("ClientScheme"), m_parms.vguiFontName );
 	}
 }
 
@@ -856,6 +856,9 @@ void CHudMessage::MsgFunc_HudMsg(bf_read &msg)
 	pNetMessage->fadeout = msg.ReadFloat();
 	pNetMessage->holdtime = msg.ReadFloat();
 	pNetMessage->fxtime	= msg.ReadFloat();
+
+	pNetMessage->pVGuiSchemeFontName = new char[48];
+	msg.ReadString( (char*)pNetMessage->pVGuiSchemeFontName, 48 );
 
 	pNetMessage->pName = s_NetworkMessageNames[ channel ];
 

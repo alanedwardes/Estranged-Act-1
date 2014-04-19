@@ -3019,7 +3019,7 @@ void CSceneEntity::StartEvent( float currenttime, CChoreoScene *scene, CChoreoEv
 				tTextParam.holdTime		= 3.1;
 				tTextParam.fxTime		= 0;
 				tTextParam.channel		= 1;
-				UTIL_HudMessageAll( tTextParam, pszText );
+				UTIL_HudMessageAll( tTextParam, pszText, NULL );
 				break;
 			}
 

@@ -1,15 +1,15 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: Eyeball shader
 //
 //=============================================================================//
 
-#include "BaseVSShader.h"
+#include "basevsshader.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-BEGIN_VS_SHADER( Eyeball, "Help for EyeBall" )
+BEGIN_VS_SHADER( sdk_eyeball, "Help for sdk_eyeball" )
 			   
 	BEGIN_SHADER_PARAMS
 		SHADER_PARAM_OVERRIDE( BASETEXTURE, SHADER_PARAM_TYPE_TEXTURE, "models/alyx/pupil_l", "iris texture", 0 )

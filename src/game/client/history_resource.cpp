@@ -292,6 +292,9 @@ bool CHudHistoryResource::ShouldDraw( void )
 //-----------------------------------------------------------------------------
 void CHudHistoryResource::Paint( void )
 {
+	// Estranged doesn't use this.
+	return;
+
 	if ( m_bDoNotDraw )
 	{
 		// this is to not draw things until the first rendered

@@ -2917,44 +2917,6 @@ bool CNPC_PlayerCompanion::OverrideMove( float flInterval )
 					}
 				}
 			}
-#ifdef HL2_EPISODIC			
-			else if ( pEntity->m_iClassname == iszNPCTurretFloor )
-			{
-				UTIL_TraceLine( WorldSpaceCenter(), pEntity->WorldSpaceCenter(), MASK_BLOCKLOS, pEntity, COLLISION_GROUP_NONE, &tr );
-				if (tr.fraction == 1.0 && !tr.startsolid)
-				{
-					float radius = 1.4 * pEntity->CollisionProp()->BoundingRadius2D(); 
-					GetLocalNavigator()->AddObstacle( pEntity->WorldSpaceCenter(), radius, AIMST_AVOID_OBJECT );
-				}
-			}
-			else if( pEntity->m_iClassname == iszEntityFlame && pEntity->GetParent() && !pEntity->GetParent()->IsNPC() )
-			{
-				float flDist = pEntity->WorldSpaceCenter().DistTo( WorldSpaceCenter() );
-
-				if( flDist > COMPANION_EPISODIC_AVOID_ENTITY_FLAME_RADIUS )
-				{
-					// If I'm not in the flame, prevent me from getting close to it.
-					// If I AM in the flame, avoid placing an obstacle until the flame frightens me away from itself.
-					UTIL_TraceLine( WorldSpaceCenter(), pEntity->WorldSpaceCenter(), MASK_BLOCKLOS, pEntity, COLLISION_GROUP_NONE, &tr );
-					if (tr.fraction == 1.0 && !tr.startsolid)
-					{
-						GetLocalNavigator()->AddObstacle( pEntity->WorldSpaceCenter(), COMPANION_EPISODIC_AVOID_ENTITY_FLAME_RADIUS, AIMST_AVOID_OBJECT );
-					}
-				}
-			}
-#endif // HL2_EPISODIC
-			else if ( pEntity->m_iClassname == iszBounceBomb )
-			{
-				CBounceBomb *pBomb = static_cast<CBounceBomb *>(pEntity);
-				if ( pBomb && !pBomb->IsPlayerPlaced() && pBomb->IsAwake() )
-				{
-					UTIL_TraceLine( WorldSpaceCenter(), pEntity->WorldSpaceCenter(), MASK_BLOCKLOS, pEntity, COLLISION_GROUP_NONE, &tr );
-					if (tr.fraction == 1.0 && !tr.startsolid)
-					{
-						GetLocalNavigator()->AddObstacle( pEntity->GetAbsOrigin(), BOUNCEBOMB_DETONATE_RADIUS * .8, AIMST_AVOID_DANGER );
-					}
-				}
-			}
 		}
 	}
 
@@ -3512,14 +3474,15 @@ void CNPC_PlayerCompanion::InputGiveWeapon( inputdata_t &inputdata )
 	string_t iszWeaponName = inputdata.value.StringID();
 	if ( iszWeaponName != NULL_STRING )
 	{
-		if( Classify() == CLASS_PLAYER_ALLY_VITAL )
-		{
-			m_iszPendingWeapon = iszWeaponName;
-		}
-		else
-		{
-			GiveWeapon( iszWeaponName );
-		}
+		GiveWeapon( iszWeaponName );
+		//if( Classify() == CLASS_PLAYER_ALLY_VITAL )
+		//{
+		//	m_iszPendingWeapon = iszWeaponName;
+		//}
+		//else
+		//{
+		//	GiveWeapon( iszWeaponName );
+		//}
 	}
 }
 
@@ -3609,12 +3572,6 @@ void CNPC_PlayerCompanion::OnPlayerKilledOther( CBaseEntity *pVictim, const CTak
 	if ( !FVisible( pVictim ) )
 	{
 		return;
-	}
-
-	// check if the player killed an enemy by punting a grenade
-	if ( pInflictor && Fraggrenade_WasPunted( pInflictor ) && Fraggrenade_WasCreatedByCombine( pInflictor ) )
-	{
-		bPuntedGrenade = true;
 	}
 
 	// check if the victim was Alyx's enemy

@@ -83,6 +83,7 @@ void WeaponsResource::LoadAllWeaponSprites( void )
 //-----------------------------------------------------------------------------
 void WeaponsResource::LoadWeaponSprites( WEAPON_FILE_INFO_HANDLE hWeaponFileInfo )
 {
+	return; // Estranged doesn't use
 	// WeaponsResource is a friend of C_BaseCombatWeapon
 	FileWeaponInfo_t *pWeaponInfo = GetFileWeaponInfoFromHandle( hWeaponFileInfo );
 

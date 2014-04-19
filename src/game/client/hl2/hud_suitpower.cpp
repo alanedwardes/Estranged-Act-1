@@ -20,6 +20,8 @@ using namespace vgui;
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
+#ifdef ESTRANGED_HIDDEN
+
 DECLARE_HUDELEMENT( CHudSuitPower );
 
 #define SUITPOWER_INIT -1
@@ -255,3 +257,5 @@ void CHudSuitPower::Paint()
 }
 
 
+
+#endif

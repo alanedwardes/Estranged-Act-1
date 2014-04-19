@@ -1,0 +1,290 @@
+#include "common_ps_fxc.h"
+
+sampler depthSampler		: register( s0 );  // depth in alpha
+sampler NoiseMap			: register( s1 ); //noise texture
+
+const float4 vScreenSize : register( c2 ); // contains: float4( float2(1.0 / Screen Size.xy), float2( Screen Size.xy)  );
+const float3 vSettings : register( c1 ); // contains: float3( occlusion radius, angle bias, ao strength)
+
+#define M_PI 3.14159265f
+
+#define SAMPLE_FIRST_STEP 0 // adds 1 texture slot, and approximately 40 arithmetic
+//original high quality #define NUM_DIRECTIONS 7 // 8 for a 'fine' mode
+//original high quality #define NUM_STEPS 5 // 6 for a 'fine' mode
+#define NUM_DIRECTIONS 5 // 8 for a 'fine' mode
+#define NUM_STEPS 3 // 6 for a 'fine' mode
+
+
+#define RANDOM_TEXTURE_WIDTH 4
+
+static float g_R = vSettings.x;
+static float g_R2 = (g_R * g_R);
+static float g_NegInvR2 = (-1.0f / g_R2);
+
+#define DegToRad (M_PI / 180.0f)
+
+static float g_AngleBias = (vSettings.y * DegToRad);
+
+struct PS_INPUT
+{
+	float2 texCoord : TEXCOORD0;
+};
+
+//----------------------------------------------------------------------------------
+float InvLength(float2 v)
+{
+	return rsqrt(dot(v,v));
+}
+
+//----------------------------------------------------------------------------------
+float Tangent(float3 P, float3 S)
+{
+	return (P.z - S.z) * InvLength(S.xy - P.xy);
+}
+
+//----------------------------------------------------------------------------------
+float3 UVToEye(float2 uv, float eye_z)
+{
+	uv = uv * 2.0 - 1.0;
+	return float3(uv * eye_z, eye_z);
+}
+
+//----------------------------------------------------------------------------------
+float FetchEyeZ(float2 uv)
+{
+	//float z = tex2D(depthSampler, uv).a / 8.0f;
+	float z = tex2D(depthSampler, uv).r; //new fetch because of Source2013 R32F thingy
+	if(z==0.0f)
+	{
+		z=1.0f;
+	}
+	return z;
+}
+
+//----------------------------------------------------------------------------------
+float3 FetchEyePos(float2 uv)
+{
+	float z = FetchEyeZ(uv);
+	return UVToEye(uv, z);
+}
+
+//----------------------------------------------------------------------------------
+float Length2(float3 v)
+{
+	return dot(v, v);
+}
+
+//----------------------------------------------------------------------------------
+float3 MinDiff(float3 P, float3 Pr, float3 Pl)
+{
+	float3 V1 = Pr - P;
+	float3 V2 = P - Pl;
+	return (Length2(V1) < Length2(V2)) ? V1 : V2;
+}
+
+//----------------------------------------------------------------------------------
+float Falloff(float d2)
+{
+	// 1 scalar mad instruction
+	return d2 * g_NegInvR2 + 1.0f;
+}
+
+//----------------------------------------------------------------------------------
+float2 SnapUVOffset(float2 uv)
+{
+	return round(uv * vScreenSize.zw) * vScreenSize.xy;
+}
+
+//----------------------------------------------------------------------------------
+float TanToSin(float x)
+{
+	return x * rsqrt(x*x + 1.0f);
+}
+
+//----------------------------------------------------------------------------------
+float3 TangentVector(float2 deltaUV, float3 dPdu, float3 dPdv)
+{
+	return deltaUV.x * dPdu + deltaUV.y * dPdv;
+}
+
+//----------------------------------------------------------------------------------
+float Tangent(float3 T)
+{
+	return -T.z * InvLength(T.xy);
+}
+
+//----------------------------------------------------------------------------------
+float BiasedTangent(float3 T)
+{
+	// Do not use atan() on T, because it gets expanded by fxc to many math instructions
+	return Tangent(T) + tan(g_AngleBias);
+}
+
+//----------------------------------------------------------------------------------
+float IntegerateOcclusion(float2 uv0, float2 snapped_duv, float3 P, float3 dPdu, float3 dPdv, inout float tanH)
+{
+	float ao = 0;
+
+	// Compute a tangent vector for snapped_duv
+	float3 T1 = TangentVector(snapped_duv, dPdu, dPdv);
+	float tanT = BiasedTangent(T1);
+	float sinT = TanToSin(tanT);
+
+	float3 S = FetchEyePos(uv0 + snapped_duv);
+	float tanS = Tangent(P, S);
+
+	float sinS = TanToSin(tanS);
+	float d2 = Length2(S - P);
+
+	if ((d2 < g_R2) && (tanS > tanT))
+	{
+		// Compute AO between the tangent plane and the sample
+		ao = Falloff(d2) * (sinS - sinT);
+
+		// Update the horizon angle
+		tanH = max(tanH, tanS);
+	}
+
+	return ao;
+}
+
+//----------------------------------------------------------------------------------
+float horizon_occlusion(float2 deltaUV, float2 texelDeltaUV, float2 uv0, float3 P, float numSteps, float randstep, float3 dPdu, float3 dPdv ) 
+{
+	float ao = 0;
+
+	// Randomize starting point within the first sample distance
+	float2 uv = uv0 + SnapUVOffset( randstep * deltaUV );
+
+	static float Num_Steps = NUM_STEPS;
+
+	// Snap increments to pixels to avoid disparities between xy
+	// and z sample locations and sample along a line
+	deltaUV = SnapUVOffset( deltaUV );
+
+	// Compute tangent vector using the tangent plane
+	float3 T = deltaUV.x * dPdu + deltaUV.y * dPdv;
+
+	float tanH = BiasedTangent(T);
+
+#if SAMPLE_FIRST_STEP == 1
+	// Take a first sample between uv0 and uv0 + deltaUV
+	float2 snapped_duv = SnapUVOffset( randstep * deltaUV + texelDeltaUV );
+	ao = IntegerateOcclusion(uv0, snapped_duv, P, dPdu, dPdv, tanH);
+	--numSteps;
+#endif
+
+	float sinH = tanH / sqrt(1.0f + tanH*tanH);
+
+	// for (float j = 1; j <= numSteps; ++j)
+	for (float j = 1; j <= Num_Steps; ++j)
+	{
+		uv += deltaUV;
+		float3 S = FetchEyePos(uv);
+		float tanS = Tangent(P, S);
+		float d2 = Length2(S - P);
+
+		// Use a merged dynamic branch
+		//[branch]
+		if ((d2 < g_R2) && (tanS > tanH))
+		{
+			// Accumulate AO between the horizon and the sample
+			float sinS = tanS / sqrt(1.0f + tanS*tanS);
+			ao += Falloff(d2) * (sinS - sinH);
+
+			// Update the current horizon angle
+			tanH = tanS;
+			sinH = sinS;
+		}
+	}
+
+	return ao;
+}
+
+//----------------------------------------------------------------------------------
+float2 RotateDirections(float2 Dir, float2 CosSin)
+{
+	return float2(Dir.x*CosSin.x - Dir.y*CosSin.y, Dir.x*CosSin.y + Dir.y*CosSin.x);
+}
+
+//----------------------------------------------------------------------------------
+void ComputeSteps(inout float2 step_size_uv, inout float numSteps, float ray_radius_pix, float rand)
+{
+	// Avoid oversampling if NUM_STEPS is greater than the kernel radius in pixels
+	numSteps = min(NUM_STEPS, ray_radius_pix);
+
+	// Divide by Ns+1 so that the farthest samples are not fully attenuated
+	float step_size_pix = ray_radius_pix / (numSteps + 1);
+
+	// Clamp numSteps if it is greater than the max kernel footprint
+	float g_MaxRadiusPixels = 0.1 * min(vScreenSize.z, vScreenSize.w);
+	float maxNumSteps = g_MaxRadiusPixels / step_size_pix;
+	if (maxNumSteps < numSteps)
+	{
+		// Use dithering to avoid AO discontinuities
+		numSteps = floor(maxNumSteps + rand);
+		numSteps = max(numSteps, 1);
+		step_size_pix = g_MaxRadiusPixels / numSteps;
+	}
+
+	// Step size in uv space
+	step_size_uv = step_size_pix * vScreenSize.xy;
+}
+
+
+//in float2 texCoord, in sampler depthSampler, in float2 texel, in float occlusionScale, in float sampleRadius, in float occlusionPower, out float ao_out
+float4 main( PS_INPUT i ) : COLOR
+{
+	
+	float2 texCoord = i.texCoord;
+
+	float3 P = FetchEyePos(texCoord);
+	if (P.z < 1e-10f) 
+	{
+		discard;
+	}
+
+	float3 rand = tex2D(NoiseMap, i.texCoord * vScreenSize.zw / RANDOM_TEXTURE_WIDTH).xyz;
+
+	// Compute projection of disk of radius g_R into uv space
+	// Multiply by 0.5 to scale from [-1,1]^2 to [0,1]^2
+	float2 ray_radius_uv = 0.5 * g_R * 1.0 / P.z;
+	float ray_radius_pix = ray_radius_uv.x * vScreenSize.w;
+	/*
+	if (ray_radius_pix < 1) 
+	{
+		discard;
+	}
+*/
+	static float numSteps;
+	static float2 step_size;
+	ComputeSteps(step_size, numSteps, ray_radius_pix, rand.z);
+
+	// Nearest neighbor pixels on the tangent plane
+	float3 Pr, Pl, Pt, Pb;
+	Pr = FetchEyePos(texCoord + float2(vScreenSize.x, 0));
+	Pl = FetchEyePos(texCoord + float2(-vScreenSize.x, 0));
+	Pt = FetchEyePos(texCoord + float2(0, vScreenSize.y));
+	Pb = FetchEyePos(texCoord + float2(0, -vScreenSize.y));
+
+	// Screen-aligned basis for the tangent plane
+	float3 dPdu = MinDiff(P, Pr, Pl);
+	float3 dPdv = MinDiff(P, Pt, Pb) * (vScreenSize.w * vScreenSize.x);
+
+	float ao = 0;
+	float d;
+	float alpha = 2.0f * M_PI / NUM_DIRECTIONS;
+
+	for (d = 0; d < NUM_DIRECTIONS; ++d)
+	{
+		float angle = alpha * d;
+		float2 dir = RotateDirections(float2(cos(angle), sin(angle)), rand.xy);
+		float2 deltaUV = dir * step_size.xy;
+		float2 texelDeltaUV = dir * vScreenSize.xy;
+		ao += horizon_occlusion(deltaUV, texelDeltaUV, texCoord, P, numSteps, rand.z, dPdu, dPdv);
+	}
+
+	ao = 1.0 - ao / NUM_DIRECTIONS * vSettings.z;
+
+	return float4(ao.xxx, 1.0f);
+}

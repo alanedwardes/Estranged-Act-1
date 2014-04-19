@@ -24,6 +24,12 @@
 #include "filesystem.h"
 #include "matsys_controls/matsyscontrols.h"
 
+#include "IOptionsPanel.h"
+#include "IDevMapPanel.h"
+#include "WebBrowser.h"
+#include "IEstrangedMenu.h"
+#include "EstrangedDialogues.h"
+
 #ifdef SIXENSE
 #include "sixense/in_sixense.h"
 #endif
@@ -197,6 +203,7 @@ void VGui_CreateGlobalPanels( void )
 {
 	VPANEL gameToolParent = enginevgui->GetPanel( PANEL_CLIENTDLL_TOOLS );
 	VPANEL toolParent = enginevgui->GetPanel( PANEL_TOOLS );
+	VPANEL GameUiDll = enginevgui->GetPanel( PANEL_GAMEUIDLL);
 #if defined( TRACK_BLOCKING_IO )
 	VPANEL gameDLLPanel = enginevgui->GetPanel( PANEL_GAMEDLL );
 #endif
@@ -220,6 +227,23 @@ void VGui_CreateGlobalPanels( void )
 #ifdef SIXENSE
 	g_pSixenseInput->CreateGUI( gameToolParent );
 #endif
+
+	optionspanel->Create(GameUiDll);
+	estrangedmenu->Create(GameUiDll);
+	estrangeddialogues->Create(GameUiDll);
+	webbrowser->Create(GameUiDll);
+
+	ConVarRef mat_dxlevel("mat_dxlevel");
+	if (mat_dxlevel.GetInt() < 90)
+	{
+		engine->ClientCmd("ae_alert #Estranged_UnsupportedTitle #EstrangedUnsupporteError");
+	}
+
+	ConVarRef developer("developer");
+	if (developer.GetInt() > 0)
+	{
+		devmappanel->Create(GameUiDll);
+	}
 }
 
 void VGui_Shutdown()
@@ -241,6 +265,12 @@ void VGui_Shutdown()
 	loadingdisc->Destroy();
 	internalCenterPrint->Destroy();
 
+	optionspanel->Destroy();
+	devmappanel->Destroy();
+	webbrowser->Destroy();
+	estrangedmenu->Destroy();
+	estrangeddialogues->Destroy();
+
 	if ( g_pClientMode )
 	{
 		g_pClientMode->VGui_Shutdown();
@@ -251,7 +281,7 @@ void VGui_Shutdown()
 	vgui::ivgui()->RunFrame();
 }
 
-static ConVar cl_showpausedimage( "cl_showpausedimage", "1", 0, "Show the 'Paused' image when game is paused." );
+static ConVar cl_showpausedimage( "cl_showpausedimage", "0", 0, "Show the 'Paused' image when game is paused." );
 
 //-----------------------------------------------------------------------------
 // Things to do before rendering vgui stuff...

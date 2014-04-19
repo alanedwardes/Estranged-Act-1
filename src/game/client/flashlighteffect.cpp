@@ -29,13 +29,18 @@ extern ConVar r_flashlightdepthres;
 #include "tier0/memdbgon.h"
 
 extern ConVar r_flashlightdepthtexture;
+extern ConVar ae_flashlightshadow;
 
 void r_newflashlightCallback_f( IConVar *pConVar, const char *pOldString, float flOldValue );
 
+static ConVar ae_flashlightfiltersize("ae_flashlightfiltersize", "3.0", FCVAR_CHEAT);
+static ConVar ae_flashlightdepthbias("ae_flashlightdepthbias", "0.0005", FCVAR_CHEAT);
+static ConVar ae_flashlightslopescaledepthbias("ae_flashlightslopescaledepthbias", "16.0", FCVAR_CHEAT);
+static ConVar ae_flashlightrgb("ae_flashlightrgb", "255 192 128", FCVAR_CHEAT );
 static ConVar r_newflashlight( "r_newflashlight", "1", FCVAR_CHEAT, "", r_newflashlightCallback_f );
 static ConVar r_swingflashlight( "r_swingflashlight", "1", FCVAR_CHEAT );
 static ConVar r_flashlightlockposition( "r_flashlightlockposition", "0", FCVAR_CHEAT );
-static ConVar r_flashlightfov( "r_flashlightfov", "45.0", FCVAR_CHEAT );
+static ConVar r_flashlightfov( "r_flashlightfov", "60.0", FCVAR_CHEAT );
 static ConVar r_flashlightoffsetx( "r_flashlightoffsetx", "10.0", FCVAR_CHEAT );
 static ConVar r_flashlightoffsety( "r_flashlightoffsety", "-20.0", FCVAR_CHEAT );
 static ConVar r_flashlightoffsetz( "r_flashlightoffsetz", "24.0", FCVAR_CHEAT );
@@ -48,9 +53,6 @@ static ConVar r_flashlightvisualizetrace( "r_flashlightvisualizetrace", "0", FCV
 static ConVar r_flashlightambient( "r_flashlightambient", "0.0", FCVAR_CHEAT );
 static ConVar r_flashlightshadowatten( "r_flashlightshadowatten", "0.35", FCVAR_CHEAT );
 static ConVar r_flashlightladderdist( "r_flashlightladderdist", "40.0", FCVAR_CHEAT );
-static ConVar mat_slopescaledepthbias_shadowmap( "mat_slopescaledepthbias_shadowmap", "16", FCVAR_CHEAT );
-static ConVar mat_depthbias_shadowmap(	"mat_depthbias_shadowmap", "0.0005", FCVAR_CHEAT  );
-
 
 void r_newflashlightCallback_f( IConVar *pConVar, const char *pOldString, float flOldValue )
 {
@@ -321,21 +323,35 @@ void CFlashlightEffect::UpdateLightNew(const Vector &vecPos, const Vector &vecFo
 	}
 
 	state.m_fConstantAtten = r_flashlightconstant.GetFloat();
-	state.m_Color[0] = 1.0f;
-	state.m_Color[1] = 1.0f;
-	state.m_Color[2] = 1.0f;
+
+	float tmp[4];
+	UTIL_StringToFloatArray( tmp, 4, ae_flashlightrgb.GetString() );
+	if( tmp[3] <= 0.0f )
+	{
+		tmp[3] = 255.0f;
+	}
+	tmp[3] *= ( 1.0f / 255.0f );
+	state.m_Color[0] = GammaToLinear( tmp[0] * ( 1.0f / 255.0f ) ) * tmp[3];
+	state.m_Color[1] = GammaToLinear( tmp[1] * ( 1.0f / 255.0f ) ) * tmp[3];
+	state.m_Color[2] = GammaToLinear( tmp[2] * ( 1.0f / 255.0f ) ) * tmp[3];
 	state.m_Color[3] = r_flashlightambient.GetFloat();
-	state.m_NearZ = r_flashlightnear.GetFloat() + m_flDistMod;	// Push near plane out so that we don't clip the world when the flashlight pulls back 
+
+	state.m_NearZ = r_flashlightnear.GetFloat() + m_flDistMod;
 	state.m_FarZ = r_flashlightfar.GetFloat();
-	state.m_bEnableShadows = r_flashlightdepthtexture.GetBool();
-	state.m_flShadowMapResolution = r_flashlightdepthres.GetInt();
+	state.m_bEnableShadows = r_flashlightdepthtexture.GetBool() && ae_flashlightshadow.GetBool();
+
+	state.m_flShadowDepthBias = ae_flashlightdepthbias.GetFloat();
+	state.m_flShadowSlopeScaleDepthBias = ae_flashlightslopescaledepthbias.GetFloat();
+
+	state.m_fHorizontalFOVDegrees = r_flashlightfov.GetFloat();
+	state.m_fVerticalFOVDegrees = r_flashlightfov.GetFloat();
+
+	state.m_flShadowFilterSize = ae_flashlightfiltersize.GetFloat();
 
 	state.m_pSpotlightTexture = m_FlashlightTexture;
 	state.m_nSpotlightTextureFrame = 0;
 
 	state.m_flShadowAtten = r_flashlightshadowatten.GetFloat();
-	state.m_flShadowSlopeScaleDepthBias = mat_slopescaledepthbias_shadowmap.GetFloat();
-	state.m_flShadowDepthBias = mat_depthbias_shadowmap.GetFloat();
 
 	if( m_FlashlightHandle == CLIENTSHADOW_INVALID_HANDLE )
 	{
@@ -522,7 +538,7 @@ void CHeadlightEffect::UpdateLight( const Vector &vecPos, const Vector &vecDir, 
 	state.m_Color[3] = r_flashlightambient.GetFloat();
 	state.m_NearZ = r_flashlightnear.GetFloat();
 	state.m_FarZ = r_flashlightfar.GetFloat();
-	state.m_bEnableShadows = true;
+	state.m_bEnableShadows = ae_flashlightrgb.GetBool();
 	state.m_pSpotlightTexture = m_FlashlightTexture;
 	state.m_nSpotlightTextureFrame = 0;
 	

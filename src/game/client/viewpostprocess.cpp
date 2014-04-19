@@ -18,8 +18,10 @@
 #include "bitmap/tgawriter.h"
 #include "filesystem.h"
 #include "tier0/vprof.h"
-
+#include "sourcevr/isourcevirtualreality.h"
 #include "proxyentity.h"
+#include "estranged_system_caps.h"
+#include "colorgrade_manager.h"
 
 //-----------------------------------------------------------------------------
 // Globals
@@ -2212,6 +2214,21 @@ static ConVar r_queued_post_processing( "r_queued_post_processing", "0" );
 static ConVar mat_postprocess_x( "mat_postprocess_x", "4" );
 static ConVar mat_postprocess_y( "mat_postprocess_y", "1" );
 
+// Convars for controlling Estranged specific post processing stuff.
+static ConVar ae_vignette( "ae_vignette", "1", FCVAR_ARCHIVE );
+static ConVar ae_dof( "ae_dof", "0", FCVAR_ARCHIVE );
+
+static ConVar ae_lensflare("ae_lensflare", "1", FCVAR_ARCHIVE );
+static ConVar ae_grain( "ae_grain", "1", FCVAR_ARCHIVE );
+
+static ConVar ae_grain_intensity( "ae_grain_intensity", "2.0", FCVAR_ARCHIVE );
+static ConVar ae_grain_falloff( "ae_grain_falloff", "40.0", FCVAR_ARCHIVE);
+
+static ConVar ae_colorgrading( "ae_colorgrading", "0", FCVAR_ARCHIVE );
+static ConVar ae_experimental_depth( "ae_experimental_depth", "0" );
+static ConVar ae_experimental_normals( "ae_experimental_normals", "0" );
+static ConVar ae_experimental_albedo( "ae_experimental_albedo", "0" );
+
 void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, bool bPostVGui )
 {
 	tmZone( TELEMETRY_LEVEL0, TMZF_NONE, "%s", __FUNCTION__ );
@@ -2630,6 +2647,98 @@ void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, b
 #if defined( _X360 )
 	pRenderContext->PopVertexShaderGPRAllocation();
 #endif
+
+	if ( CEstrangedSystemCaps::HasCaps( CAPS_MATERIAL_POSTPROCESS ) && ae_vignette.GetBool() )
+	{
+		static IMaterial *vignetteMat = materials->FindMaterial("effects/vignette", TEXTURE_GROUP_OTHER);
+		if (vignetteMat)
+		{
+			UpdateScreenEffectTexture();
+			pRenderContext->DrawScreenSpaceRectangle(vignetteMat, 0, 0, w, h, 0, 0, w - 1, h - 1, w, h);
+		}
+	}
+
+	if ( CEstrangedSystemCaps::HasCaps( CAPS_ESTRANGED_DEPTHPASS ) && CEstrangedSystemCaps::HasCaps( CAPS_SHADER_POSTPROCESS ) )
+	{
+		static ConVar ae_dof_post("ae_dof_post", "0");
+		if (ae_dof_post.GetBool())
+		{
+			static IMaterial *ae_DOF_X_Mat = materials->FindMaterial("effects/dof_x", TEXTURE_GROUP_OTHER);
+			if (ae_DOF_X_Mat)
+			{
+				UpdateScreenEffectTexture();
+				pRenderContext->DrawScreenSpaceRectangle(ae_DOF_X_Mat, 0, 0, w, h, 0, 0, w - 1, h - 1, w, h);
+			}
+		}
+
+		if (ae_experimental_depth.GetBool())
+		{
+			static IMaterial *e_Depth_Mat = materials->FindMaterial("effects/exp/depth", TEXTURE_GROUP_OTHER);
+			if (e_Depth_Mat)
+			{
+				UpdateScreenEffectTexture();
+				pRenderContext->DrawScreenSpaceRectangle(e_Depth_Mat, 0, 0, w, h, 0, 0, w - 1, h - 1, w, h);
+			}
+		}
+	}
+
+	if ( CEstrangedSystemCaps::HasCaps( CAPS_SHADER_POSTPROCESS ) )
+	{
+		if (ae_lensflare.GetBool())
+		{
+			static IMaterial *lensflareMat = materials->FindMaterial("effects/lensflare", TEXTURE_GROUP_OTHER);
+			if (lensflareMat)
+			{
+				UpdateScreenEffectTexture();
+				pRenderContext->DrawScreenSpaceRectangle(lensflareMat, 0, 0, w, h, 0, 0, w - 1, h - 1, w, h);
+			}
+		}
+
+		if (ae_grain.GetBool() && ae_grain_intensity.GetFloat() > 0)
+		{
+			static IMaterial *grainMat = materials->FindMaterial("effects/filmgrain", TEXTURE_GROUP_OTHER);
+			IMaterialVar *pGrainAmountVar = grainMat->FindVar("$noiseamount", NULL);
+			pGrainAmountVar->SetFloatValue(ae_grain_intensity.GetFloat());
+			IMaterialVar *pGrainFalloffVar = grainMat->FindVar("$noisefalloff", NULL);
+			pGrainFalloffVar->SetFloatValue(ae_grain_falloff.GetFloat());
+			if (grainMat)
+			{
+				UpdateScreenEffectTexture();
+				pRenderContext->DrawScreenSpaceRectangle(grainMat, 0, 0, w, h, 0, 0, w - 1, h - 1, w, h);
+			}
+		}
+
+		//if ( ae_colorgrading.GetBool() )
+		//{
+		//	ColorGradingData_t cData = g_pColorGradingMgr->GetColorGradingData();
+		//	static IMaterial *gradeMat = materials->FindMaterial("effects/colorgrade", TEXTURE_GROUP_OTHER);
+		//	gradeMat->FindVar("$contrast", NULL)->SetVecValue(cData.contrast->x, cData.contrast->y, cData.contrast->z);
+		//	gradeMat->FindVar("$brightness", NULL)->SetVecValue(cData.brightness->x, cData.brightness->y, cData.brightness->z);
+
+		//	gradeMat->FindVar("$levels_r_min_input", NULL)->SetFloatValue(cData.levels_r_min_input);
+		//	gradeMat->FindVar("$levels_r_max_input", NULL)->SetFloatValue(cData.levels_r_max_input);
+		//	gradeMat->FindVar("$levels_r_min_output", NULL)->SetFloatValue(cData.levels_r_min_output);
+		//	gradeMat->FindVar("$levels_r_max_output", NULL)->SetFloatValue(cData.levels_r_max_output);
+
+		//	gradeMat->FindVar("$levels_g_min_input", NULL)->SetFloatValue(cData.levels_g_min_input);
+		//	gradeMat->FindVar("$levels_g_max_input", NULL)->SetFloatValue(cData.levels_g_max_input);
+		//	gradeMat->FindVar("$levels_g_min_output", NULL)->SetFloatValue(cData.levels_g_min_output);
+		//	gradeMat->FindVar("$levels_g_max_output", NULL)->SetFloatValue(cData.levels_g_max_output);
+
+		//	gradeMat->FindVar("$levels_b_min_input", NULL)->SetFloatValue(cData.levels_b_min_input);
+		//	gradeMat->FindVar("$levels_b_max_input", NULL)->SetFloatValue(cData.levels_b_max_input);
+		//	gradeMat->FindVar("$levels_b_min_output", NULL)->SetFloatValue(cData.levels_b_min_output);
+		//	gradeMat->FindVar("$levels_b_max_output", NULL)->SetFloatValue(cData.levels_b_max_output);
+
+		//	gradeMat->FindVar("$saturation", NULL)->SetFloatValue(cData.saturation);
+		//	gradeMat->FindVar("$gamma_amount", NULL)->SetFloatValue(cData.gamma);
+		//	if (gradeMat)
+		//	{
+		//		UpdateScreenEffectTexture();
+		//		pRenderContext->DrawScreenSpaceRectangle(gradeMat, 0, 0, w, h, 0, 0, w - 1, h - 1, w, h);
+		//	}
+		//}
+	}
 }
 
 // Motion Blur Material Proxy =========================================================================================
@@ -2690,20 +2799,20 @@ EXPOSE_INTERFACE( CMotionBlurMaterialProxy, IMaterialProxy, "MotionBlur" IMATERI
 // Image-space Motion Blur ============================================================================================
 //=====================================================================================================================
 ConVar mat_motion_blur_enabled( "mat_motion_blur_enabled", "1", FCVAR_ARCHIVE );
-ConVar mat_motion_blur_forward_enabled( "mat_motion_blur_forward_enabled", "0" );
-ConVar mat_motion_blur_falling_min( "mat_motion_blur_falling_min", "10.0" );
+ConVar mat_motion_blur_forward_enabled( "mat_motion_blur_forward_enabled", "1" );
+ConVar mat_motion_blur_falling_min( "mat_motion_blur_falling_min", "5.0" );
 ConVar mat_motion_blur_falling_max( "mat_motion_blur_falling_max", "20.0" );
 ConVar mat_motion_blur_falling_intensity( "mat_motion_blur_falling_intensity", "1.0" );
 //ConVar mat_motion_blur_roll_intensity( "mat_motion_blur_roll_intensity", "1.0" );
 ConVar mat_motion_blur_rotation_intensity( "mat_motion_blur_rotation_intensity", "1.0" );
-ConVar mat_motion_blur_strength( "mat_motion_blur_strength", "1.0" );
+ConVar mat_motion_blur_strength( "mat_motion_blur_strength", "2.0" );
 
 void DoImageSpaceMotionBlur( const CViewSetup &view, int x, int y, int w, int h )
 {
 #ifdef CSS_PERF_TEST
 	return;
 #endif
-	if ( ( !mat_motion_blur_enabled.GetInt() ) || ( g_pMaterialSystemHardwareConfig->GetDXSupportLevel() < 90 ) )
+	if ( ( !mat_motion_blur_enabled.GetInt() ) || !CEstrangedSystemCaps::HasCaps( CAPS_SHADER_POSTPROCESS ) )
 	{
 		return;
 	}

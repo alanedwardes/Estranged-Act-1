@@ -46,6 +46,8 @@
 #include "gamestats.h"
 #include "filters.h"
 #include "tier0/icommandline.h"
+#include "estranged_interactive_screen.h"
+#include "shareddefs_estranged.h"
 
 #ifdef HL2_EPISODIC
 #include "npc_alyx_episodic.h"
@@ -70,6 +72,9 @@ extern ConVar autoaim_max_dist;
 // the X/Y of the player's hull to get the volume to trace bullets against.
 #define PLAYER_HULL_REDUCTION	0.70
 
+#define MAX_ZOOM_HINTS 5
+#define ZOOM_HINT_COOLDOWN_TIME 60.0f
+
 // This switches between the single primary weapon, and multiple weapons with buckets approach (jdw)
 #define	HL2_SINGLE_PRIMARY_WEAPON_MODE	0
 
@@ -80,8 +85,8 @@ extern int gEvilImpulse101;
 ConVar sv_autojump( "sv_autojump", "0" );
 
 ConVar hl2_walkspeed( "hl2_walkspeed", "150" );
-ConVar hl2_normspeed( "hl2_normspeed", "190" );
-ConVar hl2_sprintspeed( "hl2_sprintspeed", "320" );
+ConVar hl2_normspeed( "hl2_normspeed", "150" );
+ConVar hl2_sprintspeed( "hl2_sprintspeed", "250" );
 
 ConVar hl2_darkness_flashlight_factor ( "hl2_darkness_flashlight_factor", "1" );
 
@@ -106,6 +111,8 @@ ConVar sv_infinite_aux_power( "sv_infinite_aux_power", "0", FCVAR_CHEAT );
 ConVar autoaim_unlock_target( "autoaim_unlock_target", "0.8666" );
 
 ConVar sv_stickysprint("sv_stickysprint", "0", FCVAR_ARCHIVE | FCVAR_ARCHIVE_XBOX);
+
+ConVar ae_flashlight_drain_time("ae_flashlight_drain_time", "0.75", FCVAR_CHEAT);
 
 #define	FLASH_DRAIN_TIME	 1.1111	// 100 units / 90 secs
 #define	FLASH_CHARGE_TIME	 50.0f	// 100 units / 2 secs
@@ -193,6 +200,7 @@ public:
 
 	COutputEvent m_OnFlashlightOn;
 	COutputEvent m_OnFlashlightOff;
+	COutputEvent m_OnUse;
 	COutputEvent m_PlayerHasAmmo;
 	COutputEvent m_PlayerHasNoAmmo;
 	COutputEvent m_PlayerDied;
@@ -239,6 +247,50 @@ void CC_ToggleZoom( void )
 }
 
 static ConCommand toggle_zoom("toggle_zoom", CC_ToggleZoom, "Toggles zoom display" );
+
+void CC_ZoomIn( void )
+{
+	CBasePlayer* pPlayer = UTIL_GetCommandClient();
+
+	if( pPlayer )
+	{
+		CHL2_Player *pHL2Player = dynamic_cast<CHL2_Player*>(pPlayer);
+
+		pHL2Player->ZoomIn();
+	}
+}
+
+void CC_ZoomOut( void )
+{
+	CBasePlayer* pPlayer = UTIL_GetCommandClient();
+
+	if( pPlayer )
+	{
+		CHL2_Player *pHL2Player = dynamic_cast<CHL2_Player*>(pPlayer);
+
+		pHL2Player->ZoomOut();
+	}
+}
+
+ConVar ae_playerstartitems("ae_playerstartitems", "", FCVAR_REPLICATED);
+CON_COMMAND(givestartitem, "Give the player starting items")
+{
+	if (args.ArgC() != 2) return;
+
+	if (Q_strlen(ae_playerstartitems.GetString()) > 0)
+	{
+		CFmtStr playerstartitems;
+		playerstartitems.sprintf("%s,%s", ae_playerstartitems.GetString(), args[1]);
+		ae_playerstartitems.SetValue(playerstartitems);
+	}
+	else
+	{
+		ae_playerstartitems.SetValue(args[1]);
+	}
+};
+
+static ConCommand zoom_in("zoom_in", CC_ZoomIn, "Zooms in" );
+static ConCommand zoom_out("zoom_out", CC_ZoomOut, "Zooms out" );
 
 // ConVar cl_forwardspeed( "cl_forwardspeed", "400", FCVAR_CHEAT ); // Links us to the client's version
 ConVar xc_crouch_range( "xc_crouch_range", "0.85", FCVAR_ARCHIVE, "Percentarge [1..0] of joystick range to allow ducking within" );	// Only 1/2 of the range is used
@@ -356,6 +408,7 @@ BEGIN_DATADESC( CHL2_Player )
 	DEFINE_FIELD( m_flNextFlashlightCheckTime, FIELD_TIME ),
 	DEFINE_FIELD( m_flFlashlightPowerDrainScale, FIELD_FLOAT ),
 	DEFINE_FIELD( m_bFlashlightDisabled, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_bFlashlightHasBeenEnabled, FIELD_BOOLEAN ),
 
 	DEFINE_FIELD( m_bUseCappedPhysicsDamageTable, FIELD_BOOLEAN ),
 
@@ -383,6 +436,9 @@ BEGIN_DATADESC( CHL2_Player )
 
 	DEFINE_FIELD( m_flTimeNextLadderHint, FIELD_TIME ),
 
+	DEFINE_FIELD( m_flTimeNextZoomHint, FIELD_TIME ),
+	DEFINE_FIELD( m_iTotalZoomHints, FIELD_INTEGER ),
+
 	//DEFINE_FIELD( m_hPlayerProxy, FIELD_EHANDLE ), //Shut up class check!
 
 END_DATADESC()
@@ -392,6 +448,7 @@ CHL2_Player::CHL2_Player()
 	m_nNumMissPositions	= 0;
 	m_pPlayerAISquad = 0;
 	m_bSprintEnabled = true;
+	m_bFlashlightDisabled = true;
 
 	m_flArmorReductionTime = 0.0f;
 	m_iArmorReductionFrom = 0;
@@ -426,8 +483,11 @@ void CHL2_Player::Precache( void )
 {
 	BaseClass::Precache();
 
-	PrecacheScriptSound( "HL2Player.SprintNoPower" );
-	PrecacheScriptSound( "HL2Player.SprintStart" );
+	PrecacheScriptSound( "player.footstep_clothes_movement" );
+	//PrecacheScriptSound( "HL2Player.SprintNoPower" );
+	PrecacheScriptSound( "player.no_sprint" );
+	//PrecacheScriptSound( "HL2Player.SprintStart" );
+	PrecacheScriptSound( "player.start_sprint" );
 	PrecacheScriptSound( "HL2Player.UseDeny" );
 	PrecacheScriptSound( "HL2Player.FlashLightOn" );
 	PrecacheScriptSound( "HL2Player.FlashLightOff" );
@@ -867,31 +927,44 @@ void CHL2_Player::PreThink(void)
 	// Update weapon's ready status
 	UpdateWeaponPosture();
 
-	// Disallow shooting while zooming
-	if ( IsX360() )
+	// ae - Disallow shooting while zooming
+	if ( IsZooming() )
 	{
-		if ( IsZooming() )
+		if( GetActiveWeapon() && !GetActiveWeapon()->IsWeaponZoomed() )
 		{
-			if( GetActiveWeapon() && !GetActiveWeapon()->IsWeaponZoomed() )
-			{
-				// If not zoomed because of the weapon itself, do not attack.
-				m_nButtons &= ~(IN_ATTACK|IN_ATTACK2);
-			}
-		}
-	}
-	else
-	{
-		if ( m_nButtons & IN_ZOOM )
-		{
-			//FIXME: Held weapons like the grenade get sad when this happens
-	#ifdef HL2_EPISODIC
-			// Episodic allows players to zoom while using a func_tank
-			CBaseCombatWeapon* pWep = GetActiveWeapon();
-			if ( !m_hUseEntity || ( pWep && pWep->IsWeaponVisible() ) )
-	#endif
+			// If not zoomed because of the weapon itself, do not attack.
 			m_nButtons &= ~(IN_ATTACK|IN_ATTACK2);
 		}
 	}
+
+	// ae - I don't understand why this was 360 only, but
+	// Estranged needed the 360 portion of this to prevent
+	// the SMG1 emptying its magazine on player zoom out.
+	//// Disallow shooting while zooming
+	//if ( IsX360() )
+	//{
+	//	if ( IsZooming() )
+	//	{
+	//		if( GetActiveWeapon() && !GetActiveWeapon()->IsWeaponZoomed() )
+	//		{
+	//			// If not zoomed because of the weapon itself, do not attack.
+	//			m_nButtons &= ~(IN_ATTACK|IN_ATTACK2);
+	//		}
+	//	}
+	//}
+	//else
+	//{
+	//	if ( m_nButtons & IN_ZOOM )
+	//	{
+	//		//FIXME: Held weapons like the grenade get sad when this happens
+	//#ifdef HL2_EPISODIC
+	//		// Episodic allows players to zoom while using a func_tank
+	//		CBaseCombatWeapon* pWep = GetActiveWeapon();
+	//		if ( !m_hUseEntity || ( pWep && pWep->IsWeaponVisible() ) )
+	//#endif
+	//		m_nButtons &= ~(IN_ATTACK|IN_ATTACK2);
+	//	}
+	//}
 }
 
 void CHL2_Player::PostThink( void )
@@ -1006,47 +1079,6 @@ Class_T  CHL2_Player::Classify ( void )
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Purpose:  This is a generic function (to be implemented by sub-classes) to
-//			 handle specific interactions between different types of characters
-//			 (For example the barnacle grabbing an NPC)
-// Input  :  Constant for the type of interaction
-// Output :	 true  - if sub-class has a response for the interaction
-//			 false - if sub-class has no response
-//-----------------------------------------------------------------------------
-bool CHL2_Player::HandleInteraction(int interactionType, void *data, CBaseCombatCharacter* sourceEnt)
-{
-	if ( interactionType == g_interactionBarnacleVictimDangle )
-		return false;
-	
-	if (interactionType ==	g_interactionBarnacleVictimReleased)
-	{
-		m_afPhysicsFlags &= ~PFLAG_ONBARNACLE;
-		SetMoveType( MOVETYPE_WALK );
-		return true;
-	}
-	else if (interactionType ==	g_interactionBarnacleVictimGrab)
-	{
-#ifdef HL2_EPISODIC
-		CNPC_Alyx *pAlyx = CNPC_Alyx::GetAlyx();
-		if ( pAlyx )
-		{
-			// Make Alyx totally hate this barnacle so that she saves the player.
-			int priority;
-
-			priority = pAlyx->IRelationPriority(sourceEnt);
-			pAlyx->AddEntityRelationship( sourceEnt, D_HT, priority + 5 );
-		}
-#endif//HL2_EPISODIC
-
-		m_afPhysicsFlags |= PFLAG_ONBARNACLE;
-		ClearUseEntity();
-		return true;
-	}
-	return false;
-}
-
-
 void CHL2_Player::PlayerRunCommand(CUserCmd *ucmd, IMoveHelper *moveHelper)
 {
 	// Handle FL_FROZEN.
@@ -1128,20 +1160,28 @@ void CHL2_Player::Spawn(void)
 
 	SuitPower_SetCharge( 100 );
 
+	m_Local.m_bWearingSuit = true;
+
 	m_Local.m_iHideHUD |= HIDEHUD_CHAT;
 
 	m_pPlayerAISquad = g_AI_SquadManager.FindCreateSquad(AllocPooledString(PLAYER_SQUADNAME));
 
 	InitSprinting();
 
-	// Setup our flashlight values
-#ifdef HL2_EPISODIC
 	m_HL2Local.m_flFlashBattery = 100.0f;
-#endif 
 
 	GetPlayerProxy();
 
 	SetFlashlightPowerDrainScale( 1.0f );
+
+	CUtlVector<char*, CUtlMemory<char*> > pStartItems;
+	Q_SplitString(ae_playerstartitems.GetString(), ",", pStartItems);
+	for (int i = 0; i < pStartItems.Count(); i++)
+	{
+		GiveNamedItem(pStartItems.Element(i));	
+	}
+	pStartItems.PurgeAndDeleteElements();
+	ae_playerstartitems.SetValue("");
 }
 
 //-----------------------------------------------------------------------------
@@ -1203,7 +1243,7 @@ void CHL2_Player::StartSprinting( void )
 		{
 			CPASAttenuationFilter filter( this );
 			filter.UsePredictionRules();
-			EmitSound( filter, entindex(), "HL2Player.SprintNoPower" );
+			EmitSound( filter, entindex(), "player.no_sprint" );
 		}
 		return;
 	}
@@ -1211,9 +1251,14 @@ void CHL2_Player::StartSprinting( void )
 	if( !SuitPower_AddDevice( SuitDeviceSprint ) )
 		return;
 
+	ZoomOut();
+
 	CPASAttenuationFilter filter( this );
 	filter.UsePredictionRules();
-	EmitSound( filter, entindex(), "HL2Player.SprintStart" );
+	EmitSound( filter, entindex(), "player.start_sprint" );
+
+	//ConVarRef fov_desired( "fov_desired" );
+	//SetFOV( this, fov_desired.GetInt() + 10, 0.5f);
 
 	SetMaxSpeed( HL2_SPRINT_SPEED );
 	m_fIsSprinting = true;
@@ -1238,6 +1283,8 @@ void CHL2_Player::StopSprinting( void )
 		SetMaxSpeed( HL2_WALK_SPEED );
 	}
 
+	//ConVarRef fov_desired( "fov_desired" );
+	//SetFOV( this, fov_desired.GetInt(), 0.25f );
 	m_fIsSprinting = false;
 
 	if ( sv_stickysprint.GetBool() )
@@ -1288,7 +1335,8 @@ bool CHL2_Player::CanZoom( CBaseEntity *pRequester )
 	if ( IsZooming() )
 		return false;
 
-	//Check our weapon
+	if ( IsSprinting() )
+		return false;
 
 	return true;
 }
@@ -1307,13 +1355,41 @@ void CHL2_Player::ToggleZoom(void)
 	}
 }
 
+void CHL2_Player::ZoomIn(void)
+{
+	if( !IsZooming() && CanZoom(this))
+	{
+		StartZooming();
+	}
+}
+
+void CHL2_Player::ZoomOut(void)
+{
+	if( IsZooming() )
+	{
+		StopZooming();
+	}
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: +zoom suit zoom
 //-----------------------------------------------------------------------------
 void CHL2_Player::StartZooming( void )
 {
+#if !defined(CLIENT_DLL)
+	if (gpGlobals->curtime > m_flTimeNextZoomHint
+		&& m_iTotalZoomHints < MAX_ZOOM_HINTS
+		&& !IsInAVehicle())
+	{
+		m_flTimeNextZoomHint = gpGlobals->curtime + ZOOM_HINT_COOLDOWN_TIME;
+		m_iTotalZoomHints++;
+
+		UTIL_HudHintText( this, "#hint_zoom" );
+	}
+#endif//CLIENT_DLL
+
 	int iFOV = 25;
-	if ( SetFOV( this, iFOV, 0.4f ) )
+	if ( SetFOV( this, iFOV, 0.2f ) )
 	{
 		m_HL2Local.m_bZooming = true;
 	}
@@ -1822,27 +1898,28 @@ void CHL2_Player::SuitPower_Update( void )
 				StopSprinting();
 			}
 
-			if ( Flashlight_UseLegacyVersion() )
-			{
-				if( FlashlightIsOn() )
-				{
-#ifndef HL2MP
-					FlashlightTurnOff();
-#endif
-				}
-			}
+			// ae - in Estranged, flashlight is separate
+			//if ( Flashlight_UseLegacyVersion() )
+			//{
+			//	if( FlashlightIsOn() )
+			//	{
+//#ifndef HL2MP
+			//		FlashlightTurnOff();
+//#endif
+			//	}
+			//}
 		}
 
-		if ( Flashlight_UseLegacyVersion() )
-		{
-			// turn off flashlight a little bit after it hits below one aux power notch (5%)
-			if( m_HL2Local.m_flSuitPower < 4.8f && FlashlightIsOn() )
-			{
-#ifndef HL2MP
-				FlashlightTurnOff();
-#endif
-			}
-		}
+		//if ( Flashlight_UseLegacyVersion() )
+		//{
+		//	// turn off flashlight a little bit after it hits below one aux power notch (5%)
+		//	if( m_HL2Local.m_flSuitPower < 4.8f && FlashlightIsOn() )
+		//	{
+//#ifndef HL2MP
+		//		FlashlightTurnOff();
+//#endif
+		//	}
+		//}
 	}
 }
 
@@ -2013,6 +2090,38 @@ bool CHL2_Player::ApplyBattery( float powerMultiplier )
 	return false;
 }
 
+bool CHL2_Player::AddFlashlightBattery(int amount)
+{
+	if (amount >= 100)
+	{
+		m_HL2Local.m_iFlashlightBatteries++;
+	}
+	else if (m_HL2Local.m_flFlashBattery + amount > 100)
+	{
+		m_HL2Local.m_flFlashBattery = (m_HL2Local.m_flFlashBattery + amount) - 100.0f;
+		m_HL2Local.m_iFlashlightBatteries++;
+	}
+	else
+	{
+		m_HL2Local.m_flFlashBattery += amount;
+	}
+
+	return true;
+}
+
+int CHL2_Player::GetFlashlightBatteries(void)
+{
+	return m_HL2Local.m_iFlashlightBatteries;
+}
+
+float CHL2_Player::GetFlashlightLevel( void )
+{
+	return m_HL2Local.m_flFlashBattery;
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 int CHL2_Player::FlashlightIsOn( void )
@@ -2182,12 +2291,22 @@ bool CHL2_Player::PassesDamageFilter( const CTakeDamageInfo &info )
 	return BaseClass::PassesDamageFilter( info );
 }
 
+bool CHL2_Player::GetFlashlightEnabled( void )
+{
+	return m_HL2Local.m_bHasFlashlight;
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
 void CHL2_Player::SetFlashlightEnabled( bool bState )
 {
 	m_bFlashlightDisabled = !bState;
+	m_HL2Local.m_bHasFlashlight = bState;
+	if ( bState )
+	{
+		m_bFlashlightHasBeenEnabled = true;
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -2765,6 +2884,56 @@ bool CHL2_Player::ClientCommand( const CCommand &args )
 
 #endif
 
+	if (!Q_stricmp(args[0], ESTRANGED_SCREEN_EXIT_OUTPUT))
+	{
+		CEstrangedInteractiveScreen *entity = NULL;
+		while ((entity = (CEstrangedInteractiveScreen*) gEntList.FindEntityByClassname(entity, "estranged_interactive_screen")) != NULL)
+		{
+			if (entity->IsActive())
+			{
+				inputdata_t id;
+				id.pActivator = this;
+				id.pCaller = this;
+				entity->InputHideScreen(id);
+			}
+		}
+		return true;
+	}
+
+	if (!Q_stricmp(args[0], ESTRANGED_SCREEN_TRIGGER_OUTPUT))
+	{
+		CEstrangedInteractiveScreen *entity = NULL;
+		while ((entity = (CEstrangedInteractiveScreen*) gEntList.FindEntityByClassname(entity, "estranged_interactive_screen")) != NULL)
+		{
+			if (entity->IsActive())
+			{
+				entity->FireTriggerNumber(Q_atof(args[1]));
+			}
+		}
+		return true;
+	}
+
+	if (!Q_strcmp(args[0], ESTRANGED_SCREEN_PERSIST_PARAMETERS))
+	{
+		if (args.ArgC() != 3)
+		{
+			Warning("%s Wrong number of arguments\n", args[0]);
+		}
+		else
+		{
+			CEstrangedInteractiveScreen *entity = NULL;
+			while ((entity = (CEstrangedInteractiveScreen*) gEntList.FindEntityByClassname(entity, "estranged_interactive_screen")) != NULL)
+			{
+				if (entity->IsActive())
+				{
+					entity->PersistData(args[1], args[2]);
+				}
+			}
+		}
+
+		return true;
+	}
+
 	if ( !Q_stricmp( args[0], "emit" ) )
 	{
 		CSingleUserRecipientFilter filter( this );
@@ -2780,6 +2949,22 @@ bool CHL2_Player::ClientCommand( const CCommand &args )
 	}
 
 	return BaseClass::ClientCommand( args );
+}
+
+void CHL2_Player::PlayStepSound( Vector &vecOrigin, surfacedata_t *psurface, float fvol, bool force )
+{
+	BaseClass::PlayStepSound( vecOrigin, psurface, fvol, force );
+
+	CRecipientFilter filter;
+	filter.AddRecipientsByPAS( vecOrigin );
+
+	// Estranged - emit a "clothing" footstep sound
+	EmitSound_t clothesSound;
+	clothesSound.m_nChannel = CHAN_BODY;
+	clothesSound.m_pSoundName = "player.footstep_clothes_movement";
+	clothesSound.m_nFlags = 0;
+	clothesSound.m_pOrigin = &vecOrigin;
+	EmitSound( filter, entindex(), clothesSound );
 }
 
 //-----------------------------------------------------------------------------
@@ -3243,33 +3428,23 @@ void CHL2_Player::UpdateClientData( void )
 		m_bitsDamageType &= iTimeBasedDamage;
 	}
 
-	// Update Flashlight
-#ifdef HL2_EPISODIC
-	if ( Flashlight_UseLegacyVersion() == false )
+	if ( FlashlightIsOn() && !sv_infinite_aux_power.GetBool() )
 	{
-		if ( FlashlightIsOn() && sv_infinite_aux_power.GetBool() == false )
+		m_HL2Local.m_flFlashBattery -= ae_flashlight_drain_time.GetFloat() * gpGlobals->frametime;
+		if ( m_HL2Local.m_flFlashBattery < 0.0f )
 		{
-			m_HL2Local.m_flFlashBattery -= FLASH_DRAIN_TIME * gpGlobals->frametime;
-			if ( m_HL2Local.m_flFlashBattery < 0.0f )
+			if (m_HL2Local.m_iFlashlightBatteries > 0)
+			{
+				m_HL2Local.m_iFlashlightBatteries--;
+				m_HL2Local.m_flFlashBattery = 100.0f;
+			}
+			else
 			{
 				FlashlightTurnOff();
 				m_HL2Local.m_flFlashBattery = 0.0f;
 			}
 		}
-		else
-		{
-			m_HL2Local.m_flFlashBattery += FLASH_CHARGE_TIME * gpGlobals->frametime;
-			if ( m_HL2Local.m_flFlashBattery > 100.0f )
-			{
-				m_HL2Local.m_flFlashBattery = 100.0f;
-			}
-		}
 	}
-	else
-	{
-		m_HL2Local.m_flFlashBattery = -1.0f;
-	}
-#endif // HL2_EPISODIC
 
 	BaseClass::UpdateClientData();
 }
@@ -3769,6 +3944,7 @@ LINK_ENTITY_TO_CLASS( logic_playerproxy, CLogicPlayerProxy);
 BEGIN_DATADESC( CLogicPlayerProxy )
 	DEFINE_OUTPUT( m_OnFlashlightOn, "OnFlashlightOn" ),
 	DEFINE_OUTPUT( m_OnFlashlightOff, "OnFlashlightOff" ),
+	DEFINE_OUTPUT( m_OnUse, "OnUse" ),
 	DEFINE_OUTPUT( m_RequestedPlayerHealth, "PlayerHealth" ),
 	DEFINE_OUTPUT( m_PlayerHasAmmo, "PlayerHasAmmo" ),
 	DEFINE_OUTPUT( m_PlayerHasNoAmmo, "PlayerHasNoAmmo" ),

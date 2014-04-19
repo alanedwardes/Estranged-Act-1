@@ -1,0 +1,40 @@
+#include "common_ps_fxc.h"
+
+sampler s_buffer		: register( s0 );
+sampler s_noise		: register( s1 );
+
+const float n_time : register( c0 );
+const float noiseamount : register( c1 );
+const float noisefalloff : register( c2 );
+
+struct PS_INPUT
+{
+	float2 texCoords : TEXCOORD0;
+};
+
+float4 main(PS_INPUT i) : COLOR //out main function
+{
+	float4 tex = tex2D(s_buffer,i.texCoords);
+
+	float rand = sin(n_time*30.0f);
+
+	half2 randCoords = 0.0f;
+
+	randCoords.x = i.texCoords.x+n_time;
+	randCoords.y = i.texCoords.y+rand;
+
+	half4 noise = tex2D(s_noise,randCoords*6.0f);
+	half noiseA = noise.a;
+
+	noise = tex2D(s_noise,(i.texCoords+(n_time*0.1))*20.0f);
+
+	noise.rgb *= noiseA;
+
+	noise.rgb *= (1.0f - (tex.rgb*noisefalloff));
+	noise.rgb = saturate(noise.rgb);
+
+	float4 color_out;
+	color_out.rgb = tex.rgb + (noise.rgb*0.2)*noiseamount;
+	color_out.a = tex.a;
+	return color_out;
+}

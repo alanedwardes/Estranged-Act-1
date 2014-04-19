@@ -40,6 +40,7 @@
 #include "cdll_bounded_cvars.h"
 #include "inetchannelinfo.h"
 #include "proto_version.h"
+#include "sourcevr/isourcevirtualreality.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -1416,6 +1417,9 @@ bool C_BaseEntity::ShouldDraw()
 	if (g_pClientMode && !g_pClientMode->ShouldDrawEntity(this) )
 		return false;
 #endif
+
+	if (UseVR() && IsEffectActive(EF_DISABLE_IN_VR))
+		return false;
 
 	// Some rendermodes prevent rendering
 	if ( m_nRenderMode == kRenderNone )

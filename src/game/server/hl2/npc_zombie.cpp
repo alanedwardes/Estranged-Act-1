@@ -13,6 +13,7 @@
 #include "ai_hull.h"
 #include "ai_navigator.h"
 #include "ai_memory.h"
+#include "npcevent.h"
 #include "gib.h"
 #include "soundenvelope.h"
 #include "engine/IEngineSound.h"
@@ -23,6 +24,8 @@
 
 // ACT_FLINCH_PHYSICS
 
+//Custom animation events
+int AE_ZOMBIE_JUMP;
 
 ConVar	sk_zombie_health( "sk_zombie_health","0");
 
@@ -96,8 +99,9 @@ public:
 
 	void SetZombieModel( void );
 	void MoanSound( envelopePoint_t *pEnvelope, int iEnvelopeSize );
-	bool ShouldBecomeTorso( const CTakeDamageInfo &info, float flDamageThreshold );
-	bool CanBecomeLiveTorso() { return !m_fIsHeadless; }
+
+	// Modified hitgroup damage modifier function - AniCator
+	float GetHitgroupDamageMultiplier( int iHitGroup, const CTakeDamageInfo &info );
 
 	void GatherConditions( void );
 
@@ -114,11 +118,6 @@ public:
 
 	void StartTask( const Task_t *pTask );
 	void RunTask( const Task_t *pTask );
-
-	virtual const char *GetLegsModel( void );
-	virtual const char *GetTorsoModel( void );
-	virtual const char *GetHeadcrabClassname( void );
-	virtual const char *GetHeadcrabModel( void );
 
 	virtual bool OnObstructingDoor( AILocalMoveGoal_t *pMoveGoal, 
 								 CBaseDoor *pDoor,
@@ -148,7 +147,11 @@ public:
 	void FootscuffSound( bool fRightFoot );
 
 	const char *GetMoanSound( int nSound );
-	
+
+private:
+	void RandomizeInfectedAppearance( void );
+	void DeformFacialFeatures( void );
+
 public:
 	DEFINE_CUSTOM_AI;
 
@@ -234,9 +237,9 @@ void CZombie::Precache( void )
 {
 	BaseClass::Precache();
 
-	PrecacheModel( "models/zombie/classic.mdl" );
-	PrecacheModel( "models/zombie/classic_torso.mdl" );
-	PrecacheModel( "models/zombie/classic_legs.mdl" );
+	PrecacheModel( "models/anicator/infected_human_01.mdl" );
+	//PrecacheModel( "models/zombie/classic_torso.mdl" );
+	//PrecacheModel( "models/zombie/classic_legs.mdl" );
 
 	PrecacheScriptSound( "Zombie.FootstepRight" );
 	PrecacheScriptSound( "Zombie.FootstepLeft" );
@@ -273,22 +276,25 @@ void CZombie::Spawn( void )
 		m_fIsTorso = true;
 	}
 
-	m_fIsHeadless = false;
+	m_fIsHeadless = true;
 
-#ifdef HL2_EPISODIC
-	SetBloodColor( BLOOD_COLOR_ZOMBIE );
-#else
-	SetBloodColor( BLOOD_COLOR_GREEN );
-#endif // HL2_EPISODIC
+	SetBloodColor( BLOOD_COLOR_RED );
 
 	m_iHealth			= sk_zombie_health.GetFloat();
-	m_flFieldOfView		= 0.2;
+	m_flFieldOfView		= -0.5;
 
 	CapabilitiesClear();
 
-	//GetNavigator()->SetRememberStaleNodes( false );
+	// GetNavigator()->SetRememberStaleNodes( false );
 
 	BaseClass::Spawn();
+
+	// Bodygroup support by AniCator
+	RandomizeInfectedAppearance();
+	// Bodygroup support end
+
+	// Capabilities
+	CapabilitiesAdd( bits_CAP_OPEN_DOORS | bits_CAP_MOVE_SHOOT);
 
 	m_flNextMoanSound = gpGlobals->curtime + random->RandomFloat( 1.0, 4.0 );
 }
@@ -443,36 +449,6 @@ void CZombie::AttackSound( void )
 	EmitSound( "Zombie.Attack" );
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Returns the classname (ie "npc_headcrab") to spawn when our headcrab bails.
-//-----------------------------------------------------------------------------
-const char *CZombie::GetHeadcrabClassname( void )
-{
-	return "npc_headcrab";
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-const char *CZombie::GetHeadcrabModel( void )
-{
-	return "models/headcrabclassic.mdl";
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: 
-//-----------------------------------------------------------------------------
-const char *CZombie::GetLegsModel( void )
-{
-	return "models/zombie/classic_legs.mdl";
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-const char *CZombie::GetTorsoModel( void )
-{
-	return "models/zombie/classic_torso.mdl";
-}
-
 
 //---------------------------------------------------------
 //---------------------------------------------------------
@@ -480,18 +456,8 @@ void CZombie::SetZombieModel( void )
 {
 	Hull_t lastHull = GetHullType();
 
-	if ( m_fIsTorso )
-	{
-		SetModel( "models/zombie/classic_torso.mdl" );
-		SetHullType( HULL_TINY );
-	}
-	else
-	{
-		SetModel( "models/zombie/classic.mdl" );
-		SetHullType( HULL_HUMAN );
-	}
-
-	SetBodygroup( ZOMBIE_BODYGROUP_HEADCRAB, !m_fIsHeadless );
+	SetModel( "models/anicator/infected_human_01.mdl" );
+	SetHullType( HULL_HUMAN );
 
 	SetHullSizeNormal( true );
 	SetDefaultEyeOffset();
@@ -509,6 +475,31 @@ void CZombie::SetZombieModel( void )
 	}
 }
 
+void CZombie::DeformFacialFeatures( void )
+{
+	SetFlexWeight("deform_cheeks",random->RandomFloat());
+	SetFlexWeight("deform_brow",random->RandomFloat());
+	SetFlexWeight("deform_nose1",random->RandomFloat());
+	SetFlexWeight("deform_chin",random->RandomFloat());
+	SetFlexWeight("deform_skull1",random->RandomFloat());
+	SetFlexWeight("deform_skull2",random->RandomFloat());
+}
+
+void CZombie::RandomizeInfectedAppearance( void )
+{
+	static int BodyGroup_Hats = FindBodygroupByName("hats");
+	int RandomHatGroup = random->RandomInt(0,GetBodygroupCount(BodyGroup_Hats));
+	SetBodygroup( BodyGroup_Hats, RandomHatGroup );
+	static int BodyGroup_Facial = FindBodygroupByName("facial");
+	int RandomFacialGroup = random->RandomInt(0,GetBodygroupCount(BodyGroup_Facial));
+	SetBodygroup( BodyGroup_Facial, RandomFacialGroup );
+
+	DeformFacialFeatures();
+
+	int RandomSkin = random->RandomInt(0,3);
+	m_nSkin = RandomSkin;
+}
+
 //---------------------------------------------------------
 // Classic zombie only uses moan sound if on fire.
 //---------------------------------------------------------
@@ -518,23 +509,6 @@ void CZombie::MoanSound( envelopePoint_t *pEnvelope, int iEnvelopeSize )
 	{
 		BaseClass::MoanSound( pEnvelope, iEnvelopeSize );
 	}
-}
-
-//---------------------------------------------------------
-//---------------------------------------------------------
-bool CZombie::ShouldBecomeTorso( const CTakeDamageInfo &info, float flDamageThreshold )
-{
-	if( IsSlumped() ) 
-	{
-		// Never break apart a slouched zombie. This is because the most fun
-		// slouched zombies to kill are ones sleeping leaning against explosive
-		// barrels. If you break them in half in the blast, the force of being
-		// so close to the explosion makes the body pieces fly at ridiculous 
-		// velocities because the pieces weigh less than the whole.
-		return false;
-	}
-
-	return BaseClass::ShouldBecomeTorso( info, flDamageThreshold );
 }
 
 //---------------------------------------------------------
@@ -579,6 +553,21 @@ void CZombie::GatherConditions( void )
 				 
 		}
 	}
+}
+
+ConVar sk_zombie_dmg_head_mult("sk_zombie_dmg_head_mult","5");
+float CZombie::GetHitgroupDamageMultiplier( int iHitGroup, const CTakeDamageInfo &info )
+{
+	switch( iHitGroup )
+	{
+	case HITGROUP_HEAD:
+		{
+			//ConVarRef head_mult("sk_zombie_dmg_head_mult");
+			return sk_zombie_dmg_head_mult.GetFloat();
+		}
+	}
+
+	return BaseClass::GetHitgroupDamageMultiplier( iHitGroup, info );
 }
 
 //---------------------------------------------------------
@@ -822,7 +811,7 @@ void CZombie::Extinguish()
 int CZombie::OnTakeDamage_Alive( const CTakeDamageInfo &inputInfo )
 {
 #ifndef HL2_EPISODIC
-	if ( inputInfo.GetDamageType() & DMG_BUCKSHOT )
+	if ( inputInfo.GetDamageType() & DMG_BUCKSHOT || true )
 	{
 		if( !m_fIsTorso && inputInfo.GetDamage() > (m_iMaxHealth/3) )
 		{
@@ -921,8 +910,8 @@ AI_BEGIN_CUSTOM_NPC( npc_zombie, CZombie )
 	DECLARE_TASK( TASK_ZOMBIE_ATTACK_DOOR )
 	DECLARE_TASK( TASK_ZOMBIE_CHARGE_ENEMY )
 	
-	DECLARE_ACTIVITY( ACT_ZOMBIE_TANTRUM );
-	DECLARE_ACTIVITY( ACT_ZOMBIE_WALLPOUND );
+	DECLARE_ACTIVITY( ACT_ZOMBIE_TANTRUM )
+	DECLARE_ACTIVITY( ACT_ZOMBIE_WALLPOUND )
 
 	DEFINE_SCHEDULE
 	( 

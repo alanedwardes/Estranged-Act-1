@@ -33,8 +33,9 @@
 #include "tier0/memdbgon.h"
 
 // Spawn flags
-#define SF_BREAKABLESURF_CRACK_DECALS				0x00000001
-#define SF_BREAKABLESURF_DAMAGE_FROM_HELD_OBJECTS	0x00000002
+#define SF_BREAKABLESURF_CRACK_DECALS								0x00000001
+#define SF_BREAKABLESURF_DAMAGE_FROM_HELD_OBJECTS					0x00000002
+#define SF_BREAKABLESURF_ONLY_DAMAGE_FROM_FORCEBREAKGLASS_OBJECTS	0x00000004
 
 //#############################################################################
 //  > CWindowPane
@@ -242,6 +243,9 @@ void CBreakableSurface::Precache(void)
 		PrecacheMaterial( "models/brokenglass/glassbroken_03c" );
 		PrecacheMaterial( "models/brokenglass/glassbroken_03d" );
 	}
+
+	PrecacheScriptSound( "Breakable.Glass" );
+	PrecacheScriptSound( "ambient.glass_bounce" );
 
 	BaseClass::Precache();
 }
@@ -1232,16 +1236,40 @@ void CBreakableSurface::Spawn(void)
 	}
 }
 
+bool CBreakableSurface::DoesInflictorForceBreak( CBaseEntity *pInflictor )
+{
+	if (!HasSpawnFlags(SF_BREAKABLESURF_ONLY_DAMAGE_FROM_FORCEBREAKGLASS_OBJECTS))
+		return false;
+
+	CBreakableProp *pPropBreakableWithPropData = dynamic_cast<CBreakableProp*>( pInflictor );
+	if ( pPropBreakableWithPropData == NULL )
+		return false;
+
+	// ae - respond to QC command "world_interactions"{ "forcebreakglass", "yes" }
+	return pPropBreakableWithPropData->HasInteraction( PROPINTER_WORLD_FORCE_BREAK_GLASS );
+}
+
 void CBreakableSurface::VPhysicsCollision( int index, gamevcollisionevent_t *pEvent )
 {
 	if ( !m_bIsBroken )
 	{
+		int otherIndex = !index;
+		CBaseEntity *pInflictor = pEvent->pEntities[otherIndex];
+
+		// ae - respond to QC command "world_interactions"{ "forcebreakglass", "yes" }
+		bool shouldTakeDamage = true;
+		if (HasSpawnFlags(SF_BREAKABLESURF_ONLY_DAMAGE_FROM_FORCEBREAKGLASS_OBJECTS))
+		{
+			shouldTakeDamage = false;
+		}
+		bool doesPropForceBreakGlass = DoesInflictorForceBreak(pInflictor);
+
 		int damageType = 0;
 		string_t iszDamageTable = ( ( m_nSurfaceType == SHATTERSURFACE_GLASS ) ? ( "glass" ) : ( NULL_STRING ) );
 		bool bDamageFromHeldObjects = ( ( m_spawnflags & SF_BREAKABLESURF_DAMAGE_FROM_HELD_OBJECTS ) != 0 );
 		float damage = CalculateDefaultPhysicsDamage( index, pEvent, 1.0, false, damageType, iszDamageTable, bDamageFromHeldObjects );
 
-		if ( damage > 10 )
+		if ((shouldTakeDamage && damage > 10) || doesPropForceBreakGlass)
 		{
 			// HACKHACK: Reset mass to get correct collision response for the object breaking this
 			pEvent->pObjects[index]->SetMass( 2.0f );
@@ -1253,16 +1281,19 @@ void CBreakableSurface::VPhysicsCollision( int index, gamevcollisionevent_t *pEv
 				normal *= -1.0f;
 			}
 			pEvent->pInternalData->GetContactPoint( damagePos );
-			int otherIndex = !index;
-			CBaseEntity *pInflictor = pEvent->pEntities[otherIndex];
 			CTakeDamageInfo info( pInflictor, pInflictor, normal, damagePos, damage, damageType );
 			PhysCallbackDamage( this, info, *pEvent, index );
+
+			// ae - extra smashy sound
+			if (m_nSurfaceType == SHATTERSURFACE_GLASS)
+			{
+				EmitSound( "Breakable.Glass" );
+			}
 		}
 		else if ( damage > 0 )
 		{
 			if ( m_spawnflags & SF_BREAKABLESURF_CRACK_DECALS )
 			{
-
 				Vector normal, damagePos;
 				pEvent->pInternalData->GetSurfaceNormal( normal );
 				if ( index == 0 )
@@ -1289,6 +1320,12 @@ void CBreakableSurface::VPhysicsCollision( int index, gamevcollisionevent_t *pEv
 					// Send it on its way
 					DispatchEffect( "Impact", data );
 				}
+			}
+			
+			if (m_nSurfaceType == SHATTERSURFACE_GLASS)
+			{
+				// ae - bounce sound
+				EmitSound( "ambient.glass_bounce" );
 			}
 		}
 	}

@@ -12,6 +12,7 @@
 #include "ndebugoverlay.h"
 #include "engine/IEngineSound.h"
 #include "physics_saverestore.h"
+#include "props.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -39,6 +40,7 @@ BEGIN_DATADESC( CFuncMoveLinear )
 	DEFINE_KEYFIELD( m_flBlockDamage,	 FIELD_FLOAT,	"BlockDamage"),
 	DEFINE_KEYFIELD( m_flStartPosition, FIELD_FLOAT,	"StartPosition"),
 	DEFINE_KEYFIELD( m_flMoveDistance,  FIELD_FLOAT,	"MoveDistance"),
+	DEFINE_KEYFIELD(m_bOpenOnSpawn,		FIELD_BOOLEAN,	"OpenOnSpawn"),
 //	DEFINE_PHYSPTR( m_pFluidController ),
 
 	// Inputs
@@ -49,6 +51,7 @@ BEGIN_DATADESC( CFuncMoveLinear )
 
 	// Outputs
 	DEFINE_OUTPUT( m_OnFullyOpen, "OnFullyOpen" ),
+	DEFINE_OUTPUT( m_OnBlocked, "OnBlocked" ),
 	DEFINE_OUTPUT( m_OnFullyClosed, "OnFullyClosed" ),
 
 	// Functions
@@ -106,6 +109,14 @@ void CFuncMoveLinear::Spawn( void )
 	}
 
 	CreateVPhysics();
+
+	if (m_bOpenOnSpawn)
+	{
+		if (GetLocalOrigin() != m_vecPosition2)
+		{
+			MoveTo(m_vecPosition2, m_flSpeed);
+		}
+	}
 }
 
 
@@ -339,16 +350,19 @@ void CFuncMoveLinear::InputSetPosition( inputdata_t &inputdata )
 //-----------------------------------------------------------------------------
 void CFuncMoveLinear::Blocked( CBaseEntity *pOther )
 {
-	// Hurt the blocker 
-	if ( m_flBlockDamage )
+	// If it's a physics prop with infinite
+	// health, fire the OnBlocked output.
+	CPhysicsProp *physicsProp = (CPhysicsProp*)pOther;
+	if (physicsProp && physicsProp->GetHealth() == 0)
 	{
-		if ( pOther->m_takedamage == DAMAGE_EVENTS_ONLY )
-		{
-			if ( FClassnameIs( pOther, "gib" ) )
-				UTIL_Remove( pOther );
-		}
-		else
-			pOther->TakeDamage( CTakeDamageInfo( this, this, m_flBlockDamage, DMG_CRUSH ) );
+		SetThink(&CFuncMoveLinear::StopMoveSound);
+		SetNextThink(gpGlobals->curtime + 0.1f);
+		m_OnBlocked.FireOutput(this, pOther);
+	}
+	else if ( m_flBlockDamage )
+	{
+		// Hurt the blocker 
+		pOther->TakeDamage( CTakeDamageInfo( this, this, m_flBlockDamage, DMG_CRUSH ) );
 	}
 }
 

@@ -25,8 +25,10 @@ BEGIN_RECV_TABLE_NOBASE( C_HL2PlayerLocalData, DT_HL2Local )
 	RecvPropBool( RECVINFO(m_bDisplayReticle) ),
 	RecvPropBool( RECVINFO(m_bStickyAutoAim) ),
 	RecvPropBool( RECVINFO(m_bAutoAimTarget) ),
-#ifdef HL2_EPISODIC
+	RecvPropInt( RECVINFO(m_iFlashlightBatteries) ),
+	RecvPropBool( RECVINFO(m_bHasFlashlight) ),
 	RecvPropFloat( RECVINFO(m_flFlashBattery) ),
+#ifdef HL2_EPISODIC
 	RecvPropVector( RECVINFO(m_vecLocatorOrigin) ),
 #endif
 END_RECV_TABLE()

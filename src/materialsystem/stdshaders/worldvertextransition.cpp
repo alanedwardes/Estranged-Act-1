@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -6,7 +6,7 @@
 // $NoKeywords: $
 //=============================================================================//
 
-#include "BaseVSShader.h"
+#include "basevsshader.h"
 #include "convar.h"
 
 #include "worldvertextransition_dx8_helper.h"
@@ -15,9 +15,9 @@
 static LightmappedGeneric_DX9_Vars_t s_info;
 
 
-DEFINE_FALLBACK_SHADER( WorldVertexTransition, WorldVertexTransition_DX9 )
+DEFINE_FALLBACK_SHADER( sdk_worldvertextransition, sdk_worldvertextransition_dx9 )
 
-BEGIN_VS_SHADER( WorldVertexTransition_DX9, "Help for WorldVertexTransition" )
+BEGIN_VS_SHADER( sdk_worldvertextransition_dx9, "Help for WorldVertexTransition" )
 
 	BEGIN_SHADER_PARAMS
 		SHADER_PARAM( ALBEDO, SHADER_PARAM_TYPE_TEXTURE, "shadertest/BaseTexture", "albedo (Base texture with no baked lighting)" )

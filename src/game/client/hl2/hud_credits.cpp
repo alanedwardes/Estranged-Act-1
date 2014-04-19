@@ -141,7 +141,7 @@ void CHudCredits::PrepareCredits( const char *pKeyName )
 	Clear();
 
 	KeyValues *pKV= new KeyValues( "CreditsFile" );
-	if ( !pKV->LoadFromFile( filesystem, CREDITS_FILE, "MOD" ) )
+	if ( !pKV->LoadFromFile( filesystem, CREDITS_FILE, NULL ) )
 	{
 		pKV->deleteThis();
 

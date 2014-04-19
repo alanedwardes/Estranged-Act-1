@@ -288,6 +288,19 @@ extern "C" {
 #define ACHIEVEMENT_TF_LAST_ORANGEBOX				150
 
 //
+// Estranged Achievements
+//
+#define ACHIEVEMENT_EA1_MORE_THAN_SHIPWRECKED		0
+#define ACHIEVEMENT_EA1_ESTRANGED_IN_THE_DARK		1
+#define ACHIEVEMENT_EA1_MARKSMAN					2
+#define ACHIEVEMENT_EA1_VENDAHOLIC					3
+#define ACHIEVEMENT_EA1_POWER_CONSERVER				4
+#define ACHIEVEMENT_EA1_CAT_LOVER					5
+#define ACHIEVEMENT_EA1_WATER_COLLECTOR				6
+#define ACHIEVEMENT_EA1_HOUDINI						7
+#define ACHIEVEMENT_EA1_EVENING_NEWS				8
+
+//
 // Stats view ids
 //
 // These are used in the dwViewId member of the XUSER_STATS_SPEC structure

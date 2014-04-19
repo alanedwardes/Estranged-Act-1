@@ -13,8 +13,6 @@
 #if ( defined( HL2_DLL ) || defined( HL2_EPISODIC ) ) && ( !defined ( PORTAL ) )
 
 #include "baseachievement.h"
-#include "prop_combine_ball.h"
-#include "combine_mine.h"
 #include "basegrenade_shared.h"
 #include "basehlcombatweapon_shared.h"
 #include "ammodef.h"
@@ -46,33 +44,6 @@ class CAchievementHLXKillWithPhysicsObjects : public CBaseAchievement
 
 };
 DECLARE_ACHIEVEMENT( CAchievementHLXKillWithPhysicsObjects, ACHIEVEMENT_HLX_KILL_ENEMIES_WITHPHYSICS, "HLX_KILL_ENEMIES_WITHPHYSICS", 5 );
-
-class CAchievementHLXKillWithHopper : public CBaseAchievement
-{
-	void Init() 
-	{
-		SetFlags( ACH_LISTEN_KILL_ENEMY_EVENTS | ACH_SAVE_WITH_GAME );
-		SetAttackerFilter( "combine_mine" );
-		SetGoal( 1 );
-
-		if ( IsPC() )
-		{
-			// only in Ep2 for PC. (Shared across HLX for X360.)
-			SetGameDirFilter( "ep2" );
-		}
-	}
-
-	virtual void Event_EntityKilled( CBaseEntity *pVictim, CBaseEntity *pAttacker, CBaseEntity *pInflictor, IGameEvent *event )
-	{
-		// If we get here, a combine mine has killed a player enemy.  Now check and see if the player planted it
-		CBounceBomb *pBounceBomb = dynamic_cast<CBounceBomb *>( pAttacker );
-		if ( pBounceBomb && pBounceBomb->IsPlayerPlaced() )
-		{
-			IncrementCount();
-		}
-	}
-};
-DECLARE_ACHIEVEMENT( CAchievementHLXKillWithHopper, ACHIEVEMENT_HLX_KILL_ENEMY_WITHHOPPERMINE, "HLX_KILL_ENEMY_WITHHOPPERMINE", 5 );
 
 class CAchievementHLXKillWithManhack : public CBaseAchievement
 {
@@ -179,40 +150,6 @@ protected:
 	int m_iLocalCount;
 };
 DECLARE_ACHIEVEMENT( CAchievementHLXKillWithOneEnergyBall, ACHIEVEMENT_HLX_KILL_ENEMIES_WITHONEENERGYBALL, "HLX_KILL_ENEMIES_WITHONEENERGYBALL", 5 );
-
-class CAchievementHLXKillEliteSoldierWithOwnEnergyBall : public CBaseAchievement
-{
-protected:
-	virtual void Init()
-	{
-		SetFlags( ACH_LISTEN_PLAYER_KILL_ENEMY_EVENTS | ACH_SAVE_WITH_GAME );
-		SetInflictorFilter( "prop_combine_ball" );
-		SetVictimFilter( "npc_combine_s" );
-		SetGoal( 1 );
-
-		if ( IsPC() )
-		{
-			// only in Ep2 for PC. (Shared across HLX for X360.)
-			SetGameDirFilter( "episodic" );
-		}
-	}
-
-	virtual void Event_EntityKilled( CBaseEntity *pVictim, CBaseEntity *pAttacker, CBaseEntity *pInflictor, IGameEvent *event ) 
-	{
-		CPropCombineBall *pBall = dynamic_cast<CPropCombineBall *>( pInflictor );
-		if ( pBall )
-		{
-			// determine original owner of this ball
-			CBaseEntity *pOriginalOwner = pBall->GetOriginalOwner();
-			// see if original owner is the victim
-			if ( pOriginalOwner && ( pOriginalOwner == pVictim ) )
-			{				
-				IncrementCount();
-			}
-		}
-	}
-};
-DECLARE_ACHIEVEMENT( CAchievementHLXKillEliteSoldierWithOwnEnergyBall, ACHIEVEMENT_HLX_KILL_ELITESOLDIER_WITHHISENERGYBALL, "HLX_KILL_ELITESOLDIER_WITHHISENERGYBALL", 10 );
 
 //-----------------------------------------------------------------------------
 // Purpose: Counts the accumulated # of primary and secondary attacks from all

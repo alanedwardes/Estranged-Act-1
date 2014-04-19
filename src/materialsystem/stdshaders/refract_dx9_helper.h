@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//====== Copyright © 1996-2006, Valve Corporation, All rights reserved. =======
 //
 // Purpose: 
 //
@@ -50,7 +50,6 @@ struct Refract_DX9_Vars_t
 	int m_nNoWriteZ;
 	int m_nMasked;
 	int m_nVertexColorModulate;
-	int m_nForceAlphaWrite;
 };
 
 void InitParamsRefract_DX9( CBaseVSShader *pShader, IMaterialVar** params, const char *pMaterialName, 

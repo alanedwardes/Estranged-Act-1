@@ -28,8 +28,10 @@ BEGIN_SEND_TABLE_NOBASE( CHL2PlayerLocalData, DT_HL2Local )
 	SendPropBool( SENDINFO(m_bDisplayReticle) ),
 	SendPropBool( SENDINFO(m_bStickyAutoAim) ),
 	SendPropBool( SENDINFO(m_bAutoAimTarget) ),
-#ifdef HL2_EPISODIC
+	SendPropInt( SENDINFO(m_iFlashlightBatteries) ),
+	SendPropBool( SENDINFO(m_bHasFlashlight) ),
 	SendPropFloat( SENDINFO(m_flFlashBattery) ),
+#ifdef HL2_EPISODIC
 	SendPropVector( SENDINFO(m_vecLocatorOrigin) ),
 #endif
 END_SEND_TABLE()
@@ -44,8 +46,12 @@ BEGIN_SIMPLE_DATADESC( CHL2PlayerLocalData )
 	DEFINE_FIELD( m_bWeaponLowered, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_bDisplayReticle, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_bStickyAutoAim, FIELD_BOOLEAN ),
-#ifdef HL2_EPISODIC
+	DEFINE_FIELD( m_iFlashlightBatteries, FIELD_INTEGER ),
+	DEFINE_FIELD( m_bHasFlashlight, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_iFlashlightBatteries, FIELD_INTEGER ),
+	DEFINE_FIELD( m_bHasFlashlight, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_flFlashBattery, FIELD_FLOAT ),
+#ifdef HL2_EPISODIC
 	DEFINE_FIELD( m_vecLocatorOrigin, FIELD_POSITION_VECTOR ),
 #endif
 	// Ladder related stuff
@@ -62,8 +68,8 @@ CHL2PlayerLocalData::CHL2PlayerLocalData()
 	m_hLadder.Set(NULL);
 	m_vecAutoAimPoint.GetForModify().Init();
 	m_bDisplayReticle = false;
-#ifdef HL2_EPISODIC
+	m_iFlashlightBatteries = 0;
 	m_flFlashBattery = 0.0f;
-#endif
+	m_bHasFlashlight = false;
 }
 

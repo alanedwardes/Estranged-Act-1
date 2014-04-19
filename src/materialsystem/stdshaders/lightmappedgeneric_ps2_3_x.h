@@ -1,4 +1,3 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
 //  SKIP: $BUMPMAP2 && $WARPLIGHTING
 //  SKIP: $WARPLIGHTING && $DETAILTEXTURE
 //	SKIP: $ENVMAPMASK && $BUMPMAP
@@ -40,6 +39,8 @@
 #include "common_ps_fxc.h"
 #include "common_flashlight_fxc.h"
 #include "common_lightmappedgeneric_fxc.h"
+#include "interface_typedefs_fxc.h"
+#include "ae_common_ps_fxc.h"
 
 #if SEAMLESS
 #define USE_FAST_PATH 1
@@ -100,6 +101,15 @@ const float4 g_FlashlightAttenuationFactors	: register( c13 );
 const float3 g_FlashlightPos				: register( c14 );
 const float4x4 g_FlashlightWorldToTexture	: register( c15 ); // through c18
 const float4 g_ShadowTweaks					: register( c19 );
+
+//-- Phong information
+const float4 g_PhongTintExponent				: register( c20 );
+const float g_PhongFresnel_Atten			: register( c21 );
+
+//Shader lights provided by client/shaderapi interfaces
+d_ae_shaderlight_t cLightInfo[3]			: register( c22 );
+
+//--
 
 
 sampler BaseTextureSampler		: register( s0 );
@@ -316,19 +326,16 @@ HALF4 main( PS_INPUT i ) : COLOR
 
 	if( bBaseTexture2 )
 	{
-#if (SELFILLUM == 0) && (PIXELFOGTYPE != PIXEL_FOG_TYPE_HEIGHT) && (FANCY_BLENDING)
+#if (SELFILLUM == 0) && (NORMALMAPALPHAENVMAPMASK==0) && (PIXELFOGTYPE != PIXEL_FOG_TYPE_HEIGHT) && (FANCY_BLENDING)
 		float4 modt=tex2D(BlendModulationSampler,i.lightmapTexCoord3.zw);
 #if MASKEDBLENDING
-		// FXC is unable to optimize this, despite blendfactor=0.5 above
-		//float minb=modt.g-modt.r;
-		//float maxb=modt.g+modt.r;
-		//blendfactor=smoothstep(minb,maxb,blendfactor);
-		blendfactor=modt.g;
+		float minb=modt.g-modt.r;
+		float maxb=modt.g+modt.r;
 #else
-		float minb=saturate(modt.g-modt.r);
-		float maxb=saturate(modt.g+modt.r);
-		blendfactor=smoothstep(minb,maxb,blendfactor);
+		float minb=max(0,modt.g-modt.r);
+		float maxb=min(1,modt.g+modt.r);
 #endif
+		blendfactor=smoothstep(minb,maxb,blendfactor);
 #endif
 		baseColor.rgb = lerp( baseColor, baseColor2.rgb, blendfactor );
 		blendedAlpha = lerp( baseColor.a, baseColor2.a, blendfactor );
@@ -373,15 +380,7 @@ HALF4 main( PS_INPUT i ) : COLOR
 			vNormal.xyz = lerp( vNormalMask.xyz, vNormal.xyz, vNormalMask.a );		// Mask out normals from vNormal
 			specularFactor = vNormalMask.a;
 	#else // BUMPMASK == 0
-			if ( FANCY_BLENDING && bNormalMapAlphaEnvmapMask )
-			{
-				vNormal = lerp( vNormal, vNormal2, blendfactor);
-			}
-			else
-			{
-				vNormal.xyz = lerp( vNormal.xyz, vNormal2.xyz, blendfactor);
-			}
-
+			vNormal.xyz = lerp( vNormal.xyz, vNormal2.xyz, blendfactor);
 	#endif
 
 		}
@@ -409,6 +408,7 @@ HALF4 main( PS_INPUT i ) : COLOR
 	{
 		specularFactor *= 1.0 - blendedAlpha; // Reversing alpha blows!
 	}
+
 	float4 albedo = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	float alpha = 1.0f;
 	albedo *= baseColor;
@@ -475,7 +475,7 @@ HALF4 main( PS_INPUT i ) : COLOR
 	diffuseLighting *= 2.0*tex2D(WarpLightingSampler,float2(len,0));
 #endif
 
-#if CUBEMAP || LIGHTING_PREVIEW || ( defined( _X360 ) && FLASHLIGHT )
+#if PHONG || CUBEMAP || LIGHTING_PREVIEW || ( defined( _X360 ) && FLASHLIGHT )
 	float3 worldSpaceNormal = mul( vNormal, i.tangentSpaceTranspose );
 #endif
 
@@ -545,7 +545,37 @@ HALF4 main( PS_INPUT i ) : COLOR
 	}
 #endif
 
-	HALF3 result = diffuseComponent + specularLighting;
+	//-- Phong lighting for LightmappedGeneric - AniCator
+	float3 specularPhong = 0.0f;
+
+#if PHONG
+	float3 worldPos = i.worldPos_projPosZ.xyz;
+	worldPos += 1.e-6f;
+	float3 projPosZ = i.worldPos_projPosZ.w;
+	projPosZ += 1.e-6f;
+
+	float3 m_fFresnelIntensity = g_PhongFresnel_Atten;
+
+	specularPhong.rgb += CalculatePhongSpecular_Lightmapped( g_EyePos,worldSpaceNormal, worldPos , projPosZ , g_PhongTintExponent.a , m_fFresnelIntensity, cLightInfo[0] );
+	specularPhong.rgb += CalculatePhongSpecular_Lightmapped( g_EyePos,worldSpaceNormal, worldPos , projPosZ , g_PhongTintExponent.a , m_fFresnelIntensity, cLightInfo[1] );
+	specularPhong.rgb += CalculatePhongSpecular_Lightmapped( g_EyePos,worldSpaceNormal, worldPos , projPosZ , g_PhongTintExponent.a , m_fFresnelIntensity, cLightInfo[2] );
+	//specularPhong.rgb += CalculatePhongSpecular_Lightmapped( g_EyePos,worldSpaceNormal, worldPos , projPosZ , g_PhongTintExponent.a , m_fFresnelIntensity, cLightInfo[3] );
+	//specularPhong.rgb += CalculatePhongSpecular_Lightmapped( g_EyePos,worldSpaceNormal, worldPos , projPosZ , g_PhongTintExponent.a , m_fFresnelIntensity, cLightInfo[4] );
+	//specularPhong.rgb += CalculatePhongSpecular_Lightmapped( g_EyePos,worldSpaceNormal, worldPos , projPosZ , g_PhongTintExponent.a , m_fFresnelIntensity, cLightInfo[5] );
+	//specularPhong.rgb += CalculatePhongSpecular_Lightmapped( g_EyePos,worldSpaceNormal, worldPos , projPosZ , g_PhongTintExponent.a , m_fFresnelIntensity, cLightInfo[6] );
+	//specularPhong.rgb += CalculatePhongSpecular_Lightmapped( g_EyePos,worldSpaceNormal, worldPos , projPosZ , g_PhongTintExponent.a , m_fFresnelIntensity, cLightInfo[7] );
+	//specularPhong.rgb += CalculatePhongSpecular_Lightmapped( g_EyePos,worldSpaceNormal, worldPos , projPosZ , g_PhongTintExponent.a , m_fFresnelIntensity, cLightInfo[8] );
+	//specularPhong.rgb += CalculatePhongSpecular_Lightmapped( g_EyePos,worldSpaceNormal, worldPos , projPosZ , g_PhongTintExponent.a , m_fFresnelIntensity, cLightInfo[9] );
+
+	specularPhong.rgb *= g_PhongTintExponent.rgb; //Tint the specular Blinn-Phong magic
+	specularPhong.rgb *= specularFactor;
+	specularPhong.rgb *= diffuseComponent;
+
+	specularPhong = saturate(specularPhong);
+#endif
+	//-- Phong lighting for LightmappedGeneric - AniCator
+
+	HALF3 result = diffuseComponent + specularLighting + specularPhong;
 	
 #if LIGHTING_PREVIEW
 	worldSpaceNormal = mul( vNormal, i.tangentSpaceTranspose );

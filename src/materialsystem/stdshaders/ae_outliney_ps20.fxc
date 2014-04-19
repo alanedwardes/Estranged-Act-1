@@ -1,0 +1,21 @@
+#include "common_ps_fxc.h"
+
+sampler framebuffer	: register( s0 );
+
+const float4 glowtint : register( c0 );
+
+void main( in float2 texCoords : TEXCOORD0, out float4 finalColor : COLOR )
+{
+	float scale = 0.05f;
+	texCoords.y -= 0.020f*scale;
+
+	finalColor = float4(0.0f,0.0f,0.0f,0.0f);
+
+	for(int i=0;i<4;i++)
+	{
+		texCoords.y += (0.05f*scale/4);
+		finalColor += tex2D(framebuffer,texCoords);
+	}
+
+	finalColor *= glowtint;
+}

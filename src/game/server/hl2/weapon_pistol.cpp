@@ -15,6 +15,7 @@
 #include "in_buttons.h"
 #include "soundent.h"
 #include "game.h"
+#include "te_effect_dispatch.h"
 #include "vstdlib/random.h"
 #include "gamestats.h"
 
@@ -249,6 +250,14 @@ void CWeaponPistol::PrimaryAttack( void )
 	}
 
 	BaseClass::PrimaryAttack();
+
+	CEffectData data;
+
+	data.m_vOrigin = pOwner->WorldSpaceCenter() + RandomVector( -4, 4 );
+	data.m_vAngles = QAngle( 90, random->RandomInt( 0, 360 ), 0 );
+	data.m_nEntIndex = entindex();
+
+	DispatchEffect( "ShellEject", data );
 
 	// Add an accuracy penalty which can move past our maximum penalty time if we're really spastic
 	m_flAccuracyPenalty += PISTOL_ACCURACY_SHOT_PENALTY_TIME;

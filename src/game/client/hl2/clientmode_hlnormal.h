@@ -37,6 +37,8 @@ public:
 
 	virtual void	Init();
 	virtual bool	ShouldDrawCrosshair( void );
+	virtual void	LevelInit( const char* newmap );
+	virtual void	LevelShutdown( void );
 };
 
 extern IClientMode *GetClientModeNormal();

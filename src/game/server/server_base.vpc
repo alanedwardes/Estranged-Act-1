@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 $Macro OUTBINNAME	"server"
-$Macro OUTBINDIR	"$SRCDIR\..\game\$GAMENAME\bin"
+$Macro OUTBINDIR	"$SRCDIR\..\game\estrangedact1\bin"
 $Macro DEVKITBINDIR	"$GAMENAME\bin"							[$X360]
 // It's important to include $GAMENAME in the generated_proto directory
 // to avoid race conditions when multiple games are in one solution.
@@ -79,6 +79,7 @@ $Project
 	
 	$Folder	"Source Files"
 	{
+		$File	"$SRCDIR\game\shared\estrangedplayerinformation.h"
 		$File	"$SRCDIR\game\shared\achievement_saverestore.cpp"
 		$File	"$SRCDIR\game\shared\achievement_saverestore.h"
 		$File	"$SRCDIR\game\shared\achievementmgr.cpp"
@@ -320,7 +321,6 @@ $Project
 		$File	"env_particlescript.cpp"
 		$File	"env_player_surface_trigger.cpp"
 		$File	"env_player_surface_trigger.h"
-		$File	"env_projectedtexture.cpp"
 		$File	"env_screenoverlay.cpp"
 		$File	"env_texturetoggle.cpp"
 		$File	"env_tonemap_controller.cpp"

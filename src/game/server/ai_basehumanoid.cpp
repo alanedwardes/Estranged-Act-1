@@ -20,37 +20,6 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-
-//-----------------------------------------------------------------------------
-// Purpose:  This is a generic function (to be implemented by sub-classes) to
-//			 handle specific interactions between different types of characters
-//			 (For example the barnacle grabbing an NPC)
-// Input  :  Constant for the type of interaction
-// Output :	 true  - if sub-class has a response for the interaction
-//			 false - if sub-class has no response
-//-----------------------------------------------------------------------------
-bool CAI_BaseHumanoid::HandleInteraction(int interactionType, void *data, CBaseCombatCharacter* sourceEnt)
-{
-#ifdef HL2_DLL
-	// Annoying to ifdef this out. Copy it into all the HL2 specific humanoid NPC's instead?
-	if ( interactionType == g_interactionBarnacleVictimDangle )
-	{
-		// Force choosing of a new schedule
-		ClearSchedule( "Grabbed by a barnacle" );
-		return true;
-	}
-	else if ( interactionType == g_interactionBarnacleVictimReleased )
-	{
-		// Destroy the entity, the barnacle is going to use the ragdoll that it is releasing
-		// as the corpse.
-		UTIL_Remove( this );
-		return true;
-	}
-#endif
-	return BaseClass::HandleInteraction( interactionType, data, sourceEnt);
-}
-
-
 //-----------------------------------------------------------------------------
 // Purpose: check ammo
 //-----------------------------------------------------------------------------

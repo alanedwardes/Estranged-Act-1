@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: eye renderer
 //
@@ -6,16 +6,16 @@
 // $NoKeywords: $
 //=============================================================================//
 
-#include "BaseVSShader.h"
+#include "basevsshader.h"
 #include "eyes_dx8_dx9_helper.h"
 #include "cloak_blended_pass_helper.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-DEFINE_FALLBACK_SHADER( eyes, Eyes_dx8 )
+DEFINE_FALLBACK_SHADER( sdk_eyes, sdk_eyes_dx8 )
 
-BEGIN_VS_SHADER( Eyes_dx8, 
+BEGIN_VS_SHADER( sdk_eyes_dx8, 
 			  "Help for Eyes" )
 			  
 	BEGIN_SHADER_PARAMS

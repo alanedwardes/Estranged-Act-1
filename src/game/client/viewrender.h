@@ -24,7 +24,6 @@ class ConVar;
 class CClientRenderablesList;
 class IClientVehicle;
 class C_PointCamera;
-class C_EnvProjectedTexture;
 class IScreenSpaceEffect;
 class CClientViewSetup;
 class CViewRender;
@@ -432,6 +431,10 @@ private:
 	void			ViewDrawScene( bool bDrew3dSkybox, SkyboxVisibility_t nSkyboxVisible, const CViewSetup &view, int nClearFlags, view_id_t viewID, bool bDrawViewModel = false, int baseDrawFlags = 0, ViewCustomVisibility_t *pCustomVisibility = NULL );
 
 	void			DrawMonitors( const CViewSetup &cameraView );
+
+	void			SSAO_DepthPass( const CViewSetup &viewSet );
+	void			DrawEstrangedBokehDepthOfField();
+	void			SSAO_DrawResults();
 
 	bool			DrawOneMonitor( ITexture *pRenderTarget, int cameraNum, C_PointCamera *pCameraEnt, const CViewSetup &cameraView, C_BasePlayer *localPlayer, 
 						int x, int y, int width, int height );

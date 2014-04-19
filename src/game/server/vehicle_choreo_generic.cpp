@@ -220,6 +220,7 @@ private:
 	// Vehicle script filename
 	string_t			m_vehicleScript;
 
+	COutputEvent		m_playerUse;
 	COutputEvent		m_playerOn;
 	COutputEvent		m_playerOff;
 	COutputEvent		m_OnOpen;
@@ -256,6 +257,7 @@ BEGIN_DATADESC( CPropVehicleChoreoGeneric )
 	DEFINE_KEYFIELD( m_bIgnorePlayerCollisions, FIELD_BOOLEAN, "ignoreplayer" ),
 	DEFINE_KEYFIELD( m_bForcePlayerEyePoint, FIELD_BOOLEAN, "useplayereyes" ),
 
+	DEFINE_OUTPUT( m_playerUse, "PlayerUse" ),
 	DEFINE_OUTPUT( m_playerOn, "PlayerOn" ),
 	DEFINE_OUTPUT( m_playerOff, "PlayerOff" ),
 	DEFINE_OUTPUT( m_OnOpen, "OnOpen" ),
@@ -570,6 +572,7 @@ bool CPropVehicleChoreoGeneric::CanEnterVehicle( CBaseEntity *pEntity )
 //-----------------------------------------------------------------------------
 bool CPropVehicleChoreoGeneric::CanExitVehicle( CBaseEntity *pEntity )
 {
+	m_playerUse.FireOutput( this, this, 0 );
 	// Prevent exiting if the vehicle's locked, rotating, or playing an entry/exit anim.
 	return ( !m_bLocked && (GetLocalAngularVelocity() == vec3_angle) && !m_bEnterAnimOn && !m_bExitAnimOn );
 }

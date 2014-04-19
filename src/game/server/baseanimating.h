@@ -156,6 +156,9 @@ public:
 	bool	HasPoseParameter( int iSequence, int iParameter );
 	float	EdgeLimitPoseParameter( int iParameter, float flValue, float flBase = 0.0f );
 
+	virtual void SetGlow(bool state);
+	virtual void SetGlowRadius(int radius);
+
 protected:
 	// The modus operandi for pose parameters is that you should not use the const char * version of the functions
 	// in general code -- it causes many many string comparisons, which is slower than you think. Better is to 
@@ -298,6 +301,8 @@ public:
 	void InputIgniteHitboxFireScale( inputdata_t &inputdata );
 	void InputBecomeRagdoll( inputdata_t &inputdata );
 
+	void InputSetGlowState( inputdata_t &inputdata );
+
 	// Dissolve, returns true if the ragdoll has been created
 	bool Dissolve( const char *pMaterialName, float flStartTime, bool bNPCOnly = true, int nDissolveType = 0, Vector vDissolverOrigin = vec3_origin, int iMagnitude = 0 );
 	bool IsDissolving() { return ( (GetFlags() & FL_DISSOLVING) != 0 ); }
@@ -338,7 +343,6 @@ private:
 	void StudioFrameAdvanceInternal( CStudioHdr *pStudioHdr, float flInterval );
 	void InputSetLightingOriginRelative( inputdata_t &inputdata );
 	void InputSetLightingOrigin( inputdata_t &inputdata );
-	void InputSetModelScale( inputdata_t &inputdata );
 
 	bool CanSkipAnimation( void );
 
@@ -349,6 +353,8 @@ public:
 	CNetworkVar( int, m_nSkin );
 	CNetworkVar( int, m_nBody );
 	CNetworkVar( int, m_nHitboxSet );
+
+	CNetworkVar( int, m_nGlowRadius );
 
 	// For making things thin during barnacle swallowing, e.g.
 	CNetworkVar( float, m_flModelScale );

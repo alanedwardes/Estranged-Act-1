@@ -392,37 +392,30 @@ bool CBaseTrigger::PassesTriggerFilters(CBaseEntity *pOther)
 
 		bool bOtherIsPlayer = pOther->IsPlayer();
 
-		if ( bOtherIsPlayer )
+		if ( HasSpawnFlags(SF_TRIGGER_ONLY_CLIENTS_IN_VEHICLES) && bOtherIsPlayer )
 		{
-			CBasePlayer *pPlayer = (CBasePlayer*)pOther;
-			if ( !pPlayer->IsAlive() )
+			if ( !((CBasePlayer*)pOther)->IsInAVehicle() )
 				return false;
 
-			if ( HasSpawnFlags(SF_TRIGGER_ONLY_CLIENTS_IN_VEHICLES) )
-			{
-				if ( !pPlayer->IsInAVehicle() )
-					return false;
+			// Make sure we're also not exiting the vehicle at the moment
+			IServerVehicle *pVehicleServer = ((CBasePlayer*)pOther)->GetVehicle();
+			if ( pVehicleServer == NULL )
+				return false;
+			
+			if ( pVehicleServer->IsPassengerExiting() )
+				return false;
+		}
 
-				// Make sure we're also not exiting the vehicle at the moment
-				IServerVehicle *pVehicleServer = pPlayer->GetVehicle();
-				if ( pVehicleServer == NULL )
-					return false;
+		if ( HasSpawnFlags(SF_TRIGGER_ONLY_CLIENTS_OUT_OF_VEHICLES) && bOtherIsPlayer )
+		{
+			if ( ((CBasePlayer*)pOther)->IsInAVehicle() )
+				return false;
+		}
 
-				if ( pVehicleServer->IsPassengerExiting() )
-					return false;
-			}
-
-			if ( HasSpawnFlags(SF_TRIGGER_ONLY_CLIENTS_OUT_OF_VEHICLES) )
-			{
-				if ( pPlayer->IsInAVehicle() )
-					return false;
-			}
-
-			if ( HasSpawnFlags( SF_TRIGGER_DISALLOW_BOTS ) )
-			{
-				if ( pPlayer->IsFakeClient() )
-					return false;
-			}
+		if ( HasSpawnFlags( SF_TRIGGER_DISALLOW_BOTS ) && bOtherIsPlayer )
+		{
+			if ( ((CBasePlayer*)pOther)->IsFakeClient() )
+				return false;
 		}
 
 		CBaseFilter *pFilter = m_hFilter.Get();
@@ -753,7 +746,8 @@ bool CTriggerHurt::HurtEntity( CBaseEntity *pOther, float damage )
 	{
 		m_OnHurtPlayer.FireOutput(pOther, this);
 	}
-	else
+	// ae - hacky post-release fix to stop ragdolls triggering the speedmod on sp02
+	else if (V_stricmp(gpGlobals->mapname.ToCStr(), "sp02theforest"))
 	{
 		m_OnHurt.FireOutput(pOther, this);
 	}
@@ -2302,7 +2296,7 @@ void CTriggerPush::Touch( CBaseEntity *pOther )
 //-----------------------------------------------------------------------------
 // Teleport trigger
 //-----------------------------------------------------------------------------
-const int SF_TELEPORT_PRESERVE_ANGLES = 0x20;	// Preserve angles even when a local landmark is not specified
+const int SF_TELEPORT_PRESERVE_ANGLES = 0x2000;	// Preserve angles even when a local landmark is not specified
 
 class CTriggerTeleport : public CBaseTrigger
 {

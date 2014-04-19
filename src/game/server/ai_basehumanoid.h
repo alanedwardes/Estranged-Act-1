@@ -22,8 +22,6 @@ class CAI_BaseHumanoid : public CAI_BaseHumanoidBase
 	DECLARE_CLASS( CAI_BaseHumanoid, CAI_BaseHumanoidBase );
 
 public:
-	bool HandleInteraction(int interactionType, void *data, CBaseCombatCharacter* sourceEnt);
-
 	// Tasks
 	virtual void StartTask( const Task_t *pTask );
 	virtual void RunTask( const Task_t *pTask );

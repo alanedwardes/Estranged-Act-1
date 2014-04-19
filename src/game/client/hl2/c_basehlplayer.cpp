@@ -38,6 +38,91 @@ BEGIN_PREDICTION_DATA( C_BaseHLPlayer )
 	DEFINE_PRED_FIELD( m_fIsSprinting, FIELD_BOOLEAN, FTYPEDESC_INSENDTABLE ),
 END_PREDICTION_DATA()
 
+void CC_PickerShader ( const CCommand &args )
+{
+	C_BasePlayer *pPlayer = (C_BasePlayer *) C_BasePlayer::GetLocalPlayer();
+	if ( !pPlayer )
+		return;
+
+	trace_t tr;
+	Vector vecAbsStart, vecAbsEnd, vecDir;
+
+	AngleVectors( pPlayer->EyeAngles(), &vecDir );
+
+	vecAbsStart = pPlayer->EyePosition();
+	vecAbsEnd = vecAbsStart + (vecDir * MAX_TRACE_LENGTH);
+
+	UTIL_TraceLine( vecAbsStart, vecAbsEnd, MASK_ALL, pPlayer, COLLISION_GROUP_NONE, &tr );
+
+	if ( tr.DidHitWorld() )
+	{
+		IMaterial *pMaterial = materials->FindMaterial( tr.surface.name, TEXTURE_GROUP_PRECACHED );
+		if ( !IsErrorMaterial( pMaterial ) )
+		{
+			const char* shadername = pMaterial->GetShaderName();
+			Msg("Material shader name: %s\n", shadername);
+		}
+		else
+		{
+			Msg("Could not get material shader name.\n");
+		}
+	}
+	else
+	{
+		Msg("This command only supports world geometry.\n");
+	}
+}
+
+ConCommand picker_shader( "picker_shader", CC_PickerShader);
+
+void CC_PickerShaderSet ( const CCommand &args )
+{
+	if ( args.ArgC() < 1 || strcmp(args.Arg(1),"") != 0 )
+	{
+		Msg("Usage: picker_shader_set <new shader name>\n");
+		return;
+	}
+	C_BasePlayer *pPlayer = (C_BasePlayer *) C_BasePlayer::GetLocalPlayer();
+	if ( !pPlayer )
+		return;
+
+	trace_t tr;
+	Vector vecAbsStart, vecAbsEnd, vecDir;
+
+	AngleVectors( pPlayer->EyeAngles(), &vecDir );
+
+	vecAbsStart = pPlayer->EyePosition();
+	vecAbsEnd = vecAbsStart + (vecDir * MAX_TRACE_LENGTH);
+
+	UTIL_TraceLine( vecAbsStart, vecAbsEnd, MASK_ALL, pPlayer, COLLISION_GROUP_NONE, &tr );
+
+	if ( tr.DidHitWorld() )
+	{
+		IMaterial *pMaterial = materials->FindMaterial( tr.surface.name, TEXTURE_GROUP_PRECACHED );
+		if ( !IsErrorMaterial( pMaterial ) )
+		{
+			const char* shadername = pMaterial->GetShaderName();
+			Msg("Original material shader name: %s\n", shadername);
+
+			pMaterial->SetShader(args.Arg(1));
+
+			shadername = pMaterial->GetShaderName();
+
+			Msg("New material shader name: %s\n", shadername);
+		}
+		else
+		{
+			Msg("Could not get material shader name.\n");
+		}
+	}
+	else
+	{
+		Msg("This command only supports world geometry.\n");
+	}
+}
+
+ConCommand picker_shader_set( "picker_shader_set", CC_PickerShaderSet);
+
 //-----------------------------------------------------------------------------
 // Purpose: Drops player's primary weapon
 //-----------------------------------------------------------------------------

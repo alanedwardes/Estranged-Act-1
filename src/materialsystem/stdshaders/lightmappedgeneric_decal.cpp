@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: Lightmap only shader
 //
@@ -6,17 +6,17 @@
 // $NoKeywords: $
 //=============================================================================//
 
-#include "BaseVSShader.h"
+#include "basevsshader.h"
 
-#include "lightmappedgeneric_decal.inc"
+#include "sdk_lightmappedgeneric_decal.inc"
 #include "mathlib/bumpvects.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
 
-BEGIN_VS_SHADER( LightmappedGeneric_Decal,
-			  "Help for LightmappedGeneric_Decal" )
+BEGIN_VS_SHADER( sdk_lightmappedgeneric_decal,
+			  "Help for sdk_lightmappedgeneric_decal" )
 
 	BEGIN_SHADER_PARAMS
 	END_SHADER_PARAMS
@@ -52,7 +52,7 @@ BEGIN_VS_SHADER( LightmappedGeneric_Decal,
 
 	SHADER_INIT
 	{
-		LoadTexture( FLASHLIGHTTEXTURE, TEXTUREFLAGS_SRGB );
+		LoadTexture( FLASHLIGHTTEXTURE );
 		
 		if (params[BASETEXTURE]->IsDefined())
 		{
@@ -89,9 +89,9 @@ BEGIN_VS_SHADER( LightmappedGeneric_Decal,
 			int pTexCoords[3] = { 2, 2, 1 };
 			pShaderShadow->VertexShaderVertexFormat( VERTEX_POSITION | VERTEX_COLOR, 3, pTexCoords, 0 );
 
-			lightmappedgeneric_decal_Static_Index vshIndex;
-			pShaderShadow->SetVertexShader( "LightmappedGeneric_Decal", vshIndex.GetIndex() );
-			pShaderShadow->SetPixelShader( "LightmappedGeneric_Decal" );
+			sdk_lightmappedgeneric_decal_Static_Index vshIndex;
+			pShaderShadow->SetVertexShader( "sdk_lightmappedgeneric_decal", vshIndex.GetIndex() );
+			pShaderShadow->SetPixelShader( "sdk_lightmappedgeneric_decal" );
 			FogToFogColor();
 		}
 		else
@@ -113,7 +113,7 @@ BEGIN_VS_SHADER( LightmappedGeneric_Decal,
 			SetVertexShaderTextureTransform( VERTEX_SHADER_SHADER_SPECIFIC_CONST_0, BASETEXTURETRANSFORM );
 			SetModulationPixelShaderDynamicState( 3 );
 
-			lightmappedgeneric_decal_Dynamic_Index vshIndex;
+			sdk_lightmappedgeneric_decal_Dynamic_Index vshIndex;
 			vshIndex.SetDOWATERFOG( pShaderAPI->GetSceneFogMode() == MATERIAL_FOG_LINEAR_BELOW_FOG_Z );
 			pShaderAPI->SetVertexShaderIndex( vshIndex.GetIndex() );
 		}

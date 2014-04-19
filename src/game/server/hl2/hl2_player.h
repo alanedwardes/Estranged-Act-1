@@ -116,6 +116,8 @@ public:
 
 	virtual bool		ClientCommand( const CCommand &args );
 
+	virtual void		PlayStepSound( Vector &vecOrigin, surfacedata_t *psurface, float fvol, bool force );
+
 	// from cbasecombatcharacter
 	void				InitVCollision( const Vector &vecAbsOrigin, const Vector &vecAbsVelocity );
 	WeaponProficiency_t CalcWeaponProficiency( CBaseCombatWeapon *pWeapon );
@@ -138,6 +140,7 @@ public:
 	float SuitPower_GetCurrentPercentage( void ) { return m_HL2Local.m_flSuitPower; }
 	
 	void SetFlashlightEnabled( bool bState );
+	bool GetFlashlightEnabled( void );
 
 	// Apply a battery
 	bool ApplyBattery( float powerMultiplier = 1.0 );
@@ -173,6 +176,8 @@ public:
 
 	bool CanZoom( CBaseEntity *pRequester );
 	void ToggleZoom(void);
+	void ZoomIn(void);
+	void ZoomOut(void);
 	void StartZooming( void );
 	void StopZooming( void );
 	bool IsZooming( void );
@@ -226,11 +231,15 @@ public:
 
 	// Flashlight Device
 	void				CheckFlashlight( void );
+	bool				AddFlashlightBattery( int amount );
+	int					GetFlashlightBatteries( void );
+	float				GetFlashlightLevel( void );
 	int					FlashlightIsOn( void );
 	void				FlashlightTurnOn( void );
 	void				FlashlightTurnOff( void );
 	bool				IsIlluminatedByFlashlight( CBaseEntity *pEntity, float *flReturnDot );
 	void				SetFlashlightPowerDrainScale( float flScale ) { m_flFlashlightPowerDrainScale = flScale; }
+	bool				GetFlashlightHasBeenEnabled( void ) { return m_bFlashlightHasBeenEnabled; }
 
 	// Underwater breather device
 	virtual void		SetPlayerUnderwater( bool state );
@@ -287,7 +296,6 @@ public:
 protected:
 	virtual void		PreThink( void );
 	virtual	void		PostThink( void );
-	virtual bool		HandleInteraction(int interactionType, void *data, CBaseCombatCharacter* sourceEnt);
 
 	virtual void		UpdateWeaponPosture( void );
 
@@ -346,6 +354,7 @@ private:
 
 	bool				m_bFlashlightDisabled;
 	bool				m_bUseCappedPhysicsDamageTable;
+	bool				m_bFlashlightHasBeenEnabled;
 	
 	float				m_flArmorReductionTime;
 	int					m_iArmorReductionFrom;
@@ -360,6 +369,9 @@ private:
 	EHANDLE				m_hLocatorTargetEntity; // The entity that's being tracked by the suit locator.
 
 	float				m_flTimeNextLadderHint;	// Next time we're eligible to display a HUD hint about a ladder.
+
+	float				m_flTimeNextZoomHint; // Next time we're eligible to show a zoom HUD hint
+	int					m_iTotalZoomHints; // How many zoom hints we've had.
 	
 	friend class CHL2GameMovement;
 };

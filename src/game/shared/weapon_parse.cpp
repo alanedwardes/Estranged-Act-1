@@ -319,6 +319,7 @@ FileWeaponInfo_t::FileWeaponInfo_t()
 	szWorldModel[0] = 0;
 	szAnimationPrefix[0] = 0;
 	iSlot = 0;
+	iScopeFOV = 0;
 	iPosition = 0;
 	iMaxClip1 = 0;
 	iMaxClip2 = 0;
@@ -367,6 +368,7 @@ void FileWeaponInfo_t::Parse( KeyValues *pKeyValuesData, const char *szWeaponNam
 	Q_strncpy( szWorldModel, pKeyValuesData->GetString( "playermodel" ), MAX_WEAPON_STRING );
 	Q_strncpy( szAnimationPrefix, pKeyValuesData->GetString( "anim_prefix" ), MAX_WEAPON_PREFIX );
 	iSlot = pKeyValuesData->GetInt( "bucket", 0 );
+	iScopeFOV = pKeyValuesData->GetInt( "scope_fov", 0 );
 	iPosition = pKeyValuesData->GetInt( "bucket_position", 0 );
 	
 	// Use the console (X360) buckets if hud_fastswitch is set to 2.

@@ -337,7 +337,7 @@ void CPropCrane::Think(void)
 			if ( m_bEnterAnimOn )
 			{
 				// Finished entering, display the hint for using the crane
-				UTIL_HudHintText( m_hPlayer, "#Valve_Hint_CraneKeys" );
+				UTIL_HudHintText( m_hPlayer, "#hint_crane" );
 			}
 			
 			GetServerVehicle()->HandleEntryExitFinish( m_bExitAnimOn, true );

@@ -13,6 +13,7 @@
 #include <vgui_controls/AnimationController.h>
 #include "iinput.h"
 #include "ienginevgui.h"
+#include "c_entgloweffect.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -74,6 +75,17 @@ ClientModeHLNormal::~ClientModeHLNormal()
 {
 }
 
+void ClientModeHLNormal::LevelInit( const char* newmap )
+{
+	g_pScreenSpaceEffects->EnableScreenSpaceEffect( "ge_entglow" );
+	BaseClass::LevelInit( newmap );
+}
+
+void ClientModeHLNormal::LevelShutdown( void )
+{
+	g_pScreenSpaceEffects->DisableScreenSpaceEffect( "ge_entglow" );
+	BaseClass::LevelShutdown();
+}
 
 //-----------------------------------------------------------------------------
 // Purpose: 

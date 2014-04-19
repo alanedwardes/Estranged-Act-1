@@ -172,18 +172,12 @@ public:
 	bool ShouldIgniteZombieGib( void );
 	virtual bool IsChopped( const CTakeDamageInfo &info );
 	virtual bool IsSquashed( const CTakeDamageInfo &info ) { return false; }
-	virtual void DieChopped( const CTakeDamageInfo &info );
 	virtual void Ignite( float flFlameLifetime, bool bNPCOnly = true, float flSize = 0.0f, bool bCalledByLevelDesigner = false );
 	void CopyRenderColorTo( CBaseEntity *pOther );
-
-	virtual bool ShouldBecomeTorso( const CTakeDamageInfo &info, float flDamageThreshold );
-	virtual HeadcrabRelease_t ShouldReleaseHeadcrab( const CTakeDamageInfo &info, float flDamageThreshold );
 
 	// Headcrab releasing/breaking apart
 	void RemoveHead( void );
 	virtual void SetZombieModel( void ) { };
-	virtual void BecomeTorso( const Vector &vecTorsoForce, const Vector &vecLegsForce );
-	virtual bool CanBecomeLiveTorso() { return false; }
 	virtual bool HeadcrabFits( CBaseAnimating *pCrab );
 	void ReleaseHeadcrab( const Vector &vecOrigin, const Vector &vecVelocity, bool fRemoveHead, bool fRagdollBody, bool fRagdollCrab = false );
 	void SetHeadcrabSpawnLocation( int iCrabAttachment, CBaseAnimating *pCrab );
@@ -222,10 +216,6 @@ public:
 	bool ShouldPlayIdleSound( void ) { return false; }
 
 	virtual const char *GetMoanSound( int nSound ) = 0;
-	virtual const char *GetHeadcrabClassname( void ) = 0;
-	virtual const char *GetLegsModel( void ) = 0;
-	virtual const char *GetTorsoModel( void ) = 0;
-	virtual const char *GetHeadcrabModel( void ) = 0;
 
 	virtual Vector BodyTarget( const Vector &posSrc, bool bNoisy );
 	virtual Vector HeadTarget( const Vector &posSrc );

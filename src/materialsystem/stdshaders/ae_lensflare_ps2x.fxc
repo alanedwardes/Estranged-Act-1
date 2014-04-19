@@ -1,0 +1,138 @@
+#include "common_ps_fxc.h"
+
+sampler bloom		: register( s0 );
+sampler dirtMap		: register( s1 );
+//sampler noiseMap		: register( s2 );
+sampler framebuffer		: register( s3 );
+
+static int samples = 5; // number of samples
+static float flFlaresDispersal = 0.3; //dispersion between samples (spacing between samples)
+static float flHoopWidth = 0.45; // width of hoop/halo flare
+
+static float3 flChromaCoeff = float3(0.333, 0.667, 0.999); // per-channel distortion coeffs
+static float flChromaDist = 0.05; // strength of chroma effect( distance between each sample )
+
+static float3 flChromaDistortion = flChromaCoeff * flChromaDist;
+
+static float flThreshold = 0.35; // highlight threshold
+
+#if defined( SHADER_MODEL_PS_3_0 )
+const float flIntensity : register( c0 );
+#endif
+static float flFlareIntensity = 0.3; // Strength or Intensity of the Flares
+static float flHoopIntensity = 0.1; // Strength or Intensity of the Hoop
+
+static bool bDoHoop = true; // use the hoop flare
+static bool bUseDirtMask = true; // mask our flare with a dirt map
+#if defined( SHADER_MODEL_PS_2_B ) || defined( SHADER_MODEL_PS_3_0 )
+static bool bDoAnamorphic = true;
+#endif
+
+float3 texChromatic(sampler sceneTexture, float2 sampleCenter, float2 sampleVector, float3 distortion) 
+{
+	float3 color = 0.0;
+
+	color.r = tex2D(sceneTexture, sampleCenter + sampleVector * distortion.r).r;
+	color.g = tex2D(sceneTexture, sampleCenter + sampleVector * distortion.g).g;
+	color.b = tex2D(sceneTexture, sampleCenter + sampleVector * distortion.b).b;
+
+	return color;
+}
+
+float Vignette(float2 texCoords)
+{
+	float vignette = distance(texCoords, float2(0.5,0.5));
+	vignette = smoothstep(flHoopWidth - 0.1, flHoopWidth, vignette);
+	return clamp(vignette, 0.0, 1.0);
+}
+
+float3 threshold(sampler sceneTexture, float2 texCoords)
+{
+	return saturate(tex2D(sceneTexture, texCoords) - flThreshold);
+}
+
+void main( in float2 texCoords : TEXCOORD0, out float4 finalColor : COLOR )
+{
+	float2 sampleVector = (0.5 - texCoords) * flFlaresDispersal;
+
+	float3 result = 0.0;
+	
+	for (int i = 0; i < samples; ++i) 
+	{
+		float2 offset = sampleVector * float(i);
+		result += texChromatic(bloom, texCoords + offset, offset, flChromaDistortion);
+	}
+	// divide by number of samples
+	result /= float(samples);
+
+	result *= flFlareIntensity;
+
+	if(bDoHoop)
+	{
+		float2 hoopVector = normalize(sampleVector) * flHoopWidth;
+		float3 hoop = texChromatic(bloom, texCoords + hoopVector, hoopVector, flChromaDistortion).rgb; // Hoop aka "Halo" Flare
+		//float3 hoopMask = tex2D(noiseMap, normalize(0.5 - texCoords)) ;
+		//hoop *= hoopMask.r; // gives that realistic "hoop" look 
+		hoop *= Vignette(texCoords); // mask out middle artifacts with a Vignette
+		hoop *= flHoopIntensity;
+
+		result += hoop;	// add in the hoop
+	}
+
+#if defined( SHADER_MODEL_PS_2_B ) || defined( SHADER_MODEL_PS_3_0 )
+	float mask = 1.0f;
+#endif
+	if(bUseDirtMask)
+	{	
+		// dirt map/mask
+		float3 dirt = tex2D(dirtMap, texCoords);
+		// blend between nothing, our dirt map and the flare
+		//result = lerp(0.0, dirt, result);	
+#if defined( SHADER_MODEL_PS_2_B ) || defined( SHADER_MODEL_PS_3_0 )
+		mask = saturate( (dirt - 0.5) * 2 );
+		mask = saturate( mask + 0.05f );
+#else
+		result = lerp(0.0, dirt, result);
+#endif
+
+	}
+
+	//if(bUseDirtMask)
+	//{
+	//// dirt map/mask
+	//float3 dirt = tex2D(dirtMap, texCoords);
+	//// blend between nothing, our dirt map and the flare
+	//result = lerp( 0.0, dirt, tex2D(framebuffer, texCoords).rgb );
+	//}
+
+
+	
+	float3 anamorphic = 0.0;
+
+#if defined( SHADER_MODEL_PS_2_B ) || defined( SHADER_MODEL_PS_3_0 )
+	if (bDoAnamorphic)
+	{
+		float s;
+		for (int i = -12; i < 12; ++i) 
+		{
+			s = clamp(1.0 / abs(float(i)), 0.0, 1.0);
+			anamorphic += threshold(bloom, float2(texCoords.x + float(i) * (1.0 / 64.0), texCoords.y)).rgb * s;
+		}
+		anamorphic *= float3(0.1, 0.4, 1.0) * 0.4;
+	}
+#endif
+
+	finalColor = tex2D(framebuffer,texCoords);
+
+#if defined( SHADER_MODEL_PS_2_B ) || defined( SHADER_MODEL_PS_3_0 )
+	float3 finalResult = (result + anamorphic + tex2D(bloom,texCoords)) * mask;
+#if defined( SHADER_MODEL_PS_3_0 )
+	finalResult *= flIntensity;
+#endif
+	finalColor.rgb += finalResult;
+#else
+	finalColor.rgb += (result + anamorphic);
+#endif
+
+	finalColor.a = 1.0; // assign an alpha
+}

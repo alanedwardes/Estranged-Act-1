@@ -2259,7 +2259,8 @@ static void CheckPushedEntity( CBaseEntity *pEntity, pushblock_t &params )
 		return;
 	// somehow we've got a static or motion disabled physics object in hierarchy!
 	// This is not allowed!  Don't test blocking in that case.
-	Assert(pPhysics->IsMoveable());
+	//Assert(pPhysics->IsMoveable());
+	// ae - we don't need to assert this.
 	if ( !pPhysics->IsMoveable() || !pPhysics->GetShadowController() )
 	{
 #if DEBUG_PUSH_MESSAGES

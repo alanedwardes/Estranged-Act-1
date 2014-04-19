@@ -13,14 +13,14 @@
 #include "shaderapi/commandbuffer.h"
 #endif
 
-#include "BaseVSShader.h"
+#include "basevsshader.h"
 #include "shaderapi/ishaderapi.h"
 
 #ifdef _WIN32
 #pragma once
 #endif
 
-extern ConVar	my_mat_fullbright;
+static ConVar my_mat_fullbright( "mat_fullbright", "0", FCVAR_CHEAT );
 
 template<int N> class CFixedCommandStorageBuffer
 {

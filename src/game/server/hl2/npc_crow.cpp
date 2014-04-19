@@ -75,6 +75,7 @@ BEGIN_DATADESC( CNPC_Crow )
 	DEFINE_FIELD( m_flLastStuckCheck, FIELD_TIME ),
 	DEFINE_FIELD( m_flDangerSoundTime, FIELD_TIME ),
 	DEFINE_KEYFIELD( m_bIsDeaf, FIELD_BOOLEAN, "deaf" ),
+	DEFINE_OUTPUT(m_onFlyAway, "OnFlyAway" ),
 
 	// Inputs
 	DEFINE_INPUTFUNC( FIELD_STRING, "FlyAway", InputFlyAway ),
@@ -1154,6 +1155,7 @@ int CNPC_Crow::SelectSchedule( void )
 	if ( HasCondition( COND_CROW_FORCED_FLY ) )
 	{
 		ClearCondition( COND_CROW_FORCED_FLY );
+		m_onFlyAway.FireOutput(this, this);
 		return SCHED_CROW_FLY_AWAY;
 	}
 
@@ -1164,6 +1166,7 @@ int CNPC_Crow::SelectSchedule( void )
 	//
 	if ( !( GetFlags() & FL_ONGROUND ) && ( gpGlobals->curtime > 2.0 ) && m_bOnJeep == false )
 	{
+		m_onFlyAway.FireOutput(this, this);
 		return SCHED_CROW_FLY_AWAY;
 	}
 
@@ -1172,6 +1175,7 @@ int CNPC_Crow::SelectSchedule( void )
 	//
 	if ( HasCondition( COND_LIGHT_DAMAGE ) || HasCondition( COND_HEAVY_DAMAGE ) )
 	{
+		m_onFlyAway.FireOutput(this, this);
 		return SCHED_CROW_FLY_AWAY;
 	}
 
@@ -1180,6 +1184,7 @@ int CNPC_Crow::SelectSchedule( void )
 		if ( HasCondition( COND_HEAR_DANGER ) || HasCondition( COND_HEAR_COMBAT ) )
 		{
 			m_flDangerSoundTime = gpGlobals->curtime + 10.0f;
+			m_onFlyAway.FireOutput(this, this);
 			return SCHED_CROW_FLY_AWAY;
 		}
 	}
@@ -1192,6 +1197,7 @@ int CNPC_Crow::SelectSchedule( void )
 		ClearCondition( COND_CROW_ENEMY_WAY_TOO_CLOSE );
 
 		m_nMorale = 0;
+		m_onFlyAway.FireOutput(this, this);
 		return SCHED_CROW_FLY_AWAY;
 	}
 
@@ -1205,6 +1211,7 @@ int CNPC_Crow::SelectSchedule( void )
 		if ( m_bOnJeep == true )
 		{
 			m_nMorale = 0;
+			m_onFlyAway.FireOutput(this, this);
 			return SCHED_CROW_FLY_AWAY;
 		}
 
@@ -1323,46 +1330,6 @@ void CNPC_Crow::FlapSound( void )
 	EmitSound( "NPC_Crow.Flap" );
 	m_bPlayedLoopingSound = true;
 }
-
-
-//-----------------------------------------------------------------------------
-// Purpose:  This is a generic function (to be implemented by sub-classes) to
-//			 handle specific interactions between different types of characters
-//			 (For example the barnacle grabbing an NPC)
-// Input  :  Constant for the type of interaction
-// Output :	 true  - if sub-class has a response for the interaction
-//			 false - if sub-class has no response
-//-----------------------------------------------------------------------------
-bool CNPC_Crow::HandleInteraction( int interactionType, void *data, CBaseCombatCharacter *sourceEnt )
-{
-	if ( interactionType == g_interactionBarnacleVictimDangle )
-	{
-		// Die instantly
-		return false;
-	}
-	else if ( interactionType == g_interactionBarnacleVictimGrab )
-	{
-		if ( GetFlags() & FL_ONGROUND )
-		{
-			SetGroundEntity( NULL );
-		}
-
-		// return ideal grab position
-		if (data)
-		{
-			// FIXME: need a good way to ensure this contract
-			*((Vector *)data) = GetAbsOrigin() + Vector( 0, 0, 5 );
-		}
-
-		StopLoopingSounds();
-
-		SetThink( NULL );
-		return true;
-	}
-
-	return BaseClass::HandleInteraction( interactionType, data, sourceEnt );
-}
-
 
 //-----------------------------------------------------------------------------
 // Purpose: 

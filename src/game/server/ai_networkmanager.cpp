@@ -348,7 +348,7 @@ void CAI_NetworkManager::SaveNetworkGraph( void )
 	// Write the file out
 	// -------------------------------
 
-	FileHandle_t fh = filesystem->Open( szNrpFilename, "wb" );
+	FileHandle_t fh = filesystem->Open( szNrpFilename, "wb", "DEFAULT_WRITE_PATH" );
 	if ( !fh )
 	{
 		DevWarning( 2, "Couldn't create %s!\n", szNrpFilename );
@@ -528,7 +528,7 @@ void CAI_NetworkManager::LoadNetworkGraph( void )
 	
 
 
-	if ( !bHaveAIN && !filesystem->ReadFile( szNrpFilename, "game", buf ) )
+	if ( !bHaveAIN && !filesystem->ReadFile( szNrpFilename, NULL, buf ) )
 	{
 		DevWarning( 2, "Couldn't read %s!\n", szNrpFilename );
 		return;
@@ -983,7 +983,7 @@ bool CAI_NetworkManager::IsAIFileCurrent ( const char *szMapName )
 		Q_strncpy( szLoweredGameDir, pGameDir, sizeof( szLoweredGameDir ) );
 		Q_strlower( szLoweredGameDir );
 		
-		if ( !V_stricmp( szLoweredGameDir, "hl2" ) || !V_stricmp( szLoweredGameDir, "episodic" ) || !V_stricmp( szLoweredGameDir, "ep2" ) || !V_stricmp( szLoweredGameDir, "portal" ) || !V_stricmp( szLoweredGameDir, "lostcoast" )  || !V_stricmp( szLoweredGameDir, "hl1" ) )
+		if (!V_stricmp(szLoweredGameDir, "estrangedact1") || !V_stricmp(szLoweredGameDir, "hl2") || !V_stricmp(szLoweredGameDir, "episodic") || !V_stricmp(szLoweredGameDir, "ep2") || !V_stricmp(szLoweredGameDir, "portal") || !V_stricmp(szLoweredGameDir, "lostcoast") || !V_stricmp(szLoweredGameDir, "hl1"))
 		{
 			// we shipped good node graphs for our games
 			return true;
@@ -1003,7 +1003,7 @@ bool CAI_NetworkManager::IsAIFileCurrent ( const char *szMapName )
 			{
 				// The user has specified that they wish to override the 
 				// rebuilding of outdated nodegraphs (see top of this file)
-				if ( filesystem->FileExists( szGraphFilename ) )
+				if ( filesystem->FileExists( szGraphFilename, NULL ) )
 				{
 					// Display these messages only if the graph exists, and the 
 					// user is asking to override the rebuilding. If the graph does
@@ -1110,7 +1110,8 @@ void CAI_NetworkManager::DelayedInit( void )
 #endif
 
 			DevMsg( "Node Graph out of Date. Rebuilding... (%d, %d, %d)\n", (int)m_bDontSaveGraph, (int)!CAI_NetworkManager::NetworksLoaded(), (int) engine->IsInEditMode() );
-			UTIL_CenterPrintAll( "Node Graph out of Date. Rebuilding...\n" );
+			if (developer.GetBool())
+				UTIL_CenterPrintAll( "Node Graph out of Date. Rebuilding...\n" );
 			m_bNeedGraphRebuild = true;
 			g_pAINetworkManager->SetNextThink( gpGlobals->curtime + 1 );
 			return;
@@ -1547,7 +1548,7 @@ void CAI_NetworkEditTools::DrawEditInfoOverlay(void)
 		}
 	}
 
-	UTIL_HudMessageAll( tTextParam, outTxt );
+	UTIL_HudMessageAll( tTextParam, outTxt, NULL );
 
 
 }
@@ -2235,8 +2236,6 @@ void CAI_NetworkBuilder::Build( CAI_Network *pNetwork )
 	if ( !nNodes )
 		return;
 
-	CAI_NetworkBuildHelper *pHelper = (CAI_NetworkBuildHelper *)CreateEntityByName( "ai_network_build_helper" );
-
 	VPROF( "AINet" );
 
 	BeginBuild();
@@ -2256,8 +2255,6 @@ void CAI_NetworkBuilder::Build( CAI_Network *pNetwork )
 	for ( i = 0; i < nNodes; i++)
 	{
 		InitNodePosition( pNetwork, ppNodes[i] );
-		if ( pHelper )
-			pHelper->PostInitNodePosition( pNetwork, ppNodes[i] );
 	}
 	nNodes = pNetwork->NumNodes(); // InitNodePosition can create nodes
 	timer.End();
@@ -2323,9 +2320,6 @@ void CAI_NetworkBuilder::Build( CAI_Network *pNetwork )
 	g_pAINetworkManager->FixupHints();
 
 	EndBuild();
-
-	if ( pHelper )
-		UTIL_Remove( pHelper );
 }
 
 //------------------------------------------------------------------------------

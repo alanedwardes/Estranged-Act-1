@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//===== Copyright © 1996-2005, Valve Corporation, All rights reserved. ======//
 //
 // Purpose: 
 //
@@ -6,12 +6,12 @@
 // $NoKeywords: $
 //===========================================================================//
 
-#include "BaseVSShader.h"
+#include "basevsshader.h"
 #include "vertexlitgeneric_dx9_helper.h"
 
 extern ConVar r_flashlight_version2;
 
-BEGIN_VS_SHADER( UnlitGeneric, "Help for UnlitGeneric" )
+BEGIN_VS_SHADER( sdk_unlitgeneric, "Help for sdk_unlitgeneric" )
 
 	BEGIN_SHADER_PARAMS
 		SHADER_PARAM( ALBEDO, SHADER_PARAM_TYPE_TEXTURE, "shadertest/BaseTexture", "albedo (Base texture with no baked lighting)" )

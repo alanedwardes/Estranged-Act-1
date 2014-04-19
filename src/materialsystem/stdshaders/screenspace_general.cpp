@@ -5,12 +5,12 @@
 // $NoKeywords: $
 //=============================================================================//
 
-#include "BaseVSShader.h"
+#include "basevsshader.h"
 
-#include "SDK_screenspaceeffect_vs20.inc"
+#include "sdk_screenspaceeffect_vs20.inc"
 
-DEFINE_FALLBACK_SHADER( SDK_screenspace_general, SDK_screenspace_general_dx9 )
-BEGIN_VS_SHADER_FLAGS( SDK_screenspace_general_dx9, "Help for screenspace_general", SHADER_NOT_EDITABLE )
+DEFINE_FALLBACK_SHADER( sdk_screenspace_general, sdk_screenspace_general_dx9 )
+BEGIN_VS_SHADER_FLAGS( sdk_screenspace_general_dx9, "Help for screenspace_general", SHADER_NOT_EDITABLE )
 	BEGIN_SHADER_PARAMS
 		SHADER_PARAM( C0_X,SHADER_PARAM_TYPE_FLOAT,"0","")
 		SHADER_PARAM( C0_Y,SHADER_PARAM_TYPE_FLOAT,"0","")

@@ -986,6 +986,20 @@ void UTIL_StringToColor32( color32 *color, const char *pString )
 	color->a = tmp[3];
 }
 
+void UTIL_ColorStringToLinearFloatColor( Vector &color, const char *pString )
+{
+	float tmp[4];
+	UTIL_StringToFloatArray( tmp, 4, pString );
+	if( tmp[3] <= 0.0f )
+	{
+		tmp[3] = 255.0f;
+	}
+	tmp[3] *= ( 1.0f / 255.0f );
+	color.x = GammaToLinear( tmp[0] * ( 1.0f / 255.0f ) ) * tmp[3];
+	color.y = GammaToLinear( tmp[1] * ( 1.0f / 255.0f ) ) * tmp[3];
+	color.z = GammaToLinear( tmp[2] * ( 1.0f / 255.0f ) ) * tmp[3];
+}
+
 #ifndef _XBOX
 void UTIL_DecodeICE( unsigned char * buffer, int size, const unsigned char *key)
 {

@@ -157,19 +157,6 @@ void CAI_AllyManager::CountAllies( int *pTotal, int *pMedics )
 				  fabsf( ppAIs[i]->GetAbsOrigin().z - vPlayerPos.z ) > 192 ) )
 				continue;
 
-			if( FClassnameIs( ppAIs[i], "npc_citizen" ) ) 
-			{  
-				CNPC_Citizen *pCitizen = assert_cast<CNPC_Citizen *>(ppAIs[i]);
-				if ( !pCitizen->CanJoinPlayerSquad() )
-					continue;
-
-				if ( pCitizen->WasInPlayerSquad() && !pCitizen->IsInPlayerSquad() )
-					continue;
-
-				if ( ppAIs[i]->HasSpawnFlags( SF_CITIZEN_MEDIC ) )
-					(*pMedics)++;
-			}
-
 			(*pTotal)++;
 		}
 	}

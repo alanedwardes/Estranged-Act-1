@@ -513,6 +513,11 @@ void CBaseCombatWeapon::FallInit( void )
 				m_pConstraint->SetGameData( (void *) this );
 			}
 		}
+
+		if ( HasSpawnFlags( SF_WEAPON_MOTION_DISABLED ) )
+		{
+			VPhysicsGetObject()->EnableMotion(false);
+		}
 #endif //CLIENT_DLL
 	}	
 
@@ -715,6 +720,10 @@ void CBaseCombatWeapon::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 	if ( pPlayer )
 	{
 		m_OnPlayerUse.FireOutput( pActivator, pCaller );
+
+		// ae - remove motion disabled, so if the player
+		// drops the weapon, it will not float.
+		RemoveSpawnFlags( SF_WEAPON_MOTION_DISABLED );
 
 		//
 		// Bump the weapon to try equipping it before picking it up physically. This is

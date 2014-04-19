@@ -524,21 +524,22 @@ void CBreakableProp::HandleFirstCollisionInteractions( int index, gamevcollision
 		}
 	}
 
-	if ( HasInteraction( PROPINTER_PHYSGUN_NOTIFY_CHILDREN ) )
-	{
-		CUtlVector<CBaseEntity *> children;
-		GetAllChildren( this, children );
-		for (int i = 0; i < children.Count(); i++ )
-		{
-			CBaseEntity *pent = children.Element( i );
+	// ae - this is EP2 code. see props_shared.h
+	//if ( HasInteraction( PROPINTER_PHYSGUN_NOTIFY_CHILDREN ) )
+	//{
+	//	CUtlVector<CBaseEntity *> children;
+	//	GetAllChildren( this, children );
+	//	for (int i = 0; i < children.Count(); i++ )
+	//	{
+	//		CBaseEntity *pent = children.Element( i );
 
-			IParentPropInteraction *pPropInter = dynamic_cast<IParentPropInteraction *>( pent );
-			if ( pPropInter )
-			{
-				pPropInter->OnParentCollisionInteraction( COLLISIONINTER_PARENT_FIRST_IMPACT, index, pEvent );
-			}
-		}
-	}
+	//		IParentPropInteraction *pPropInter = dynamic_cast<IParentPropInteraction *>( pent );
+	//		if ( pPropInter )
+	//		{
+	//			pPropInter->OnParentCollisionInteraction( COLLISIONINTER_PARENT_FIRST_IMPACT, index, pEvent );
+	//		}
+	//	}
+	//}
 }
 
 
@@ -2795,21 +2796,22 @@ void CPhysicsProp::OnPhysGunDrop( CBasePlayer *pPhysGunUser, PhysGunDrop_t Reaso
 
 	m_OnPhysGunDrop.FireOutput( pPhysGunUser, this );
 	
-	if ( HasInteraction( PROPINTER_PHYSGUN_NOTIFY_CHILDREN ) )
-	{
-		CUtlVector<CBaseEntity *> children;
-		GetAllChildren( this, children );
-		for (int i = 0; i < children.Count(); i++ )
-		{
-			CBaseEntity *pent = children.Element( i );
+	// ae - this is EP2 code. see props_shared.h
+	//if ( HasInteraction( PROPINTER_PHYSGUN_NOTIFY_CHILDREN ) )
+	//{
+	//	CUtlVector<CBaseEntity *> children;
+	//	GetAllChildren( this, children );
+	//	for (int i = 0; i < children.Count(); i++ )
+	//	{
+	//		CBaseEntity *pent = children.Element( i );
 
-			IParentPropInteraction *pPropInter = dynamic_cast<IParentPropInteraction *>( pent );
-			if ( pPropInter )
-			{
-				pPropInter->OnParentPhysGunDrop( pPhysGunUser, Reason );
-			}
-		}
-	}
+	//		IParentPropInteraction *pPropInter = dynamic_cast<IParentPropInteraction *>( pent );
+	//		if ( pPropInter )
+	//		{
+	//			pPropInter->OnParentPhysGunDrop( pPhysGunUser, Reason );
+	//		}
+	//	}
+	//}
 }
 
 //-----------------------------------------------------------------------------
@@ -3554,6 +3556,7 @@ BEGIN_DATADESC(CBasePropDoor)
 	//DEFINE_FIELD(m_hDoorList, FIELD_CLASSPTR),	// Reconstructed
 	
 	DEFINE_INPUTFUNC(FIELD_VOID, "Open", InputOpen),
+	DEFINE_INPUTFUNC(FIELD_VOID, "OpenLocked", InputOpenLocked),
 	DEFINE_INPUTFUNC(FIELD_STRING, "OpenAwayFrom", InputOpenAwayFrom),
 	DEFINE_INPUTFUNC(FIELD_VOID, "Close", InputClose),
 	DEFINE_INPUTFUNC(FIELD_VOID, "Toggle", InputToggle),
@@ -3970,6 +3973,16 @@ void CBasePropDoor::InputOpen(inputdata_t &inputdata)
 	OpenIfUnlocked(inputdata.pActivator, NULL);
 }
 
+//-----------------------------------------------------------------------------
+// Purpose: Opens the door regardless of locked state.
+//-----------------------------------------------------------------------------
+void CBasePropDoor::InputOpenLocked(inputdata_t &inputdata)
+{
+	// Play door unlock sounds.
+	PlayLockSounds(this, &m_ls, false, false);
+	m_OnOpen.FireOutput(inputdata.pActivator, this);
+	DoorOpen(inputdata.pActivator);
+}
 
 //-----------------------------------------------------------------------------
 // Purpose: Opens the door away from a specified entity if it is not already open.

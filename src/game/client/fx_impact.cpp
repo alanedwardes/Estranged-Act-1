@@ -207,7 +207,7 @@ char const *GetImpactDecal( C_BaseEntity *pEntity, int iMaterial, int iDamageTyp
 //-----------------------------------------------------------------------------
 // Purpose: Perform custom effects based on the Decal index
 //-----------------------------------------------------------------------------
-static ConVar cl_new_impact_effects( "cl_new_impact_effects", "0" );
+static ConVar cl_new_impact_effects( "cl_new_impact_effects", "1" );
 
 struct ImpactEffect_t
 {
@@ -252,7 +252,7 @@ static void SetImpactControlPoint( CNewParticleEffect *pEffect, int nPoint, cons
 	vecImpactY *= -1.0f;
 
 	pEffect->SetControlPoint( nPoint, vecImpactPoint );
-	pEffect->SetControlPointOrientation( nPoint, vecForward, vecImpactY, vecImpactZ );
+	pEffect->SetControlPointOrientation( nPoint, vecImpactZ, vecImpactY, vecForward );
 	pEffect->SetControlPointEntity( nPoint, pEntity );
 }
 
@@ -274,21 +274,28 @@ static void PerformNewCustomEffects( const Vector &vecOrigin, trace_t &tr, const
 	if ( !pImpactName )
 		return;
 
-	CSmartPtr<CNewParticleEffect> pEffect = CNewParticleEffect::Create( NULL, pImpactName );
-	if ( !pEffect->IsValid() )
-		return;
-
 	Vector	vecReflect;
-	float	flDot = DotProduct( shotDir, tr.plane.normal );
-	VectorMA( shotDir, -2.0f * flDot, tr.plane.normal, vecReflect );
+	Vector	vecNormal = tr.plane.normal;
+
+	float	flDot = DotProduct( shotDir, vecNormal );
+	VectorMA( shotDir, -2.0f * flDot, vecNormal, vecReflect );
 
 	Vector vecShotBackward;
 	VectorMultiply( shotDir, -1.0f, vecShotBackward );
 
 	Vector vecImpactPoint = ( tr.fraction != 1.0f ) ? tr.endpos : vecOrigin;
-	Assert( VectorsAreEqual( vecOrigin, tr.endpos, 1e-1 ) );
+#ifdef _DEBUG
+	if(!VectorsAreEqual( vecOrigin, tr.endpos, 1e-1 ))
+	{
+		Warning( "Impact decal drawn too far from the surface impacted.\n" );
+	}
+#endif
 
-	SetImpactControlPoint( pEffect.GetObject(), 0, vecImpactPoint, tr.plane.normal, tr.m_pEnt ); 
+	CSmartPtr<CNewParticleEffect> pEffect = new CNewParticleEffect( NULL, pImpactName );
+	if ( !pEffect->IsValid() )
+		return;
+
+	SetImpactControlPoint( pEffect.GetObject(), 0, vecImpactPoint, vecNormal, tr.m_pEnt ); 
 	SetImpactControlPoint( pEffect.GetObject(), 1, vecImpactPoint, vecReflect,		tr.m_pEnt ); 
 	SetImpactControlPoint( pEffect.GetObject(), 2, vecImpactPoint, vecShotBackward,	tr.m_pEnt ); 
 	pEffect->SetControlPoint( 3, Vector( iScale, iScale, iScale ) );

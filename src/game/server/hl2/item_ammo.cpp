@@ -38,137 +38,275 @@ int ITEM_GiveAmmo( CBasePlayer *pPlayer, float flCount, const char *pszAmmoName,
 // ========================================================================
 //	>> BoxSRounds
 // ========================================================================
-class CItem_BoxSRounds : public CItem
+class CItem_BoxSRounds : public CBaseAnimating
 {
 public:
-	DECLARE_CLASS( CItem_BoxSRounds, CItem );
+	DECLARE_CLASS( CItem_BoxSRounds, CBaseAnimating );
+	DECLARE_DATADESC();
 
 	void Spawn( void )
 	{ 
 		Precache( );
 		SetModel( "models/items/boxsrounds.mdl" );
 		BaseClass::Spawn( );
+
+		SetTouch(NULL);
+		SetUse(&CItem_BoxSRounds::MyUse);
+
+		SetMoveType(MOVETYPE_FLYGRAVITY);
+		SetSolid(SOLID_BBOX);
+		SetBlocksLOS(false);
+		AddEFlags(EFL_NO_ROTORWASH_PUSH);
+
+		SetCollisionGroup(COLLISION_GROUP_WEAPON);
+
+		int nSolidFlags = GetSolidFlags() | FSOLID_NOT_STANDABLE | FSOLID_NOT_STANDABLE | FSOLID_TRIGGER | FSOLID_USE_TRIGGER_BOUNDS;
+
+		VPhysicsInitNormal(SOLID_VPHYSICS, nSolidFlags, false);
+
+		CollisionProp()->UseTriggerBounds(true, 64);
+
+		SetGlow(true);
 	}
 	void Precache( void )
 	{
 		PrecacheModel ("models/items/boxsrounds.mdl");
 	}
-	bool MyTouch( CBasePlayer *pPlayer )
+	void MyUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 	{
-		if (ITEM_GiveAmmo( pPlayer, SIZE_AMMO_PISTOL, "Pistol"))
-		{
-			if ( g_pGameRules->ItemShouldRespawn( this ) == GR_ITEM_RESPAWN_NO )
-			{
-				UTIL_Remove(this);	
-			}
+		CBasePlayer *pPlayer = ToBasePlayer( pActivator );
 
-			return true;
+		if (ITEM_GiveAmmo( pPlayer, SIZE_AMMO_COLT, "Colt"))
+		{
+			UTIL_Remove(this);	
+
+			return;
 		}
-		return false;
+		else
+		{
+			if(pPlayer)
+			{
+				pPlayer->PickupObject(this);
+			}
+		}
+		return;
+	}
+	int ObjectCaps( void ) 
+	{
+		return BaseClass::ObjectCaps() | FCAP_IMPULSE_USE;
 	}
 };
+
+BEGIN_DATADESC(CItem_BoxSRounds)
+	DEFINE_USEFUNC(MyUse)
+END_DATADESC()
+
 LINK_ENTITY_TO_CLASS(item_box_srounds, CItem_BoxSRounds);
 LINK_ENTITY_TO_CLASS(item_ammo_pistol, CItem_BoxSRounds);
 
 // ========================================================================
 //	>> LargeBoxSRounds
 // ========================================================================
-class CItem_LargeBoxSRounds : public CItem
+class CItem_LargeBoxSRounds : public CBaseAnimating
 {
 public:
-	DECLARE_CLASS( CItem_LargeBoxSRounds, CItem );
+	DECLARE_CLASS( CItem_LargeBoxSRounds, CBaseAnimating );
+	DECLARE_DATADESC()
 
 	void Spawn( void )
 	{ 
 		Precache( );
 		SetModel( "models/items/boxsrounds.mdl" );
 		BaseClass::Spawn( );
+
+		SetTouch(NULL);
+		SetUse(&CItem_LargeBoxSRounds::MyUse);
+
+		SetMoveType(MOVETYPE_FLYGRAVITY);
+		SetSolid(SOLID_BBOX);
+		SetBlocksLOS(false);
+		AddEFlags(EFL_NO_ROTORWASH_PUSH);
+
+		SetCollisionGroup(COLLISION_GROUP_WEAPON);
+
+		int nSolidFlags = GetSolidFlags() | FSOLID_NOT_STANDABLE | FSOLID_NOT_STANDABLE | FSOLID_TRIGGER | FSOLID_USE_TRIGGER_BOUNDS;
+
+		VPhysicsInitNormal(SOLID_VPHYSICS, nSolidFlags, false);
+
+		CollisionProp()->UseTriggerBounds(true, 64);
+
+		SetGlow(true);
 	}
 	void Precache( void )
 	{
 		PrecacheModel ("models/items/boxsrounds.mdl");
 	}
-	bool MyTouch( CBasePlayer *pPlayer )
+	void MyUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 	{
-		if (ITEM_GiveAmmo( pPlayer, SIZE_AMMO_PISTOL_LARGE, "Pistol"))
+		CBasePlayer *pPlayer = ToBasePlayer( pActivator );
+
+		if (ITEM_GiveAmmo( pPlayer, SIZE_AMMO_COLT_LARGE, "Colt"))
 		{
-			if ( g_pGameRules->ItemShouldRespawn( this ) == GR_ITEM_RESPAWN_NO )
-			{
-				UTIL_Remove(this);	
-			}
-			return true;
+			UTIL_Remove(this);	
+
+			return;
 		}
-		return false;
+		else
+		{
+			if(pPlayer)
+			{
+				pPlayer->PickupObject(this);
+			}
+		}
+		return;
+	}
+
+	int ObjectCaps( void ) 
+	{
+		return BaseClass::ObjectCaps() | FCAP_IMPULSE_USE;
 	}
 };
+BEGIN_DATADESC(CItem_LargeBoxSRounds)
+	DEFINE_USEFUNC(MyUse)
+END_DATADESC()
 LINK_ENTITY_TO_CLASS(item_large_box_srounds, CItem_LargeBoxSRounds);
 LINK_ENTITY_TO_CLASS(item_ammo_pistol_large, CItem_LargeBoxSRounds);
 
 // ========================================================================
 //	>> BoxMRounds
 // ========================================================================
-class CItem_BoxMRounds : public CItem
+class CItem_BoxMRounds : public CBaseAnimating
 {
 public:
-	DECLARE_CLASS( CItem_BoxMRounds, CItem );
+	DECLARE_CLASS( CItem_BoxMRounds, CBaseAnimating );
+	DECLARE_DATADESC()
 
 	void Spawn( void )
 	{ 
 		Precache( );
 		SetModel( "models/items/boxmrounds.mdl");
 		BaseClass::Spawn( );
+
+		SetTouch(NULL);
+		SetUse(&CItem_BoxMRounds::MyUse);
+
+		SetMoveType(MOVETYPE_FLYGRAVITY);
+		SetSolid(SOLID_BBOX);
+		SetBlocksLOS(false);
+		AddEFlags(EFL_NO_ROTORWASH_PUSH);
+
+		SetCollisionGroup(COLLISION_GROUP_WEAPON);
+
+		int nSolidFlags = GetSolidFlags() | FSOLID_NOT_STANDABLE | FSOLID_NOT_STANDABLE | FSOLID_TRIGGER | FSOLID_USE_TRIGGER_BOUNDS;
+
+		VPhysicsInitNormal(SOLID_VPHYSICS, nSolidFlags, false);
+
+		CollisionProp()->UseTriggerBounds(true, 64);
+
+		SetGlow(true);
 	}
 	void Precache( void )
 	{
 		PrecacheModel ("models/items/boxmrounds.mdl");
 	}
-	bool MyTouch( CBasePlayer *pPlayer )
+	void MyUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 	{
+		CBasePlayer *pPlayer = ToBasePlayer( pActivator );
+
 		if (ITEM_GiveAmmo( pPlayer, SIZE_AMMO_SMG1, "SMG1"))
 		{
-			if ( g_pGameRules->ItemShouldRespawn( this ) == GR_ITEM_RESPAWN_NO )
-			{
-				UTIL_Remove(this);	
-			}
-			return true;
+			UTIL_Remove(this);	
+
+			return;
 		}
-		return false;
+		else
+		{
+			if(pPlayer)
+			{
+				pPlayer->PickupObject(this);
+			}
+		}
+		return;
+	}
+
+	int ObjectCaps( void ) 
+	{
+		return BaseClass::ObjectCaps() | FCAP_IMPULSE_USE;
 	}
 };
+BEGIN_DATADESC(CItem_BoxMRounds)
+	DEFINE_USEFUNC(MyUse)
+END_DATADESC()
 LINK_ENTITY_TO_CLASS(item_box_mrounds, CItem_BoxMRounds);
 LINK_ENTITY_TO_CLASS(item_ammo_smg1, CItem_BoxMRounds);
 
 // ========================================================================
 //	>> LargeBoxMRounds
 // ========================================================================
-class CItem_LargeBoxMRounds : public CItem
+class CItem_LargeBoxMRounds : public CBaseAnimating
 {
 public:
-	DECLARE_CLASS( CItem_LargeBoxMRounds, CItem );
+	DECLARE_CLASS( CItem_LargeBoxMRounds, CBaseAnimating );
+	DECLARE_DATADESC()
 
 	void Spawn( void )
 	{ 
 		Precache( );
 		SetModel( "models/items/boxmrounds.mdl");
 		BaseClass::Spawn( );
+
+		SetTouch(NULL);
+		SetUse(&CItem_LargeBoxMRounds::MyUse);
+
+		SetMoveType(MOVETYPE_FLYGRAVITY);
+		SetSolid(SOLID_BBOX);
+		SetBlocksLOS(false);
+		AddEFlags(EFL_NO_ROTORWASH_PUSH);
+
+		SetCollisionGroup(COLLISION_GROUP_WEAPON);
+
+		int nSolidFlags = GetSolidFlags() | FSOLID_NOT_STANDABLE | FSOLID_NOT_STANDABLE | FSOLID_TRIGGER | FSOLID_USE_TRIGGER_BOUNDS;
+
+		VPhysicsInitNormal(SOLID_VPHYSICS, nSolidFlags, false);
+
+		CollisionProp()->UseTriggerBounds(true, 64);
+
+		SetGlow(true);
 	}
 	void Precache( void )
 	{
 		PrecacheModel ("models/items/boxmrounds.mdl");
 	}
-	bool MyTouch( CBasePlayer *pPlayer )
+	void MyUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 	{
+		CBasePlayer *pPlayer = ToBasePlayer( pActivator );
+
 		if (ITEM_GiveAmmo( pPlayer, SIZE_AMMO_SMG1_LARGE, "SMG1"))
 		{
-			if ( g_pGameRules->ItemShouldRespawn( this ) == GR_ITEM_RESPAWN_NO )
-			{
-				UTIL_Remove(this);	
-			}
-			return true;
+			UTIL_Remove(this);	
+
+			return;
 		}
-		return false;
+		else
+		{
+			if(pPlayer)
+			{
+				pPlayer->PickupObject(this);
+			}
+		}
+		return;
+	}
+
+	int ObjectCaps( void ) 
+	{
+		return BaseClass::ObjectCaps() | FCAP_IMPULSE_USE;
 	}
 };
+
+BEGIN_DATADESC(CItem_LargeBoxMRounds)
+	DEFINE_USEFUNC(MyUse)
+END_DATADESC()
+
 LINK_ENTITY_TO_CLASS(item_large_box_mrounds, CItem_LargeBoxMRounds);
 LINK_ENTITY_TO_CLASS(item_ammo_smg1_large, CItem_LargeBoxMRounds);
 
@@ -606,6 +744,7 @@ enum
 	AMMOCRATE_CROSSBOW,
 	AMMOCRATE_AR2_ALTFIRE,
 	AMMOCRATE_SMG_ALTFIRE,
+	AMMOCRATE_COLT_ROUNDS,
 	NUM_AMMO_CRATE_TYPES,
 };
 
@@ -693,6 +832,7 @@ const char *CItem_AmmoCrate::m_lpzModelNames[NUM_AMMO_CRATE_TYPES] =
 	//FIXME: This model is incorrect!
 	"models/items/ammocrate_ar2.mdl",		// Combine Ball 
 	"models/items/ammocrate_smg2.mdl",	    // smg grenade
+	"models/items/ammocrate_pistol.mdl",	// Colt rounds
 };
 
 // Ammo type names
@@ -708,6 +848,7 @@ const char *CItem_AmmoCrate::m_lpzAmmoNames[NUM_AMMO_CRATE_TYPES] =
 	"XBowBolt",
 	"AR2AltFire",
 	"SMG1_Grenade",
+	"Colt",
 };
 
 // Ammo amount given per +use
@@ -718,11 +859,12 @@ int CItem_AmmoCrate::m_nAmmoAmounts[NUM_AMMO_CRATE_TYPES] =
 	300,	// AR2
 	3,		// RPG rounds
 	120,	// Buckshot
-	5,		// Grenades
+	1,		// Grenades
 	50,		// 357
 	50,		// Crossbow
 	3,		// AR2 alt-fire
-	5,
+	1,
+	8, // Colt
 };
 
 const char *CItem_AmmoCrate::m_pGiveWeapon[NUM_AMMO_CRATE_TYPES] =
@@ -737,6 +879,7 @@ const char *CItem_AmmoCrate::m_pGiveWeapon[NUM_AMMO_CRATE_TYPES] =
 	NULL,		// Crossbow
 	NULL,		// AR2 alt-fire
 	NULL,		// SMG alt-fire
+	NULL, // Colt
 };
 
 #define	AMMO_CRATE_CLOSE_DELAY	1.5f

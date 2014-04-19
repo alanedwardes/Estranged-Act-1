@@ -40,8 +40,10 @@ public:
 	CNetworkVar( bool,	m_bDisplayReticle );
 	CNetworkVar( bool,	m_bStickyAutoAim );
 	CNetworkVar( bool,	m_bAutoAimTarget );
-#ifdef HL2_EPISODIC
+	CNetworkVar( int, m_iFlashlightBatteries );
+	CNetworkVar( bool,	m_bHasFlashlight );
 	CNetworkVar( float, m_flFlashBattery );
+#ifdef HL2_EPISODIC
 	CNetworkVar( Vector, m_vecLocatorOrigin );
 #endif
 

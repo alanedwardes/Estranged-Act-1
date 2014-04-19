@@ -1,0 +1,18 @@
+#include "common_ps_fxc.h"
+
+sampler FBSampler		: register( s0 );
+sampler SSAOSampler		: register( s1 );
+
+struct PS_INPUT
+{
+float2 iTexCoord : TEXCOORD0;
+};
+
+float4 main(PS_INPUT i) : COLOR //out main function
+{
+	float4 result = tex2D(FBSampler,i.iTexCoord);
+	float scale = tex2D(SSAOSampler,i.iTexCoord).a;
+
+	result.rgb  *= scale;
+	return float4(result.rgb, 1.0f);
+}

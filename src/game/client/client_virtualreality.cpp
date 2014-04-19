@@ -32,7 +32,7 @@ EXPOSE_SINGLE_INTERFACE_GLOBALVAR( CClientVirtualReality, IClientVirtualReality,
 // --------------------------------------------------------------------
 // A huge pile of VR convars
 // --------------------------------------------------------------------
-ConVar vr_activate_default( "vr_activate_default",		"0", FCVAR_ARCHIVE, "If this is true the game will switch to VR mode once startup is complete." );
+ConVar vr_activate_default( "vr_activate_default",		"1", FCVAR_ARCHIVE, "If this is true the game will switch to VR mode once startup is complete." );
 
 
 ConVar vr_moveaim_mode      ( "vr_moveaim_mode",      "3", FCVAR_ARCHIVE, "0=move+shoot from face. 1=move with torso. 2,3,4=shoot with face+mouse cursor. 5+ are probably not that useful." );
@@ -88,7 +88,7 @@ ConVar vr_viewmodel_offset_forward_large( "vr_viewmodel_offset_forward_large", "
 
 ConVar vr_force_windowed ( "vr_force_windowed", "0", FCVAR_ARCHIVE );
 
-ConVar vr_first_person_uses_world_model ( "vr_first_person_uses_world_model", "1", 0, "Causes the third person model to be drawn instead of the view model" );
+ConVar vr_first_person_uses_world_model ( "vr_first_person_uses_world_model", "0", 0, "Causes the third person model to be drawn instead of the view model" );
 
 // --------------------------------------------------------------------
 // Purpose: Cycle through the aim & move modes.

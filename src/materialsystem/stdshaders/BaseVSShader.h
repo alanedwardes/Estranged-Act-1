@@ -153,8 +153,6 @@ public:
 	void SetColorVertexShaderConstant( int nVertexReg, int colorVar, int alphaVar );
 	void SetColorPixelShaderConstant( int nPixelReg, int colorVar, int alphaVar );
 
-
-#ifndef GAME_SHADER_DLL
 	//
 	// Standard shader passes!
 	//
@@ -270,7 +268,6 @@ public:
 		int nWorldVertexTransitionPassID, int baseTexture2Var, int baseTexture2FrameVar,
 		bool bTeeth=false, int nTeethForwardVar=0, int nTeethIllumFactorVar=0 );
 #endif
-
 	struct DrawFlashlight_dx90_Vars_t
 	{
 		DrawFlashlight_dx90_Vars_t() 
@@ -312,7 +309,6 @@ public:
 	};
 	void DrawFlashlight_dx90( IMaterialVar** params, 
 		IShaderDynamicAPI *pShaderAPI, IShaderShadow* pShaderShadow, DrawFlashlight_dx90_Vars_t &vars );
-#endif // GAME_SHADER_DLL
 
 	BlendType_t EvaluateBlendRequirements( int textureVar, bool isBaseTexture, int detailTextureVar = -1 );
 

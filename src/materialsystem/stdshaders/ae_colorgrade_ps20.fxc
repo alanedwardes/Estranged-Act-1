@@ -1,0 +1,64 @@
+#include "common_ps_fxc.h"
+
+sampler s_buffer		: register( s0 );
+
+const float4 contrastInfo : register( c0 );
+const float4 brightness : register( c1 );
+const float4 levels_r : register( c2 );
+const float4 levels_g : register( c3 );
+const float4 levels_b : register( c4 );
+
+struct PS_INPUT
+{
+	float2 texCoords : TEXCOORD0;
+};
+
+float GammaCorrectionSingleChannel(float color_value, float gamma)
+{
+	return pow(color_value, 1.0 / gamma);
+}
+
+float LevelsControlInputRangeSingleChannel(float color_value, float minInput, float maxInput)
+{
+	return min(max(color_value - minInput, 0.0) / (maxInput - minInput), 1.0);
+}
+
+float LevelsControlInputSingleChannel(float color_value, float minInput, float gamma, float maxInput)
+{
+	return GammaCorrectionSingleChannel(LevelsControlInputRangeSingleChannel(color_value, minInput, maxInput), gamma);
+}
+
+float LevelsControlOutputRangeSingleChannel(float color_value, float minOutput, float maxOutput)
+{
+	return lerp(minOutput, maxOutput, color_value);
+}
+
+float ApplyLevelsSingleChannel(float color_value, float minInput, float maxInput, float minOutput, float maxOutput)
+{
+	return LevelsControlOutputRangeSingleChannel(LevelsControlInputSingleChannel(color_value, minInput, brightness.a, maxInput), minOutput, maxOutput);
+}
+
+float4 main(PS_INPUT i) : COLOR
+{
+	float3  LuminanceWeights = float3(0.299,0.587,0.114);
+
+	float4 OutColor;
+	OutColor.r = pow(tex2D(s_buffer, i.texCoords).r, contrastInfo.r).x;
+	OutColor.g=  pow(tex2D(s_buffer, i.texCoords).g, contrastInfo.g).x; 
+	OutColor.b = pow(tex2D(s_buffer, i.texCoords).b, contrastInfo.b).x;
+
+	float luminance = dot(OutColor,LuminanceWeights);
+	OutColor.rgb = lerp(luminance,OutColor.rgb,contrastInfo.a).rgb;
+
+	OutColor.r *= brightness.r;
+	OutColor.g *= brightness.g;
+	OutColor.b *= brightness.b;
+
+	OutColor.r = ApplyLevelsSingleChannel(OutColor.r,levels_r.x,levels_r.y,levels_r.z,levels_r.w);
+	OutColor.g = ApplyLevelsSingleChannel(OutColor.g,levels_g.x,levels_g.y,levels_g.z,levels_g.w);
+	OutColor.b = ApplyLevelsSingleChannel(OutColor.b,levels_b.x,levels_b.y,levels_b.z,levels_b.w);
+
+	OutColor.a = tex2D(s_buffer, i.texCoords).a;
+
+	return OutColor;
+}

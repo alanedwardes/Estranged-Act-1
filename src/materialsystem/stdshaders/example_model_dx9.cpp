@@ -4,7 +4,7 @@
 //
 //==================================================================================================
 
-#include "BaseVSShader.h"
+#include "basevsshader.h"
 #include "convar.h"
 #include "example_model_dx9_helper.h"
 

@@ -271,6 +271,7 @@ public:
 	inline	bool	MessageToAll( void ) { return (m_spawnflags & SF_ENVTEXT_ALLPLAYERS); }
 	inline	void	MessageSet( const char *pMessage ) { m_iszMessage = AllocPooledString(pMessage); }
 	inline	const char *MessageGet( void )	{ return STRING( m_iszMessage ); }
+	inline  void FontGet( char buf[48] ) { Q_strncpy(buf, STRING(m_iszFont), 48); }
 
 	void InputDisplay( inputdata_t &inputdata );
 	void Display( CBaseEntity *pActivator );
@@ -283,6 +284,7 @@ public:
 private:
 
 	string_t m_iszMessage;
+	string_t m_iszFont;
 	hudtextparms_t	m_textParms;
 };
 
@@ -293,6 +295,7 @@ LINK_ENTITY_TO_CLASS( game_text, CGameText );
 BEGIN_DATADESC( CGameText )
 
 	DEFINE_KEYFIELD( m_iszMessage, FIELD_STRING, "message" ),
+	DEFINE_KEYFIELD( m_iszFont, FIELD_STRING, "font" ),
 
 	DEFINE_KEYFIELD( m_textParms.channel, FIELD_INTEGER, "channel" ),
 	DEFINE_KEYFIELD( m_textParms.x, FIELD_FLOAT, "x" ),
@@ -349,9 +352,12 @@ void CGameText::Display( CBaseEntity *pActivator )
 	if ( !CanFireForActivator( pActivator ) )
 		return;
 
+	char fontbuf[48];
+	FontGet(fontbuf);
+
 	if ( MessageToAll() )
 	{
-		UTIL_HudMessageAll( m_textParms, MessageGet() );
+		UTIL_HudMessageAll( m_textParms, MessageGet(), fontbuf );
 	}
 	else
 	{
@@ -359,12 +365,12 @@ void CGameText::Display( CBaseEntity *pActivator )
 		if ( gpGlobals->maxClients == 1 )
 		{
 			CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
-			UTIL_HudMessage( pPlayer, m_textParms, MessageGet() );
+			UTIL_HudMessage( pPlayer, m_textParms, MessageGet(), fontbuf );
 		}
 		// Otherwise show the message to the player that triggered us.
 		else if ( pActivator && pActivator->IsNetClient() )
 		{
-			UTIL_HudMessage( ToBasePlayer( pActivator ), m_textParms, MessageGet() );
+			UTIL_HudMessage( ToBasePlayer( pActivator ), m_textParms, MessageGet(), fontbuf );
 		}
 	}
 }

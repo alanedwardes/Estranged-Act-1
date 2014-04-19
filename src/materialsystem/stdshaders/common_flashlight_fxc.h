@@ -231,7 +231,8 @@ float DoShadowPoisson16Sample( sampler DepthSampler, sampler RandomRotationSampl
 	// 2D Rotation Matrix setup
 	float3 RMatTop = 0, RMatBottom = 0;
 #if defined(SHADER_MODEL_PS_2_0) || defined(SHADER_MODEL_PS_2_B) || defined(SHADER_MODEL_PS_3_0)
-	RMatTop.xy = tex2D( RandomRotationSampler, cFlashlightScreenScale.xy * (vScreenPos * 0.5 + 0.5) + vNoiseOffset) * 2.0 - 1.0;
+	//RMatTop.xy = tex2D( RandomRotationSampler, cFlashlightScreenScale.xy * (vScreenPos * 0.5 + 0.5) + vNoiseOffset) * 2.0 - 1.0;
+	RMatTop.xy = tex2D( RandomRotationSampler, cFlashlightScreenScale.xy * vNoiseOffset) * 2.0 - 1.0;
 	RMatBottom.xy = float2(-1.0, 1.0) * RMatTop.yx;	// 2x2 rotation matrix in 4-tuple
 #endif
 

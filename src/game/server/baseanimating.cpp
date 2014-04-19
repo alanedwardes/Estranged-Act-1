@@ -162,6 +162,7 @@ BEGIN_DATADESC( CBaseAnimating )
 //	DEFINE_FIELD( m_vecForce, FIELD_VECTOR ),
 
 	DEFINE_INPUT( m_nSkin, FIELD_INTEGER, "skin" ),
+	DEFINE_KEYFIELD( m_nGlowRadius, FIELD_INTEGER, "glowradius" ),
 	DEFINE_KEYFIELD( m_nBody, FIELD_INTEGER, "body" ),
 	DEFINE_INPUT( m_nBody, FIELD_INTEGER, "SetBodyGroup" ),
 	DEFINE_KEYFIELD( m_nHitboxSet, FIELD_INTEGER, "hitboxset" ),
@@ -201,6 +202,7 @@ BEGIN_DATADESC( CBaseAnimating )
 	DEFINE_INPUTFUNC( FIELD_FLOAT, "IgniteLifetime", InputIgniteLifetime ),
 	DEFINE_INPUTFUNC( FIELD_INTEGER, "IgniteNumHitboxFires", InputIgniteNumHitboxFires ),
 	DEFINE_INPUTFUNC( FIELD_FLOAT, "IgniteHitboxFireScale", InputIgniteHitboxFireScale ),
+	DEFINE_INPUTFUNC( FIELD_BOOLEAN, "SetGlowState", InputSetGlowState ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "BecomeRagdoll", InputBecomeRagdoll ),
 	DEFINE_INPUTFUNC( FIELD_STRING, "SetLightingOriginHack", InputSetLightingOriginRelative ),
 	DEFINE_INPUTFUNC( FIELD_STRING, "SetLightingOrigin", InputSetLightingOrigin ),
@@ -209,9 +211,6 @@ BEGIN_DATADESC( CBaseAnimating )
 	DEFINE_INPUT( m_fadeMinDist, FIELD_FLOAT, "fademindist" ),
 	DEFINE_INPUT( m_fadeMaxDist, FIELD_FLOAT, "fademaxdist" ),
 	DEFINE_KEYFIELD( m_flFadeScale, FIELD_FLOAT, "fadescale" ),
-
-	DEFINE_KEYFIELD( m_flModelScale, FIELD_FLOAT, "modelscale" ),
-	DEFINE_INPUTFUNC( FIELD_VECTOR, "SetModelScale", InputSetModelScale ),
 
 	DEFINE_FIELD( m_fBoneCacheFlags, FIELD_SHORT ),
 
@@ -232,6 +231,8 @@ IMPLEMENT_SERVERCLASS_ST(CBaseAnimating, DT_BaseAnimating)
 
 	SendPropInt		( SENDINFO(m_nSkin), ANIMATION_SKIN_BITS),
 	SendPropInt		( SENDINFO(m_nBody), ANIMATION_BODY_BITS),
+
+	SendPropInt		( SENDINFO( m_nGlowRadius ) ),
 
 	SendPropInt		( SENDINFO(m_nHitboxSet),ANIMATION_HITBOXSET_BITS, SPROP_UNSIGNED ),
 
@@ -288,6 +289,8 @@ CBaseAnimating::CBaseAnimating()
 	m_fadeMaxDist = 0;
 	m_flFadeScale = 0.0f;
 	m_fBoneCacheFlags = 0;
+
+	m_nGlowRadius = 0;
 }
 
 CBaseAnimating::~CBaseAnimating()
@@ -444,7 +447,7 @@ void CBaseAnimating::StudioFrameAdvanceInternal( CStudioHdr *pStudioHdr, float f
 			m_flAnimTime.Get(), m_flPrevAnimTime, flInterval, GetCycle() );
 	*/
  
-	m_flGroundSpeed = GetSequenceGroundSpeed( pStudioHdr, GetSequence() ) * GetModelScale();
+	m_flGroundSpeed = GetSequenceGroundSpeed( pStudioHdr, GetSequence() );
 
 	// Msg("%s : %s : %5.1f\n", GetClassname(), GetSequenceName( GetSequence() ), GetCycle() );
 	InvalidatePhysicsRecursive( ANIMATION_CHANGED );
@@ -611,17 +614,6 @@ void CBaseAnimating::InputSetLightingOrigin( inputdata_t &inputdata )
 	// Find our specified target
 	string_t strLightingOrigin = MAKE_STRING( inputdata.value.String() );
 	SetLightingOrigin( strLightingOrigin );
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: SetModelScale input handler
-//-----------------------------------------------------------------------------
-void CBaseAnimating::InputSetModelScale( inputdata_t &inputdata )
-{
-	Vector vecScale;
-	inputdata.value.Vector3D( vecScale );
-
-	SetModelScale( vecScale.x, vecScale.y );
 }
 
 
@@ -891,7 +883,7 @@ void CBaseAnimating::ResetSequenceInfo ( )
 	}
 
 	CStudioHdr *pStudioHdr = GetModelPtr();
-	m_flGroundSpeed = GetSequenceGroundSpeed( pStudioHdr, GetSequence() ) * GetModelScale();
+	m_flGroundSpeed = GetSequenceGroundSpeed( pStudioHdr, GetSequence() );
 	m_bSequenceLoops = ((GetSequenceFlags( pStudioHdr, GetSequence() ) & STUDIO_LOOPING) != 0);
 	// m_flAnimTime = gpGlobals->time;
 	m_flPlaybackRate = 1.0;
@@ -1385,6 +1377,24 @@ float CBaseAnimating::EdgeLimitPoseParameter( int iParameter, float flValue, flo
 	}
 
 	return RangeCompressor( flValue, Pose.start, Pose.end, flBase );
+}
+
+void CBaseAnimating::SetGlow(bool state)
+{
+	if (state)
+	{
+		ConVarRef ae_item_glow_radius("ae_item_glow_radius");
+		m_nGlowRadius = ae_item_glow_radius.GetInt();
+	}
+	else
+	{
+		m_nGlowRadius = 0;
+	}
+}
+
+void CBaseAnimating::SetGlowRadius(int radius)
+{
+	m_nGlowRadius = radius;
 }
 
 
@@ -3532,6 +3542,11 @@ void CBaseAnimating::InputIgniteNumHitboxFires( inputdata_t &inputdata )
 void CBaseAnimating::InputIgniteHitboxFireScale( inputdata_t &inputdata )
 {
 	IgniteHitboxFireScale( inputdata.value.Float() );
+}
+
+void CBaseAnimating::InputSetGlowState( inputdata_t &inputdata )
+{
+	SetGlow(inputdata.value.Bool());
 }
 
 void CBaseAnimating::InputBecomeRagdoll( inputdata_t &inputdata )

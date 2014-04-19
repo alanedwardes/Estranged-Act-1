@@ -128,8 +128,6 @@ public:
 	virtual void StartTask( const Task_t *pTask );
 	virtual void RunTask( const Task_t *pTask );
 
-	virtual bool HandleInteraction( int interactionType, void *data, CBaseCombatCharacter *sourceEnt );
-
 	virtual void OnChangeActivity( Activity eNewActivity );
 
 	virtual bool OverrideMove( float flInterval );
@@ -184,6 +182,8 @@ protected:
 private:
 
 	Activity NPC_TranslateActivity( Activity eNewActivity );
+
+	COutputEvent		m_onFlyAway;
 
 	float				m_flSoarTime;
 	bool				m_bSoar;

@@ -25,37 +25,37 @@ ConVar hud_fastswitch( "hud_fastswitch", "0", FCVAR_ARCHIVE | FCVAR_ARCHIVE_XBOX
 //-----------------------------------------------------------------------------
 // Purpose: Weapon Selection commands
 //-----------------------------------------------------------------------------
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot1, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot2, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot3, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot4, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot5, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot6, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot7, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot8, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot9, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot0, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot10, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Close, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, NextWeapon, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, PrevWeapon, "CHudWeaponSelection");
-DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, LastWeapon, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot1, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot2, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot3, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot4, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot5, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot6, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot7, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot8, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot9, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot0, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Slot10, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, Close, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, NextWeapon, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, PrevWeapon, "CHudWeaponSelection");
+//DECLARE_HUD_COMMAND_NAME(CBaseHudWeaponSelection, LastWeapon, "CHudWeaponSelection");
 
-HOOK_COMMAND( slot1, Slot1 );
-HOOK_COMMAND( slot2, Slot2 );
-HOOK_COMMAND( slot3, Slot3 );
-HOOK_COMMAND( slot4, Slot4 );
-HOOK_COMMAND( slot5, Slot5 );
-HOOK_COMMAND( slot6, Slot6 );
-HOOK_COMMAND( slot7, Slot7 );
-HOOK_COMMAND( slot8, Slot8 );
-HOOK_COMMAND( slot9, Slot9 );
-HOOK_COMMAND( slot0, Slot0 );
-HOOK_COMMAND( slot10, Slot10 );
-HOOK_COMMAND( cancelselect, Close );
-HOOK_COMMAND( invnext, NextWeapon );
-HOOK_COMMAND( invprev, PrevWeapon );
-HOOK_COMMAND( lastinv, LastWeapon );
+//HOOK_COMMAND( slot1, Slot1 );
+//HOOK_COMMAND( slot2, Slot2 );
+//HOOK_COMMAND( slot3, Slot3 );
+//HOOK_COMMAND( slot4, Slot4 );
+//HOOK_COMMAND( slot5, Slot5 );
+//HOOK_COMMAND( slot6, Slot6 );
+//HOOK_COMMAND( slot7, Slot7 );
+//HOOK_COMMAND( slot8, Slot8 );
+//HOOK_COMMAND( slot9, Slot9 );
+//HOOK_COMMAND( slot0, Slot0 );
+//HOOK_COMMAND( slot10, Slot10 );
+//HOOK_COMMAND( cancelselect, Close );
+//HOOK_COMMAND( invnext, NextWeapon );
+//HOOK_COMMAND( invprev, PrevWeapon );
+//HOOK_COMMAND( lastinv, LastWeapon );
 
 // instance info
 CBaseHudWeaponSelection *CBaseHudWeaponSelection::s_pInstance = NULL;

@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 $Macro OUTBINNAME	"client"
-$Macro OUTBINDIR	"$SRCDIR\..\game\$GAMENAME\bin"
+$Macro OUTBINDIR	"$SRCDIR\..\game\estrangedact1\bin"
 $Macro DEVKITBINDIR	"$GAMENAME\bin"							[$X360]
 // It's important to include $GAMENAME in the generated_proto directory
 // to avoid race conditions when multiple games are in one solution.
@@ -232,7 +232,6 @@ $Project
 		$File	"c_entityparticletrail.cpp"
 		$File	"c_env_fog_controller.cpp"
 		$File	"c_env_particlescript.cpp"
-		$File	"c_env_projectedtexture.cpp"
 		$File	"c_env_screenoverlay.cpp"
 		$File	"c_env_tonemap_controller.cpp"
 		$File	"c_fire_smoke.cpp"
@@ -1106,6 +1105,7 @@ $Project
 
 	$Folder	"Game Shared Header Files"
 	{
+		$File	"$SRCDIR\game\shared\estrangedplayerinformation.h"
 		$File	"$SRCDIR\game\shared\activitylist.h"
 		$File	"$SRCDIR\game\shared\ai_activity.h"
 		$File	"$SRCDIR\game\shared\ai_debug_shared.h"

@@ -831,12 +831,6 @@ void CBasePlayer::DeathSound( const CTakeDamageInfo &info )
 	{
 		EmitSound( "Player.Death" );
 	}
-
-	// play one of the suit death alarms
-	if ( IsSuitEquipped() )
-	{
-		UTIL_EmitGroupnameSuit(edict(), "HEV_DEAD");
-	}
 }
 
 // override takehealth
@@ -2827,11 +2821,6 @@ bool CBasePlayer::CanPickupObject( CBaseEntity *pObject, float massLimit, float 
 
 	if ( checkEnable )
 	{
-		// Allowing picking up of bouncebombs.
-		CBounceBomb *pBomb = dynamic_cast<CBounceBomb*>(pObject);
-		if( pBomb )
-			return true;
-
 		// Allow pickup of phys props that are motion enabled on player pickup
 		CPhysicsProp *pProp = dynamic_cast<CPhysicsProp*>(pObject);
 		CPhysBox *pBox = dynamic_cast<CPhysBox*>(pObject);
@@ -4238,6 +4227,7 @@ void CBasePlayer::CheckSuitUpdate()
 
 void CBasePlayer::SetSuitUpdate(const char *name, int fgroup, int iNoRepeatTime)
 {
+	return;
 	int i;
 	int isentence;
 	int iempty = -1;
@@ -4844,6 +4834,13 @@ CBaseEntity *CBasePlayer::EntSelectSpawnPoint()
 	// If startspot is set, (re)spawn there.
 	if ( !gpGlobals->startspot || !strlen(STRING(gpGlobals->startspot)))
 	{
+		if (developer.GetBool() && sv_cheats->GetBool())
+		{
+			pSpot = FindPlayerStart( "info_player_dev" );
+			if ( pSpot )
+				goto ReturnSpot;
+		}
+
 		pSpot = FindPlayerStart( "info_player_start" );
 		if ( pSpot )
 			goto ReturnSpot;
@@ -5684,6 +5681,14 @@ CBaseEntity	*CBasePlayer::GiveNamedItem( const char *pszName, int iSubType )
 	if ( pent != NULL && !(pent->IsMarkedForDeletion()) ) 
 	{
 		pent->Touch( this );
+		if (pWeapon)
+		{
+			BumpWeapon(pWeapon);
+		}
+		else
+		{
+			pent->Use(this, this, USE_ON, 0.0f);
+		}
 	}
 
 	return pent;
@@ -6153,7 +6158,7 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 #endif		
 		GiveNamedItem( "weapon_smg1" );
 		GiveNamedItem( "weapon_frag" );
-		GiveNamedItem( "weapon_crowbar" );
+		GiveNamedItem( "weapon_hammer" );
 		GiveNamedItem( "weapon_pistol" );
 		GiveNamedItem( "weapon_ar2" );
 		GiveNamedItem( "weapon_shotgun" );
@@ -6615,6 +6620,9 @@ bool CBasePlayer::BumpWeapon( CBaseCombatWeapon *pWeapon )
 		pWeapon->AddSolidFlags( FSOLID_NOT_SOLID );
 		pWeapon->AddEffects( EF_NODRAW );
 
+		const Vector *zeroVector = new Vector(0, 0, 0);
+		Weapon_Drop(GetActiveWeapon(), zeroVector, zeroVector);
+		delete zeroVector;
 		Weapon_Equip( pWeapon );
 		if ( IsInAVehicle() )
 		{
@@ -6637,7 +6645,7 @@ bool CBasePlayer::BumpWeapon( CBaseCombatWeapon *pWeapon )
 				// If it uses clips, load it full. (this is the first time you've picked up this type of weapon)
 				if ( pWeapon->UsesClipsForAmmo1() )
 				{
-					pWeapon->m_iClip1 = pWeapon->GetMaxClip1();
+					//pWeapon->m_iClip1 = pWeapon->GetMaxClip1();
 				}
 
 				Weapon_Switch( pWeapon );
@@ -6782,12 +6790,12 @@ void CBasePlayer::UpdateClientData( void )
 		m_iClientBattery = m_ArmorValue;
 
 		// send "battery" update message
-		if ( usermessages->LookupUserMessage( "Battery" ) != -1 )
-		{
-			UserMessageBegin( user, "Battery" );
-				WRITE_SHORT( (int)m_ArmorValue);
-			MessageEnd();
-		}
+		//if ( usermessages->LookupUserMessage( "Battery" ) != -1 )
+		//{
+		//	UserMessageBegin( user, "Battery" );
+		//		WRITE_SHORT( (int)m_ArmorValue);
+		//	MessageEnd();
+		//}
 	}
 
 #if 0 // BYE BYE!!
@@ -7757,12 +7765,15 @@ void CRevertSaved::LoadThink( void )
 #define SF_SPEED_MOD_SUPPRESS_SPEED		(1<<5)
 #define SF_SPEED_MOD_SUPPRESS_ATTACK	(1<<6)
 #define SF_SPEED_MOD_SUPPRESS_ZOOM		(1<<7)
+#define SF_SPEED_MOD_SUPPRESS_FLASHLIGHT (1<<8)
 
 class CMovementSpeedMod : public CPointEntity
 {
 	DECLARE_CLASS( CMovementSpeedMod, CPointEntity );
 public:
 	void InputSpeedMod(inputdata_t &data);
+
+	virtual void OnRestore();
 
 private:
 	int GetDisabledButtonMask( void );
@@ -7813,6 +7824,19 @@ int CMovementSpeedMod::GetDisabledButtonMask( void )
 	return nMask;
 }
 
+void CMovementSpeedMod::OnRestore()
+{
+	BaseClass::OnRestore();
+
+	// ae - this is a hack to fix the crouch/sprint issue encountered on sp02.
+	if (!V_stricmp(gpGlobals->mapname.ToCStr(), "sp02theforest"))
+	{
+		variant_t data;
+		data.SetFloat(1.0f);
+		g_EventQueue.AddEvent(this, "ModifySpeed", data, 1.0f, this, this);
+	}
+}
+
 void CMovementSpeedMod::InputSpeedMod(inputdata_t &data)
 {
 	CBasePlayer *pPlayer = NULL;
@@ -7843,14 +7867,18 @@ void CMovementSpeedMod::InputSpeedMod(inputdata_t &data)
 				pPlayer->HideViewModels();
 			}
 
-			// Turn off the flashlight
-			if ( pPlayer->FlashlightIsOn() )
-			{
-				pPlayer->FlashlightTurnOff();
-			}
-			
 			// Disable the flashlight's further use
-			pPlayer->SetFlashlightEnabled( false );
+			if ( HasSpawnFlags( SF_SPEED_MOD_SUPPRESS_FLASHLIGHT ) )
+			{
+				// Turn off the flashlight
+				if ( pPlayer->FlashlightIsOn() )
+				{
+					pPlayer->FlashlightTurnOff();
+				}
+
+				pPlayer->SetFlashlightEnabled( false );
+			}
+
 			pPlayer->DisableButtons( GetDisabledButtonMask() );
 
 			// Hide the HUD
@@ -7871,8 +7899,12 @@ void CMovementSpeedMod::InputSpeedMod(inputdata_t &data)
 				}
 			}
 
-			// Allow the flashlight again
-			pPlayer->SetFlashlightEnabled( true );
+			if ( HasSpawnFlags( SF_SPEED_MOD_SUPPRESS_FLASHLIGHT ) )
+			{
+				// Allow the flashlight again
+				pPlayer->SetFlashlightEnabled(true);
+			}
+
 			pPlayer->EnableButtons( GetDisabledButtonMask() );
 
 			// Restore the HUD

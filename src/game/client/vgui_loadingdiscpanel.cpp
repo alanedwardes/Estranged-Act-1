@@ -52,8 +52,8 @@ public:
 
 	virtual void PaintBackground()
 	{
-		SetBgColor( Color(0, 0, 0, 128) );
-		SetPaintBackgroundType( 2 );
+		SetBgColor( Color(0, 0, 0, 240) );
+		SetPaintBackgroundType( 0 );
 		BaseClass::PaintBackground();
 	}
 
@@ -84,6 +84,10 @@ CLoadingDiscPanel::CLoadingDiscPanel( vgui::VPANEL parent ) : BaseClass( NULL, "
 
 	m_pLoadingLabel = vgui::SETUP_PANEL(new vgui::Label( this, "LoadingLabel", "" ));
 	m_pLoadingLabel->SetPaintBackgroundEnabled( false );
+
+	vgui::HScheme scheme = vgui::scheme()->GetScheme( "ClientScheme" );
+	vgui::HFont font = vgui::scheme()->GetIScheme(scheme)->GetFont( "LoadingFont" );
+	m_pLoadingLabel->SetFont(font);
 
 	LoadControlSettings( "resource/LoadingDiscPanel.res" );
 

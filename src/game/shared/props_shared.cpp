@@ -169,9 +169,10 @@ propdata_interaction_s sPropdataInteractionSections[PROPINTER_NUM_INTERACTIONS] 
 
 	{ "physgun_interactions", "onpickup", "create_flare" },		// PROPINTER_PHYSGUN_CREATE_FLARE,
 
-	{ "physgun_interactions", "allow_overhead", "yes" },	// 	PROPINTER_PHYSGUN_ALLOW_OVERHEAD,
+	{ "physgun_interactions", "allow_overhead", "yes" },		// PROPINTER_PHYSGUN_ALLOW_OVERHEAD,
 
 	{ "world_interactions", "onworldimpact", "bloodsplat" },	// PROPINTER_WORLD_BLOODSPLAT,
+	{ "world_interactions", "forcebreakglass", "yes" },			// PROPINTER_WORLD_FORCE_BREAK_GLASS, (ae)
 };
 #else
 extern propdata_interaction_s sPropdataInteractionSections[PROPINTER_NUM_INTERACTIONS];

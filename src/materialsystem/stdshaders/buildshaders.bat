@@ -71,7 +71,7 @@ REM ****************
 :set_mod_args
 
 if not exist "%SDKBINDIR%\shadercompile.exe" goto NoShaderCompile
-set ChangeToDir=%SDKBINDIR%
+set ChangeToDir="%SDKBINDIR%"
 
 if /i "%4" NEQ "-source" goto NoSourceDirSpecified
 set SrcDirBase=%~5
@@ -181,10 +181,13 @@ if exist "filelist.txt" if exist "uniquefilestocopy.txt" if not "%dynamic_shader
 	echo Running distributed shader compilation...
 
 	cd /D %ChangeToDir%
-	echo %shadercompilecommand% %SDKArgs% -shaderpath "%shader_path_cd:/=\%" -allowdebug
-	%shadercompilecommand% %SDKArgs% -shaderpath "%shader_path_cd:/=\%" -allowdebug
+	echo %shadercompilecommand% %SDKArgs% -shaderpath "%shader_path_cd:/=\%" -allowdebug -low
+	%shadercompilecommand% %SDKArgs% -shaderpath "%shader_path_cd:/=\%" -allowdebug -low
 	cd /D %shader_path_cd%
 )
+
+echo Shader compilation finished. Pausing before copying to game dir...
+pause
 
 REM ****************
 REM PC Shader copy

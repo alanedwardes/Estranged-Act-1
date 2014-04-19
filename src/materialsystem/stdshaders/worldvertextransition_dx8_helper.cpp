@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2002, Valve LLC, All rights reserved. ============
 //
 // Purpose: 
 //
@@ -6,9 +6,9 @@
 //=============================================================================
 
 #include "worldvertextransition_dx8_helper.h"
-#include "BaseVSShader.h"
+#include "basevsshader.h"
 
-#include "WorldVertexTransition.inc"
+#include "sdk_worldvertextransition.inc"
 
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -45,9 +45,9 @@ void DrawWorldVertexTransitionEditor_DX8( CBaseVSShader *pShader, IMaterialVar**
 		int fmt = VERTEX_POSITION | VERTEX_COLOR;
 		pShaderShadow->VertexShaderVertexFormat( fmt, 2, 0, 0 );
 
-		worldvertextransition_Static_Index vshIndex;
-		pShaderShadow->SetVertexShader( "WorldVertexTransition", vshIndex.GetIndex() );
-		pShaderShadow->SetPixelShader( "WorldVertexTransition_Editor" );
+		sdk_worldvertextransition_Static_Index vshIndex;
+		pShaderShadow->SetVertexShader( "sdk_worldvertextransition", vshIndex.GetIndex() );
+		pShaderShadow->SetPixelShader( "sdk_worldvertextransition_editor" );
 	
 		pShader->FogToFogColor();
 	}
@@ -73,7 +73,7 @@ void DrawWorldVertexTransitionEditor_DX8( CBaseVSShader *pShader, IMaterialVar**
 		pShader->SetVertexShaderTextureTransform( nTextureTransformConst,  info.m_nBaseTextureTransformVar  );
 		pShader->SetVertexShaderTextureTransform( nTextureTransformConst2, info.m_nBaseTexture2TransformVar );
 
-		worldvertextransition_Dynamic_Index vshIndex;
+		sdk_worldvertextransition_Dynamic_Index vshIndex;
 		vshIndex.SetDOWATERFOG( pShaderAPI->GetSceneFogMode() == MATERIAL_FOG_LINEAR_BELOW_FOG_Z );
 		pShaderAPI->SetVertexShaderIndex( vshIndex.GetIndex() );
 	}

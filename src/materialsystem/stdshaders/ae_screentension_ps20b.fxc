@@ -1,0 +1,33 @@
+#include "common_ps_fxc.h"
+
+sampler s_buffer		: register( s0 );
+sampler s_smallbuffer		: register( s1 );
+
+const float n_time : register( c0 );
+
+struct PS_INPUT
+{
+	float2 texCoords : TEXCOORD0;
+};
+
+float4 main(PS_INPUT i) : COLOR
+{
+	float2 texCoord = i.texCoords;
+	float2 shiftCoord = texCoord;
+
+	//Sample framebuffer
+	float4 tex = tex2D(s_buffer,texCoord);
+
+	float2 scaleCenter = float2(0.5f, 0.5f);
+	float scale = 1.0f;
+	
+	for(int i=0;i<8;i++)
+	{
+		float shift = abs(sin(n_time * 50.0f));
+		scale -= 0.025f * shift;
+		shiftCoord = (shiftCoord - scaleCenter) * scale + scaleCenter;
+		tex += saturate(tex2D(s_smallbuffer,shiftCoord) * shift)*0.1f;
+	}
+
+	return tex;
+}

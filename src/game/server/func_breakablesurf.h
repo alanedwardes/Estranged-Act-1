@@ -94,6 +94,7 @@ public:
 	void			InputShatter( inputdata_t &inputdata );
 	void			VPhysicsCollision( int index, gamevcollisionevent_t *pEvent );
 private:
+	bool			DoesInflictorForceBreak( CBaseEntity *pInflictor );
 	// One bit per pane
 	CNetworkArray( bool, m_RawPanelBitVec, MAX_NUM_PANELS * MAX_NUM_PANELS );
 };

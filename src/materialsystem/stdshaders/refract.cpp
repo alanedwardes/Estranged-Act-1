@@ -1,17 +1,17 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
 // $NoKeywords: $
 //=============================================================================//
 
-#include "BaseVSShader.h"
+#include "basevsshader.h"
 #include "convar.h"
 #include "refract_dx9_helper.h"
 
-DEFINE_FALLBACK_SHADER( Refract, Refract_DX90 )
+DEFINE_FALLBACK_SHADER( sdk_refract, sdk_refract_dx90 )
 
-BEGIN_VS_SHADER( Refract_DX90, "Help for Refract" )
+BEGIN_VS_SHADER( sdk_refract_dx90, "Help for Refract" )
 
 	BEGIN_SHADER_PARAMS
 		SHADER_PARAM_OVERRIDE( COLOR, SHADER_PARAM_TYPE_COLOR, "{255 255 255}", "unused", SHADER_PARAM_NOT_EDITABLE )
@@ -38,7 +38,6 @@ BEGIN_VS_SHADER( Refract_DX90, "Help for Refract" )
 		SHADER_PARAM( NOWRITEZ, SHADER_PARAM_TYPE_INTEGER, "0", "0 == write z, 1 = no write z" )
 		SHADER_PARAM( MASKED, SHADER_PARAM_TYPE_BOOL, "0", "mask using dest alpha" )
 		SHADER_PARAM( VERTEXCOLORMODULATE, SHADER_PARAM_TYPE_BOOL, "0","Use the vertex color to effect refract color. alpha will adjust refract amount" )
-		SHADER_PARAM( FORCEALPHAWRITE, SHADER_PARAM_TYPE_BOOL, "0","Force the material to write alpha to the dest buffer" )
 	END_SHADER_PARAMS
 // FIXME: doesn't support Fresnel!
 
@@ -67,7 +66,6 @@ BEGIN_VS_SHADER( Refract_DX90, "Help for Refract" )
 		info.m_nNoWriteZ = NOWRITEZ;
 		info.m_nMasked = MASKED;
 		info.m_nVertexColorModulate = VERTEXCOLORMODULATE;
-		info.m_nForceAlphaWrite = FORCEALPHAWRITE;
 	}
 
 	SHADER_INIT_PARAMS()

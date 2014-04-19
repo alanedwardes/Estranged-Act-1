@@ -45,16 +45,7 @@ public:
 
 	virtual const Vector& GetBulletSpread( void )
 	{
-		static Vector vitalAllyCone = VECTOR_CONE_3DEGREES;
 		static Vector cone = VECTOR_CONE_10DEGREES;
-
-		if( GetOwner() && (GetOwner()->Classify() == CLASS_PLAYER_ALLY_VITAL) )
-		{
-			// Give Alyx's shotgun blasts more a more directed punch. She needs
-			// to be at least as deadly as she would be with her pistol to stay interesting (sjb)
-			return vitalAllyCone;
-		}
-
 		return cone;
 	}
 

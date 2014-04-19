@@ -286,7 +286,9 @@ enum
 										// the parent is not in the PVS.
 	EF_ITEM_BLINK			= 0x100,	// blink an item so that the user notices it.
 	EF_PARENT_ANIMATES		= 0x200,	// always assume that the parent entity is animating
-	EF_MAX_BITS = 10
+	EF_SHADOW_SIMPLE		= 0x400,	// draw simple shadows for this entity
+	EF_DISABLE_IN_VR		= 0x800,
+	EF_MAX_BITS = 11
 };
 
 #define EF_PARITY_BITS	3

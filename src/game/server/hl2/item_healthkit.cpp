@@ -41,6 +41,7 @@ PRECACHE_REGISTER(item_healthkit);
 //-----------------------------------------------------------------------------
 void CHealthKit::Spawn( void )
 {
+	Warning("%s detected - Estranged doesn't use these!\n", GetClassname());
 	Precache();
 	SetModel( "models/items/healthkit.mdl" );
 
@@ -104,6 +105,7 @@ public:
 
 	void Spawn( void )
 	{
+		Warning("%s detected - Estranged doesn't use these!\n", GetClassname());
 		Precache();
 		SetModel( "models/healthvial.mdl" );
 
@@ -236,6 +238,7 @@ bool CWallHealth::KeyValue(  const char *szKeyName, const char *szValue )
 //-----------------------------------------------------------------------------
 void CWallHealth::Spawn(void)
 {
+	Warning("%s detected - Estranged doesn't use these!\n", GetClassname());
 	Precache( );
 
 	SetSolid( SOLID_BSP );
@@ -509,6 +512,7 @@ bool CNewWallHealth::KeyValue(  const char *szKeyName, const char *szValue )
 //-----------------------------------------------------------------------------
 void CNewWallHealth::Spawn(void)
 {
+	Warning("%s detected - Estranged doesn't use these!\n", GetClassname());
 	Precache( );
 
 	SetMoveType( MOVETYPE_NONE );

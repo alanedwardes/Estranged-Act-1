@@ -269,6 +269,7 @@ public:
 	virtual bool				IsZoomed( void )	{ return false; }
 	bool						SetFOV( CBaseEntity *pRequester, int FOV, float zoomRate = 0.0f, int iZoomStart = 0 );
 	void						ClearZoomOwner( void );
+	CBaseEntity*				GetZoomOwner() { return m_hZoomOwner; };
 
 	float						GetFOVDistanceAdjustFactor();
 

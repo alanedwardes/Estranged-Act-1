@@ -116,6 +116,8 @@ END_DATADESC()
 CItem::CItem()
 {
 	m_bActivateWhenAtRest = false;
+
+	SetGlow(true);
 }
 
 bool CItem::CreateItemVPhysicsObject( void )
@@ -175,6 +177,8 @@ void CItem::Spawn( void )
 		return;
 
 	m_takedamage = DAMAGE_EVENTS_ONLY;
+
+	SetGlow(true);
 
 #if !defined( CLIENT_DLL )
 	// Constrained start?

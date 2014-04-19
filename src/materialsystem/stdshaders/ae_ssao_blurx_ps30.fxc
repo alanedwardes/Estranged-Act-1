@@ -1,0 +1,78 @@
+#include "common_ps_fxc.h"
+ 
+sampler depthSampler            : register( s0 );
+sampler ssaoSampler             : register( s1 );
+ 
+const float4 vScreenSize : register( c0 );
+const float g_blurSharpness : register( c1 );
+ 
+static float g_BlurRadius = 10.0f; // We can change this if we need to...
+ 
+struct PS_INPUT
+{
+        float2 texCoord : TEXCOORD0;
+};
+ 
+ 
+float FetchEyeZ(float2 uv)
+{
+        float z = tex2D(depthSampler, uv).r;
+        return z / 8.0f;
+}
+ 
+//-------------------------------------------------------------------------
+float BlurFunction(float2 uv, float r, float center_c, float center_d, inout float w_total)
+{
+        float c = tex2D(ssaoSampler, uv).r;
+        float d = FetchEyeZ(uv);
+       
+        float sigma = (g_BlurRadius + 1.0f) / 2.0f;
+        float g_BlurFalloff = 1.0f / (2.0f * sigma * sigma);
+ 
+        float ddiff = d - center_d;
+        float w = exp(-r * r * g_BlurFalloff - ddiff * ddiff * g_blurSharpness);
+        w_total += w;
+ 
+        return w * c;
+}
+ 
+float BlurX(float2 texUV)
+{
+        float b = 0.0f;
+        float w_total = 0.0f;
+       
+        float center_c = tex2D(ssaoSampler, texUV).r;
+        float center_d = FetchEyeZ(texUV);
+       
+        for (float r = -g_BlurRadius; r <= g_BlurRadius; ++r)
+        {
+                float2 uv = texUV + float2(r * vScreenSize.x , 0.0f);
+                b += BlurFunction(uv, r, center_c, center_d, w_total);  
+        }
+ 
+        return b/w_total;
+}
+ 
+float BlurY(float2 texUV)
+{
+        float b = 0.0f;
+        float w_total = 0.0f;
+       
+        float center_c = tex2D(ssaoSampler, texUV).r;
+        float center_d = FetchEyeZ(texUV);
+       
+        for (float r = -g_BlurRadius; r <= g_BlurRadius; ++r)
+        {
+                float2 uv = texUV + float2(0.0f, r * vScreenSize.y);
+                b += BlurFunction(uv, r, center_c, center_d, w_total);
+        }
+       
+        return b/w_total;  
+}
+ 
+ 
+float4 main(PS_INPUT i) : COLOR
+{
+        float result = BlurX(i.texCoord).x;
+        return float4( result.xxx, 1.0 );
+}

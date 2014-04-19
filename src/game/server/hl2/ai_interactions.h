@@ -21,9 +21,9 @@
 extern int	g_interactionAntlionKilled;
 
 //Barnacle
-extern int	g_interactionBarnacleVictimDangle;
-extern int	g_interactionBarnacleVictimReleased;
-extern int	g_interactionBarnacleVictimGrab;
+//extern int	g_interactionBarnacleVictimDangle;
+//extern int	g_interactionBarnacleVictimReleased;
+//extern int	g_interactionBarnacleVictimGrab;
 
 //Bullsquid
 //extern int	g_interactionBullsquidPlay;

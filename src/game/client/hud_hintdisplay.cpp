@@ -107,7 +107,7 @@ void CHudHintDisplay::ApplySchemeSettings( vgui::IScheme *pScheme )
 	SetFgColor( GetSchemeColor("HintMessageFg", pScheme) );
 	m_hFont = pScheme->GetFont( "HudHintText", true );
 	m_pLabel->SetBgColor( GetSchemeColor("HintMessageBg", pScheme) );
-	m_pLabel->SetPaintBackgroundType( 2 );
+	m_pLabel->SetPaintBackgroundType( 0 );
 	m_pLabel->SetSize( 0, GetTall() );		// Start tiny, it'll grow.
 }
 
@@ -444,6 +444,9 @@ void CHudHintKeyDisplay::OnThink()
 		}
 	}
 
+	SetBgColor(Color(0, 0, 0, 255));
+	SetPaintBackgroundType(0);
+
 	int ox, oy;
 	GetPos(ox, oy);
 	SetPos( ox, m_iBaseY + m_iYOffset );
@@ -479,6 +482,8 @@ bool CHudHintKeyDisplay::SetHintText( const char *text )
 		g_pVGuiLocalize->ConvertANSIToUnicode(text, wszBuf, sizeof(wszBuf));
 		ws = wszBuf;
 	}
+
+	ws = V_wcslower(ws);
 
 	// parse out the text into a label set
 	while ( *ws )
@@ -618,6 +623,7 @@ bool CHudHintKeyDisplay::SetHintText( const char *text )
 					// Assuming localized vars must be using a bitmap image. *May* not be the case, but since
 					// keyboard bindings have never been localized in the past, they probably won't in the future either.
 					bIsBitmap = true;
+					V_wcsupr(locName);
 					label->SetText( locName );
 				}
 			}
@@ -779,6 +785,12 @@ void CHudHintKeyDisplay::MsgFunc_KeyHintText( bf_read &msg )
 	// make it visible
 	if ( SetHintText( szString ) )
 	{
+		C_BasePlayer *pLocalPlayer = C_BasePlayer::GetLocalPlayer();
+		if ( pLocalPlayer )
+		{
+			pLocalPlayer->EmitSound( "Hud.Hint" );
+		}
+
 		SetVisible( true );
  		g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "KeyHintMessageShow" ); 
 	}

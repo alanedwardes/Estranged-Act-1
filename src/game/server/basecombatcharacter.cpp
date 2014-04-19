@@ -57,14 +57,10 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-#ifdef HL2_DLL
-extern int	g_interactionBarnacleVictimReleased;
-#endif //HL2_DLL
-
 extern ConVar weapon_showproficiency;
 
 ConVar ai_show_hull_attacks( "ai_show_hull_attacks", "0" );
-ConVar ai_force_serverside_ragdoll( "ai_force_serverside_ragdoll", "0" );
+ConVar ai_force_serverside_ragdoll( "ai_force_serverside_ragdoll", "1" );
 
 ConVar nb_last_area_update_tolerance( "nb_last_area_update_tolerance", "4.0", FCVAR_CHEAT, "Distance a character needs to travel in order to invalidate cached area" ); // 4.0 tested as sweet spot (for wanderers, at least). More resulted in little benefit, less quickly diminished benefit [7/31/2008 tom]
 
@@ -691,14 +687,6 @@ bool CBaseCombatCharacter::FInAimCone( const Vector &vecSpot )
 //-----------------------------------------------------------------------------
 bool CBaseCombatCharacter::HandleInteraction( int interactionType, void *data, CBaseCombatCharacter* sourceEnt )
 {
-#ifdef HL2_DLL
-	if ( interactionType == g_interactionBarnacleVictimReleased )
-	{
-		// For now, throw away the NPC and leave the ragdoll.
-		UTIL_Remove( this );
-		return true;
-	}
-#endif // HL2_DLL
 	return false;
 }
 
@@ -742,7 +730,9 @@ CBaseCombatCharacter::CBaseCombatCharacter( void )
 	// Default so that spawned entities have this set
 	m_impactEnergyScale = 1.0f;
 
-	m_bForceServerRagdoll = ai_force_serverside_ragdoll.GetBool();
+	// ae - post-release hack to fix train getting stuck on ragdolls and a speedmod issue
+	// because this code is unclear, just bear in mind V_stricmp returns zero if it matches
+	m_bForceServerRagdoll = ai_force_serverside_ragdoll.GetBool() && V_stricmp(gpGlobals->mapname.ToCStr(), "sp02theforest");
 
 #ifdef GLOWS_ENABLE
 	m_bGlowEnabled.Set( false );
@@ -1655,7 +1645,7 @@ void CBaseCombatCharacter::Event_Killed( const CTakeDamageInfo &info )
 		}
 #endif
 
-		if ( !bRagdollCreated && ( info.GetDamageType() & DMG_REMOVENORAGDOLL ) == 0 )
+		if ( !bRagdollCreated && ( info.GetDamageType() & DMG_REMOVENORAGDOLL ) == 0 && !IsPlayer() )
 		{
 			BecomeRagdoll( info, forceVector );
 		}
@@ -2039,7 +2029,7 @@ void CBaseCombatCharacter::Weapon_Drop( CBaseCombatWeapon *pWeapon, const Vector
 		}
 	}
 
-	pWeapon->Drop( vecThrow );
+	pWeapon->Drop(Vector(0,0,0));
 	Weapon_Detach( pWeapon );
 
 	if ( HasSpawnFlags( SF_NPC_NO_WEAPON_DROP ) )
@@ -2095,18 +2085,17 @@ void CBaseCombatCharacter::Weapon_Equip( CBaseCombatWeapon *pWeapon )
 			// !!!HACK - Don't give any ammo with the spawn equipment RPG in d3_c17_09. This is a chapter
 			// start and the map is way to easy if you start with 3 RPG rounds. It's fine if a player conserves
 			// them and uses them here, but it's not OK to start with enough ammo to bypass the snipers completely.
-			GiveAmmo( 0, pWeapon->m_iPrimaryAmmoType); 
+			//GiveAmmo( 0, pWeapon->m_iPrimaryAmmoType); 
 		}
-		else
 #endif // HL2_DLL
-		GiveAmmo(pWeapon->GetDefaultClip1(), pWeapon->m_iPrimaryAmmoType); 
+		//GiveAmmo(pWeapon->GetDefaultClip1(), pWeapon->m_iPrimaryAmmoType); 
 	}
 	// If default ammo given is greater than clip
 	// size, fill clips and give extra ammo
 	else if (pWeapon->GetDefaultClip1() >  pWeapon->GetMaxClip1() )
 	{
 		pWeapon->m_iClip1 = pWeapon->GetMaxClip1();
-		GiveAmmo( (pWeapon->GetDefaultClip1() - pWeapon->GetMaxClip1()), pWeapon->m_iPrimaryAmmoType); 
+		//GiveAmmo( (pWeapon->GetDefaultClip1() - pWeapon->GetMaxClip1()), pWeapon->m_iPrimaryAmmoType); 
 	}
 
 	// ----------------------

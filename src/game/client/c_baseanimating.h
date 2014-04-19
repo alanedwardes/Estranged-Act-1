@@ -26,6 +26,7 @@
 #include "ragdoll_shared.h"
 #include "tier0/threadtools.h"
 #include "datacache/idatacache.h"
+#include "c_entgloweffect.h"
 
 #define LIPSYNC_POSEPARAM_NAME "mouth"
 #define NUM_HITBOX_FIRES	10
@@ -484,6 +485,8 @@ public:
 	// Texture group to use
 	int								m_nSkin;
 
+	int								m_nGlowRadius;
+
 	// Object bodygroup
 	int								m_nBody;
 
@@ -541,6 +544,8 @@ private:
 	float							m_flLastEventCheck;	// cycle index of when events were last checked
 	bool							m_bSequenceFinished;// flag set when StudioAdvanceFrame moves across a frame boundry
 	bool							m_bSequenceLoops;	// true if the sequence loops
+
+	CEntGlowEffect					*m_pEntGlowEffect;
 
 	// Mouth lipsync/envelope following values
 	CMouthInfo						m_mouth;
@@ -607,6 +612,8 @@ private:
 
 	void							SetupBones_AttachmentHelper( CStudioHdr *pStudioHdr );
 
+	void							DestroyMuzzleLightHandle();
+
 	EHANDLE							m_hLightingOrigin;
 	EHANDLE							m_hLightingOriginRelative;
 
@@ -630,9 +637,15 @@ private:
 private:
 	void							LockStudioHdr();
 	void							UnlockStudioHdr();
+	void							RecalculateGlowState();
+	void							GlowRegister();
+	void							GlowUnregister();
 	mutable CStudioHdr				*m_pStudioHdr;
 	mutable MDLHandle_t				m_hStudioHdr;
 	CThreadFastMutex				m_StudioHdrInitLock;
+	ClientShadowHandle_t			m_muzzleLightHandle;
+	float							m_flDestroyMuzzleLightHandle;
+	CTextureReference				m_muzzleLightTexture;
 };
 
 enum 

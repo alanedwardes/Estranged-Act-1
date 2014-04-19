@@ -82,6 +82,7 @@ extern ConVar cam_idealpitch;
 extern ConVar thirdperson_platformer;
 
 static ConVar m_filter( "m_filter","0", FCVAR_ARCHIVE, "Mouse filtering (set this to 1 to average the mouse over 2 frames)." );
+static ConVar m_filter_speedoverride( "m_filter_speedoverride","0");
 ConVar sensitivity( "sensitivity","3", FCVAR_ARCHIVE, "Mouse sensitivity.", true, 0.0001f, true, 10000000 );
 
 static ConVar m_side( "m_side","0.8", FCVAR_ARCHIVE, "Mouse side factor." );
@@ -370,9 +371,17 @@ void CInput::GetMouseDelta( float inmousex, float inmousey, float *pOutMouseX, f
 	// Apply filtering?
 	if ( m_filter.GetBool() )
 	{
-		// Average over last two samples
-		*pOutMouseX = ( inmousex + m_flPreviousMouseXPosition ) * 0.5f;
-		*pOutMouseY = ( inmousey + m_flPreviousMouseYPosition ) * 0.5f;
+		if(m_filter_speedoverride.GetFloat() > 0.0f)
+		{
+			*pOutMouseX = Approach(inmousex,m_flPreviousMouseXPosition,m_filter_speedoverride.GetFloat() * gpGlobals->frametime);
+			*pOutMouseY = Approach(inmousey,m_flPreviousMouseYPosition,m_filter_speedoverride.GetFloat() * gpGlobals->frametime);
+		}
+		else
+		{
+			// Average over last two samples
+			*pOutMouseX = ( inmousex + m_flPreviousMouseXPosition ) * 0.5f;
+			*pOutMouseY = ( inmousey + m_flPreviousMouseYPosition ) * 0.5f;
+		}
 	}
 	else
 	{
@@ -381,9 +390,16 @@ void CInput::GetMouseDelta( float inmousex, float inmousey, float *pOutMouseX, f
 	}
 
 	// Latch previous
-	m_flPreviousMouseXPosition = inmousex;
-	m_flPreviousMouseYPosition = inmousey;
-
+	if(m_filter.GetBool() && m_filter_speedoverride.GetFloat() > 0.0f)
+	{
+		m_flPreviousMouseXPosition = *pOutMouseX;
+		m_flPreviousMouseYPosition = *pOutMouseY;
+	}
+	else
+	{
+		m_flPreviousMouseXPosition = inmousex;
+		m_flPreviousMouseYPosition = inmousey;
+	}
 }
 
 //-----------------------------------------------------------------------------

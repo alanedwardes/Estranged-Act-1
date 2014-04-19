@@ -4,7 +4,7 @@
 //	Project Script for mods to use an an example of how to override shaders
 //-----------------------------------------------------------------------------
 
-$Macro OUTBINDIR	"$SRCDIR\..\game\$GAMENAME\bin"
+$Macro OUTBINDIR	"$SRCDIR\..\game\estrangedact1\bin"
 
 $Include "$SRCDIR\vpc_scripts\source_dll_base.vpc"
 
@@ -47,25 +47,167 @@ $Configuration
 
 $Project
 {
+	$Folder "ae"
+	{
+		$Folder "Shader Interface"
+		{
+			$File "ishaderapiext.cpp"
+			$File "ishaderapiext.h"
+		}
+		
+		$Folder "Experimental"
+		{
+			$Folder "DrawDepth" [$WIN32]
+			{
+				$File "DrawDepth.cpp"
+				$File "DrawDepth_ps20.fxc"
+			}
+		}
+		
+		$Folder "Screen Effects"
+		{
+			$Folder "HBAO" [$WIN32]
+			{
+				$File "ae_ssaoshader.cpp"
+				$File "ae_ssao_ps30.fxc"
+				$File "ae_ssao_combine_ps30.fxc"
+				$File "ae_ssao_combine.cpp"
+				$File "ae_ssao_blury_ps30.fxc"
+				$File "ae_ssao_blury.cpp"
+				$File "ae_ssao_blurx_ps30.fxc"
+				$File "ae_ssao_blurx.cpp"
+			}
+			$Folder "Depth of Field" [$WIN32]
+			{
+				$File "ae_depthoffield.cpp"
+				$File "ae_depthoffield_ps30.fxc"
+			}
+			$Folder "Color Grading"
+			{
+				$File "ae_colorgrade_ps20.fxc"
+				$File "ae_colorgrade.cpp"
+			}
+			$Folder "Lens Flare"
+			{
+				$File "ae_lensflare_ps2x.fxc"
+				$File "ae_lensflare_ps20.fxc"
+				$File "ae_lensflareshader.cpp"
+			}
+			$Folder "Film Grain"
+			{
+				$File "ae_filmgrain_ps20.fxc"
+				$File "ae_filmgrainshader.cpp"
+			}
+			$Folder "Outliner"
+			{
+				$File "ae_outlinex_ps20.fxc"
+				$File "ae_outliney_ps20.fxc"
+				$File "ae_outlinexshader.cpp"
+				$File "ae_outlineyshader.cpp"
+			}
+			$Folder "Screen Tension"
+			{
+				$File "ae_screentension_ps20b.fxc"
+				$File "ae_screentension.cpp"
+			}
+		}
+		
+		$Folder "Surfaces"
+		{
+			$Folder "sdk_lightmappedgeneric"
+			{
+				$File "lightmappedgeneric_decal.cpp"
+				$File "lightmappedgeneric_dx9.cpp"
+				$File "lightmappedgeneric_dx9_helper.cpp"
+				$File "lightmappedgeneric_dx9_helper.h"
+				$Folder "fxc"
+				{
+					$File "lightmappedgeneric_ps2_3_x.h"
+					$File "sdk_lightmappedgeneric_ps2x.fxc"
+				}
+			}
+			
+			$File "vertexlitgeneric_dx9.cpp"
+			$File "vertexlitgeneric_dx95_helper.h"
+			$File "vertexlitgeneric_dx9_helper.cpp"
+			$File "vertexlitgeneric_dx9_helper.h"
+			
+			$File "unlitgeneric_dx9.cpp"
+			$File "unlittwotexture_dx9.cpp"
+			
+			$File "skin_dx9_helper.h"
+			$File "skin_dx9_helper.cpp"
+			
+			$File "refract_dx9_helper.cpp"
+			
+			$File "flesh_interior_blended_pass_helper.h"
+			$File "flesh_interior_blended_pass_helper.cpp"
+			
+			$File "eye_refract.cpp"
+			$File "eye_refract_helper.h"
+			$File "eye_refract_helper.cpp"
+			
+			$File "eyeball.cpp"
+			
+			$File "teeth.cpp"
+			
+			$File "cable_dx9.cpp"
+			
+			$File "eyeglint_dx9.cpp"
+			
+			$File "eyes.cpp"
+			$File "eyes_dx9.cpp"
+			$File "eyes_dx8_dx9_helper.h"
+			$File "eyes_dx8_dx9_helper.cpp"
+			
+			$File "emissive_scroll_blended_pass_helper.h"
+			$File "emissive_scroll_blended_pass_helper.cpp"
+			
+			$File "cloak_dx9_helper.cpp"
+			$File "cloak_blended_pass_helper.cpp"
+			
+			$File "aftershock_helper.cpp"
+
+			$File "bloom.cpp"
+
+			$File "core_dx9.cpp"
+			
+			$File "aftershock.cpp"
+			$File "spritecard.cpp"
+			$File "vortwarp_dx9.cpp"
+			$File "water.cpp"
+			$File "worldtwotextureblend.cpp"
+			$File "worldvertexalpha.cpp"
+			
+			$File "refract.cpp"
+			$File "screenspace_general.cpp"
+			
+			$File "lightmappedreflective.cpp"
+			$File "lightmappedtwotexture.cpp"
+			
+			$File "worldvertextransition.cpp"
+			$File "worldvertextransition_dx8_helper.cpp"
+			$File "worldvertextransition_dx8_helper.h"
+		}
+	}
+
 	$Folder	"Source Files"
 	{
-		$File	"BaseVSShader.cpp"
+		$File	"basevsshader.cpp"
 
 		$File	"example_model_dx9.cpp"
 		$File	"example_model_dx9_helper.cpp"
-
-		$File	"Bloom.cpp"
-		$File	"screenspace_general.cpp"
 	}
 
 	$Folder	"Header Files"
 	{
-		$File	"BaseVSShader.h"
+		$File	"basevsshader.h"
 		$File	"common_fxc.h"
 		$File	"common_hlsl_cpp_consts.h"
 		$File	"common_ps_fxc.h"
 		$File	"common_vertexlitgeneric_dx9.h"
 		$File	"common_vs_fxc.h"
+		$File	"common_vs_simulatewind.h"
 		$File	"shader_constant_register_map.h"
 
 		$File	"example_model_dx9_helper.h"
@@ -74,9 +216,23 @@ $Project
 	$Folder	"Link Libraries" [$WIN32]
 	{
 //		$File	"$SRCDIR\dx9sdk\lib\d3dx9.lib"		
+		$DynamicFile	"$SRCDIR\lib\public\mathlib.lib"
+		$DynamicFile	"$SRCDIR\lib\public\shaderlib.lib"
 	}
 
-	$Folder "Link Libraries"
+	$Folder	"Link Libraries" [$X360]
+	{
+		$DynamicFile	"$SRCDIR\lib\public\mathlib_360.lib"	
+		$DynamicFile	"$SRCDIR\lib\public\shaderlib_360.lib"
+	}
+
+	$Folder "Link Libraries" [$POSIX&&!$LINUX]
+	{
+        $DynamicFile   "$SRCDIR\lib\public\$PLATFORM\mathlib$_STATICLIB_EXT"
+        $DynamicFile   "$SRCDIR\lib\public\$PLATFORM\shaderlib$_STATICLIB_EXT"
+    }
+
+	$Folder "Link Libraries" [$LINUX]
 	{
         $Lib	mathlib
         $Lib	shaderlib

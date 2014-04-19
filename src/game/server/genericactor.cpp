@@ -113,7 +113,8 @@ void CGenericActor::Spawn()
 
 	if ( FStrEq( STRING( GetModelName() ), "models/player.mdl" ) || 
 		 FStrEq( STRING( GetModelName() ), "models/holo.mdl" ) ||
-		 FStrEq( STRING( GetModelName() ), "models/blackout.mdl" ) )
+		 FStrEq( STRING( GetModelName() ), "models/blackout.mdl" ) ||
+		 FStrEq( STRING( GetModelName() ), "models/props_junk/shoe001a.mdl" ) )
 	{
 		UTIL_SetSize(this, VEC_HULL_MIN, VEC_HULL_MAX);
 	}
@@ -122,7 +123,8 @@ void CGenericActor::Spawn()
 		UTIL_SetSize(this, NAI_Hull::Mins(HULL_HUMAN), NAI_Hull::Maxs(HULL_HUMAN));
 	}
 
-	if ( !FStrEq( STRING( GetModelName() ), "models/blackout.mdl" ) )
+	if ( !FStrEq( STRING( GetModelName() ), "models/blackout.mdl" ) &&
+		!FStrEq( STRING( GetModelName() ), "models/props_junk/shoe001a.mdl" ) )
 	{
 		SetSolid( SOLID_BBOX );
 		AddSolidFlags( FSOLID_NOT_STANDABLE );

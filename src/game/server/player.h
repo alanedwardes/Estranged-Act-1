@@ -880,6 +880,7 @@ public:
 	float		GetDeathTime( void ) { return m_flDeathTime; }
 
 	void		ClearZoomOwner( void );
+	CBaseEntity* GetZoomOwner() { return m_hZoomOwner; };
 
 	void		SetPreviouslyPredictedOrigin( const Vector &vecAbsOrigin );
 	const Vector &GetPreviouslyPredictedOrigin() const;

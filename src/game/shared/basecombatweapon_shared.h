@@ -45,9 +45,10 @@ class CUserCmd;
 #define WEAPON_RELOAD_HUD_HINT_COUNT	1
 
 //Start with a constraint in place (don't drop to floor)
-#define	SF_WEAPON_START_CONSTRAINED	(1<<0)	
-#define SF_WEAPON_NO_PLAYER_PICKUP	(1<<1)
-#define SF_WEAPON_NO_PHYSCANNON_PUNT (1<<2)
+#define	SF_WEAPON_START_CONSTRAINED		(1<<0)	
+#define SF_WEAPON_NO_PLAYER_PICKUP		(1<<1)
+#define SF_WEAPON_NO_PHYSCANNON_PUNT	(1<<2)
+#define SF_WEAPON_MOTION_DISABLED		(1<<3)
 
 //Percent
 #define	CLIP_PERC_THRESHOLD		0.75f	
@@ -190,6 +191,7 @@ public:
 	virtual bool			HasAmmo( void );
 
 	// Weapon Pickup For Player
+	void					PickupTouch( void );
 	virtual void			SetPickupTouch( void );
 	virtual void 			DefaultTouch( CBaseEntity *pOther );	// default weapon touch
 	virtual void			GiveTo( CBaseEntity *pOther );
@@ -248,14 +250,16 @@ public:
 																	// but they are out of ammo. The default implementation
 																	// either reloads, switches weapons, or plays an empty sound.
 
-	virtual bool			ShouldBlockPrimaryFire() { return false; }
+	virtual bool			ShouldBlockPrimaryFire() { return !AutoFiresFullClip(); }
 
 #ifdef CLIENT_DLL
 	virtual void			CreateMove( float flInputSampleTime, CUserCmd *pCmd, const QAngle &vecOldViewAngles ) {}
 	virtual int				CalcOverrideModelIndex() OVERRIDE;
 #endif
 
-	virtual bool			IsWeaponZoomed() { return false; }		// Is this weapon in its 'zoomed in' mode?
+	virtual bool			IsWeaponZoomed() { return m_bInZoom; }		// Is this weapon in its 'zoomed in' mode?
+	virtual void			ToggleZoom( void );
+	virtual void			CheckZoomToggle( void );
 
 	// Reloading
 	virtual	void			CheckReload( void );
@@ -341,6 +345,7 @@ public:
 	virtual const char		*GetViewModel( int viewmodelindex = 0 ) const;
 	virtual const char		*GetWorldModel( void ) const;
 	virtual const char		*GetAnimPrefix( void ) const;
+	virtual int				GetScopeAmount( void ) const;
 	virtual int				GetMaxClip1( void ) const;
 	virtual int				GetMaxClip2( void ) const;
 	virtual int				GetDefaultClip1( void ) const;
@@ -438,6 +443,7 @@ public:
 
 	virtual int				UpdateTransmitState( void );
 
+	void					InputAllowPlayerPickup( inputdata_t &inputdata );
 	void					InputHideWeapon( inputdata_t &inputdata );
 	void					Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
@@ -550,6 +556,7 @@ public:
 	bool					m_bInReload;			// Are we in the middle of a reload;
 	bool					m_bFireOnEmpty;			// True when the gun is empty and the player is still holding down the attack key(s)
 	bool					m_bFiringWholeClip;		// Are we in the middle of firing the whole clip;
+	bool					m_bInZoom;				// Are we scoped?
 	// Weapon art
 	CNetworkVar( int, m_iViewModelIndex );
 	CNetworkVar( int, m_iWorldModelIndex );

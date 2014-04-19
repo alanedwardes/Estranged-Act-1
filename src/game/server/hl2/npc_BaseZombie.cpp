@@ -705,103 +705,6 @@ void CNPC_BaseZombie::TraceAttack( const CTakeDamageInfo &info, const Vector &ve
 	BaseClass::TraceAttack( infoCopy, vecDir, ptr, pAccumulator );
 }
 
-
-//-----------------------------------------------------------------------------
-// Purpose: A zombie has taken damage. Determine whether he should split in half
-// Input  : 
-// Output : bool, true if yes.
-//-----------------------------------------------------------------------------
-bool CNPC_BaseZombie::ShouldBecomeTorso( const CTakeDamageInfo &info, float flDamageThreshold )
-{
-	if ( info.GetDamageType() & DMG_REMOVENORAGDOLL )
-		return false;
-
-	if ( m_fIsTorso )
-	{
-		// Already split.
-		return false;
-	}
-
-	// Not if we're in a dss
-	if ( IsRunningDynamicInteraction() )
-		return false;
-
-	// Break in half IF:
-	// 
-	// Take half or more of max health in DMG_BLAST
-	if( (info.GetDamageType() & DMG_BLAST) && flDamageThreshold >= 0.5 )
-	{
-		return true;
-	}
-
-	if ( hl2_episodic.GetBool() )
-	{
-		// Always split after a cannon hit
-		if ( info.GetAmmoType() == GetAmmoDef()->Index("CombineHeavyCannon") )
-			return true;
-	}
-
-#if 0
-	if( info.GetDamageType() & DMG_BUCKSHOT )
-	{
-		if( m_iHealth <= 0 || flDamageThreshold >= 0.5 )
-		{
-			return true;
-		}
-	}
-#endif 
-	
-	return false;
-}
-
-
-//-----------------------------------------------------------------------------
-// Purpose: A zombie has taken damage. Determine whether he release his headcrab.
-// Output : YES, IMMEDIATE, or SCHEDULED (see HeadcrabRelease_t)
-//-----------------------------------------------------------------------------
-HeadcrabRelease_t CNPC_BaseZombie::ShouldReleaseHeadcrab( const CTakeDamageInfo &info, float flDamageThreshold )
-{
-	if ( m_iHealth <= 0 )
-	{
-		if ( info.GetDamageType() & DMG_REMOVENORAGDOLL )
-			return RELEASE_NO;
-
-		if ( info.GetDamageType() & DMG_SNIPER )
-			return RELEASE_RAGDOLL;
-
-		// If I was killed by a bullet...
-		if ( info.GetDamageType() & DMG_BULLET )
-		{
-			if( m_bHeadShot ) 
-			{
-				if( flDamageThreshold > 0.25 )
-				{
-					// Enough force to kill the crab.
-					return RELEASE_RAGDOLL;
-				}
-			}
-			else
-			{
-				// Killed by a shot to body or something. Crab is ok!
-				return RELEASE_IMMEDIATE;
-			}
-		}
-
-		// If I was killed by an explosion, release the crab.
-		if ( info.GetDamageType() & DMG_BLAST )
-		{
-			return RELEASE_RAGDOLL;
-		}
-
-		if ( m_fIsTorso && IsChopped( info ) )
-		{
-			return RELEASE_RAGDOLL_SLICED_OFF;
-		}
-	}
-
-	return RELEASE_NO;
-}
-
 //-----------------------------------------------------------------------------
 // Purpose: 
 // Input  : pInflictor - 
@@ -845,88 +748,11 @@ int CNPC_BaseZombie::OnTakeDamage_Alive( const CTakeDamageInfo &inputInfo )
 	// flDamageThreshold is what percentage of the creature's max health
 	// this amount of damage represents. (clips at 1.0)
 	float flDamageThreshold = MIN( 1, info.GetDamage() / m_iMaxHealth );
-	
-	// Being chopped up by a sharp physics object is a pretty special case
-	// so we handle it with some special code. Mainly for 
-	// Ravenholm's helicopter traps right now (sjb).
-	bool bChopped = IsChopped(info);
-	bool bSquashed = IsSquashed(info);
-	bool bKilledByVehicle = ( ( info.GetDamageType() & DMG_VEHICLE ) != 0 );
 
-	if( !m_fIsTorso && (bChopped || bSquashed) && !bKilledByVehicle && !(info.GetDamageType() & DMG_REMOVENORAGDOLL) )
+	if (flDamageThreshold >= 1.0)
 	{
-		if( bChopped )
-		{
-			EmitSound( "E3_Phystown.Slicer" );
-		}
-
-		DieChopped( info );
-	}
-	else
-	{
-		HeadcrabRelease_t release = ShouldReleaseHeadcrab( info, flDamageThreshold );
-		
-		switch( release )
-		{
-		case RELEASE_IMMEDIATE:
-			ReleaseHeadcrab( EyePosition(), vec3_origin, true, true );
-			break;
-
-		case RELEASE_RAGDOLL:
-			// Go a little easy on headcrab ragdoll force. They're light!
-			ReleaseHeadcrab( EyePosition(), inputInfo.GetDamageForce() * 0.25, true, false, true );
-			break;
-
-		case RELEASE_RAGDOLL_SLICED_OFF:
-			{
-				EmitSound( "E3_Phystown.Slicer" );
-				Vector vecForce = inputInfo.GetDamageForce() * 0.1;
-				vecForce += Vector( 0, 0, 2000.0 );
-				ReleaseHeadcrab( EyePosition(), vecForce, true, false, true );
-			}
-			break;
-
-		case RELEASE_VAPORIZE:
-			RemoveHead();
-			break;
-
-		case RELEASE_SCHEDULED:
-			SetCondition( COND_ZOMBIE_RELEASECRAB );
-			break;
-		}
-
-		if( ShouldBecomeTorso( info, flDamageThreshold ) )
-		{
-			bool bHitByCombineCannon = (inputInfo.GetAmmoType() == GetAmmoDef()->Index("CombineHeavyCannon"));
-
-			if ( CanBecomeLiveTorso() )
-			{
-				BecomeTorso( vec3_origin, inputInfo.GetDamageForce() * 0.50 );
-
-				if ( ( info.GetDamageType() & DMG_BLAST) && random->RandomInt( 0, 1 ) == 0 )
-				{
-					Ignite( 5.0 + random->RandomFloat( 0.0, 5.0 ) );
-				}
-
-				// For Combine cannon impacts
-				if ( hl2_episodic.GetBool() )
-				{
-					if ( bHitByCombineCannon )
-					{
-						// Catch on fire.
-						Ignite( 5.0f + random->RandomFloat( 0.0f, 5.0f ) );
-					}
-				}
-
-				if (flDamageThreshold >= 1.0)
-				{
-					m_iHealth = 0;
-					BecomeRagdollOnClient( info.GetDamageForce() );
-				}
-			}
-			else if ( random->RandomInt(1, 3) == 1 )
-				DieChopped( info );
-		}
+		m_iHealth = 0;
+		BecomeRagdollOnClient( info.GetDamageForce() );
 	}
 
 	if( tookDamage > 0 && (info.GetDamageType() & (DMG_BURN|DMG_DIRECT)) && m_ActBusyBehavior.IsActive() ) 
@@ -1060,115 +886,6 @@ bool CNPC_BaseZombie::ShouldIgniteZombieGib( void )
 #else
 	return IsOnFire();
 #endif 
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Handle the special case of a zombie killed by a physics chopper.
-//-----------------------------------------------------------------------------
-void CNPC_BaseZombie::DieChopped( const CTakeDamageInfo &info )
-{
-	bool bSquashed = IsSquashed(info);
-
-	Vector forceVector( vec3_origin );
-
-	forceVector += CalcDamageForceVector( info );
-
-	if( !m_fIsHeadless && !bSquashed )
-	{
-		if( random->RandomInt( 0, 1 ) == 0 )
-		{
-			// Drop a live crab half of the time.
-			ReleaseHeadcrab( EyePosition(), forceVector * 0.005, true, false, false );
-		}
-	}
-
-	float flFadeTime = 0.0;
-
-	if( HasSpawnFlags( SF_NPC_FADE_CORPSE ) )
-	{
-		flFadeTime = 5.0;
-	}
-
-	SetSolid( SOLID_NONE );
-	AddEffects( EF_NODRAW );
-
-	Vector vecLegsForce;
-	vecLegsForce.x = random->RandomFloat( -400, 400 );
-	vecLegsForce.y = random->RandomFloat( -400, 400 );
-	vecLegsForce.z = random->RandomFloat( 0, 250 );
-
-	if( bSquashed && vecLegsForce.z > 0 )
-	{
-		// Force the broken legs down. (Give some additional force, too)
-		vecLegsForce.z *= -10;
-	}
-
-	CBaseEntity *pLegGib = CreateRagGib( GetLegsModel(), GetAbsOrigin(), GetAbsAngles(), vecLegsForce, flFadeTime, ShouldIgniteZombieGib() );
-	if ( pLegGib )
-	{
-		CopyRenderColorTo( pLegGib );
-	}
-
-	forceVector *= random->RandomFloat( 0.04, 0.06 );
-	forceVector.z = ( 100 * 12 * 5 ) * random->RandomFloat( 0.8, 1.2 );
-
-	if( bSquashed && forceVector.z > 0 )
-	{
-		// Force the broken torso down.
-		forceVector.z *= -1.0;
-	}
-
-	// Why do I have to fix this up?! (sjb)
-	QAngle TorsoAngles;
-	TorsoAngles = GetAbsAngles();
-	TorsoAngles.x -= 90.0f;
-	CBaseEntity *pTorsoGib = CreateRagGib( GetTorsoModel(), GetAbsOrigin() + Vector( 0, 0, 64 ), TorsoAngles, forceVector, flFadeTime, ShouldIgniteZombieGib() );
-	if ( pTorsoGib )
-	{
-		CBaseAnimating *pAnimating = dynamic_cast<CBaseAnimating*>(pTorsoGib);
-		if( pAnimating )
-		{
-			pAnimating->SetBodygroup( ZOMBIE_BODYGROUP_HEADCRAB, !m_fIsHeadless );
-		}
-
-		pTorsoGib->SetOwnerEntity( this );
-		CopyRenderColorTo( pTorsoGib );
-
-	}
-
-	if ( UTIL_ShouldShowBlood( BLOOD_COLOR_YELLOW ) )
-	{
-		int i;
-		Vector vecSpot;
-		Vector vecDir;
-
-		for ( i = 0 ; i < 4; i++ )
-		{
-			vecSpot = WorldSpaceCenter();
-
-			vecSpot.x += random->RandomFloat( -12, 12 ); 
-			vecSpot.y += random->RandomFloat( -12, 12 ); 
-			vecSpot.z += random->RandomFloat( -4, 16 ); 
-
-			UTIL_BloodDrips( vecSpot, vec3_origin, BLOOD_COLOR_YELLOW, 50 );
-		}
-
-		for ( int i = 0 ; i < 4 ; i++ )
-		{
-			Vector vecSpot = WorldSpaceCenter();
-
-			vecSpot.x += random->RandomFloat( -12, 12 ); 
-			vecSpot.y += random->RandomFloat( -12, 12 ); 
-			vecSpot.z += random->RandomFloat( -4, 16 );
-
-			vecDir.x = random->RandomFloat(-1, 1);
-			vecDir.y = random->RandomFloat(-1, 1);
-			vecDir.z = 0;
-			VectorNormalize( vecDir );
-
-			UTIL_BloodImpact( vecSpot, vecDir, BloodColor(), 1 );
-		}
-	}
 }
 
 //-----------------------------------------------------------------------------
@@ -1609,55 +1326,6 @@ void CNPC_BaseZombie::HandleAnimEvent( animevent_t *pEvent )
 		return;
 	}
 
-	if ( pEvent->event == AE_ZOMBIE_POPHEADCRAB )
-	{
-		if ( GetInteractionPartner() == NULL )
-			return;
-
-		const char	*pString = pEvent->options;
-		char		token[128];
-		pString = nexttoken( token, pString, ' ' );
-
-		int boneIndex = GetInteractionPartner()->LookupBone( token );
-
-		if ( boneIndex == -1 )
-		{
-			Warning( "AE_ZOMBIE_POPHEADCRAB event using invalid bone name! Usage: event AE_ZOMBIE_POPHEADCRAB \"<BoneName> <Speed>\" \n" );
-			return;
-		}
-
-		pString = nexttoken( token, pString, ' ' );
-
-		if ( !token )
-		{
-			Warning( "AE_ZOMBIE_POPHEADCRAB event format missing velocity parameter! Usage: event AE_ZOMBIE_POPHEADCRAB \"<BoneName> <Speed>\" \n" );
-			return;
-		}
-
-		Vector vecBonePosition;
-		QAngle angles;
-		Vector vecHeadCrabPosition;
-
-		int iCrabAttachment = LookupAttachment( "headcrab" );
-		int iSpeed = atoi( token );
-
-		GetInteractionPartner()->GetBonePosition( boneIndex, vecBonePosition, angles );
-		GetAttachment( iCrabAttachment, vecHeadCrabPosition );
-
-		Vector vVelocity = vecHeadCrabPosition - vecBonePosition;
-		VectorNormalize( vVelocity );
-
-		CTakeDamageInfo	dmgInfo( this, GetInteractionPartner(), m_iHealth, DMG_DIRECT );
-
-		dmgInfo.SetDamagePosition( vecHeadCrabPosition );
-
-		ReleaseHeadcrab( EyePosition(), vVelocity * iSpeed, true, false, true );
-
-		GuessDamageForce( &dmgInfo, vVelocity, vecHeadCrabPosition, 0.5f );
-		TakeDamage( dmgInfo );
-		return;
-	}
-
 	BaseClass::HandleAnimEvent( pEvent );
 }
 
@@ -1713,14 +1381,9 @@ void CNPC_BaseZombie::Spawn( void )
 //-----------------------------------------------------------------------------
 void CNPC_BaseZombie::Precache( void )
 {
-	UTIL_PrecacheOther( GetHeadcrabClassname() );
-
 	PrecacheScriptSound( "E3_Phystown.Slicer" );
 	PrecacheScriptSound( "NPC_BaseZombie.PoundDoor" );
 	PrecacheScriptSound( "NPC_BaseZombie.Swat" );
-
-	PrecacheModel( GetLegsModel() );
-	PrecacheModel( GetTorsoModel() );
 
 	PrecacheParticleSystem( "blood_impact_zombie_01" );
 
@@ -2129,22 +1792,6 @@ void CNPC_BaseZombie::StartTask( const Task_t *pTask )
 		TaskComplete();
 		break;
 
-	case TASK_ZOMBIE_RELEASE_HEADCRAB:
-		{
-			// make the crab look like it's pushing off the body
-			Vector vecForward;
-			Vector vecVelocity;
-
-			AngleVectors( GetAbsAngles(), &vecForward );
-			
-			vecVelocity = vecForward * 30;
-			vecVelocity.z += 100;
-
-			ReleaseHeadcrab( EyePosition(), vecVelocity, true, true );
-			TaskComplete();
-		}
-		break;
-
 	case TASK_ZOMBIE_WAIT_POST_MELEE:
 		{
 #ifndef HL2_EPISODIC
@@ -2195,77 +1842,6 @@ void CNPC_BaseZombie::RunTask( const Task_t *pTask )
 		BaseClass::RunTask( pTask );
 		break;
 	}
-}
-
-
-//---------------------------------------------------------
-// Make the necessary changes to a zombie to make him a 
-// torso!
-//---------------------------------------------------------
-void CNPC_BaseZombie::BecomeTorso( const Vector &vecTorsoForce, const Vector &vecLegsForce )
-{
-	if( m_fIsTorso )
-	{
-		DevMsg( "*** Zombie is already a torso!\n" );
-		return;
-	}
-
-	if( IsOnFire() )
-	{
-		Extinguish();
-		Ignite( 30 );
-	}
-
-	if ( !m_fIsHeadless )
-	{
-		m_iMaxHealth = ZOMBIE_TORSO_HEALTH_FACTOR * m_iMaxHealth;
-		m_iHealth = m_iMaxHealth;
-
-		// No more opening doors!
-		CapabilitiesRemove( bits_CAP_DOORS_GROUP );
-		
-		ClearSchedule( "Becoming torso" );
-		GetNavigator()->ClearGoal();
-		m_hPhysicsEnt = NULL;
-
-		// Put the zombie in a TOSS / fall schedule
-		// Otherwise he fails and sits on the ground for a sec.
-		SetSchedule( SCHED_FALL_TO_GROUND );
-
-		m_fIsTorso = true;
-
-		// Put the torso up where the torso was when the zombie
-		// was whole.
-		Vector origin = GetAbsOrigin();
-		origin.z += 40;
-		SetAbsOrigin( origin );
-
-		SetGroundEntity( NULL );
-		// assume zombie mass ~ 100 kg
-		ApplyAbsVelocityImpulse( vecTorsoForce * (1.0 / 100.0) );
-	}
-
-	float flFadeTime = 0.0;
-
-	if( HasSpawnFlags( SF_NPC_FADE_CORPSE ) )
-	{
-		flFadeTime = 5.0;
-	}
-
-	if ( m_fIsTorso == true )
-	{
-		// -40 on Z to make up for the +40 on Z that we did above. This stops legs spawning above the head.
-		CBaseEntity *pGib = CreateRagGib( GetLegsModel(), GetAbsOrigin() - Vector(0, 0, 40), GetAbsAngles(), vecLegsForce, flFadeTime );
-
-		// don't collide with this thing ever
-		if ( pGib )
-		{
-			pGib->SetOwnerEntity( this );
-		}
-	}
-
-
-	SetZombieModel();
 }
 
 //---------------------------------------------------------
@@ -2367,155 +1943,6 @@ bool CNPC_BaseZombie::HeadcrabFits( CBaseAnimating *pCrab )
 	//NDebugOverlay::Box( vecSpawnLoc, NAI_Hull::Mins(HULL_TINY) * CRAB_HULL_EXPAND, NAI_Hull::Maxs(HULL_TINY) * CRAB_HULL_EXPAND, 0, 255, 0, 100, 10.0 );
 	return true;
 }
-
-
-//-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : &vecOrigin - 
-//			&vecVelocity - 
-//			fRemoveHead - 
-//			fRagdollBody - 
-//-----------------------------------------------------------------------------
-void CNPC_BaseZombie::ReleaseHeadcrab( const Vector &vecOrigin, const Vector &vecVelocity, bool fRemoveHead, bool fRagdollBody, bool fRagdollCrab )
-{
-	CAI_BaseNPC		*pCrab;
-	Vector vecSpot = vecOrigin;
-
-	// Until the headcrab is a bodygroup, we have to approximate the
-	// location of the head with magic numbers.
-	if( !m_fIsTorso )
-	{
-		vecSpot.z -= 16;
-	}
-
-	if( fRagdollCrab )
-	{
-		//Vector vecForce = Vector( 0, 0, random->RandomFloat( 700, 1100 ) );
-		CBaseEntity *pGib = CreateRagGib( GetHeadcrabModel(), vecOrigin, GetLocalAngles(), vecVelocity, 15, ShouldIgniteZombieGib() );
-
-		if ( pGib )
-		{
-			CBaseAnimating *pAnimatingGib = dynamic_cast<CBaseAnimating*>(pGib);
-
-			// don't collide with this thing ever
-			int iCrabAttachment = LookupAttachment( "headcrab" );
-			if (iCrabAttachment > 0 && pAnimatingGib )
-			{
-				SetHeadcrabSpawnLocation( iCrabAttachment, pAnimatingGib );
-			}
-
-			if( !HeadcrabFits(pAnimatingGib) )
-			{
-				UTIL_Remove(pGib);
-				return;
-			}
-
-			pGib->SetOwnerEntity( this );
-			CopyRenderColorTo( pGib );
-
-			
-			if( UTIL_ShouldShowBlood(BLOOD_COLOR_YELLOW) )
-			{
-				UTIL_BloodImpact( pGib->WorldSpaceCenter(), Vector(0,0,1), BLOOD_COLOR_YELLOW, 1 );
-
-				for ( int i = 0 ; i < 3 ; i++ )
-				{
-					Vector vecSpot = pGib->WorldSpaceCenter();
-					
-					vecSpot.x += random->RandomFloat( -8, 8 ); 
-					vecSpot.y += random->RandomFloat( -8, 8 ); 
-					vecSpot.z += random->RandomFloat( -8, 8 ); 
-
-					UTIL_BloodDrips( vecSpot, vec3_origin, BLOOD_COLOR_YELLOW, 50 );
-				}
-			}
-		}
-	}
-	else
-	{
-		pCrab = (CAI_BaseNPC*)CreateEntityByName( GetHeadcrabClassname() );
-
-		if ( !pCrab )
-		{
-			Warning( "**%s: Can't make %s!\n", GetClassname(), GetHeadcrabClassname() );
-			return;
-		}
-
-		// Stick the crab in whatever squad the zombie was in.
-		pCrab->SetSquadName( m_SquadName );
-
-		// don't pop to floor, fall
-		pCrab->AddSpawnFlags( SF_NPC_FALL_TO_GROUND );
-		
-		// add on the parent flags
-		pCrab->AddSpawnFlags( m_spawnflags & ZOMBIE_CRAB_INHERITED_SPAWNFLAGS );
-		
-		// make me the crab's owner to avoid collision issues
-		pCrab->SetOwnerEntity( this );
-
-		pCrab->SetAbsOrigin( vecSpot );
-		pCrab->SetAbsAngles( GetAbsAngles() );
-		DispatchSpawn( pCrab );
-
-		pCrab->GetMotor()->SetIdealYaw( GetAbsAngles().y );
-
-		// FIXME: npc's with multiple headcrabs will need some way to query different attachments.
-		// NOTE: this has till after spawn is called so that the model is set up
-		int iCrabAttachment = LookupAttachment( "headcrab" );
-		if (iCrabAttachment > 0)
-		{
-			SetHeadcrabSpawnLocation( iCrabAttachment, pCrab );
-			pCrab->GetMotor()->SetIdealYaw( pCrab->GetAbsAngles().y );
-			
-			// Take out any pitch
-			QAngle angles = pCrab->GetAbsAngles();
-			angles.x = 0.0;
-			pCrab->SetAbsAngles( angles );
-		}
-
-		if( !HeadcrabFits(pCrab) )
-		{
-			UTIL_Remove(pCrab);
-			return;
-		}
-
-		pCrab->SetActivity( ACT_IDLE );
-		pCrab->SetNextThink( gpGlobals->curtime );
-		pCrab->PhysicsSimulate();
-		pCrab->SetAbsVelocity( vecVelocity );
-
-		// if I have an enemy, stuff that to the headcrab.
-		CBaseEntity *pEnemy;
-		pEnemy = GetEnemy();
-
-		pCrab->m_flNextAttack = gpGlobals->curtime + 1.0f;
-
-		if( pEnemy )
-		{
-			pCrab->SetEnemy( pEnemy );
-		}
-		if( ShouldIgniteZombieGib() )
-		{
-			pCrab->Ignite( 30 );
-		}
-
-		CopyRenderColorTo( pCrab );
-
-		pCrab->Activate();
-	}
-
-	if( fRemoveHead )
-	{
-		RemoveHead();
-	}
-
-	if( fRagdollBody )
-	{
-		BecomeRagdollOnClient( vec3_origin );
-	}
-}
-
-
 
 void CNPC_BaseZombie::SetHeadcrabSpawnLocation( int iCrabAttachment, CBaseAnimating *pCrab )
 {

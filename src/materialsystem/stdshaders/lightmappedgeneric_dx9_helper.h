@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2002, Valve LLC, All rights reserved. ============
 //
 // Purpose: 
 //
@@ -9,7 +9,7 @@
 #define LIGHTMAPPEDGENERIC_DX9_HELPER_H
 
 #include <string.h>
-#include "BaseVSShader.h"
+#include "basevsshader.h"
 
 
 //-----------------------------------------------------------------------------
@@ -87,6 +87,11 @@ struct LightmappedGeneric_DX9_Vars_t
 	int m_nOutlineEnd0;
 	int m_nOutlineEnd1;
 
+	//Phong info
+	int m_nPhong;
+	int m_nPhongExponent;
+	int m_nPhongTint;
+	int m_nPhongFresnel;
 };
 
 void InitParamsLightmappedGeneric_DX9( CBaseVSShader *pShader, IMaterialVar** params, const char *pMaterialName, LightmappedGeneric_DX9_Vars_t &info );

@@ -857,7 +857,7 @@ void ProcessModels (void)
 	}
 
 	// Turn the skybox into a cubemap in case we don't build env_cubemap textures.
-	Cubemap_CreateDefaultCubemaps();
+	//Cubemap_CreateDefaultCubemaps();
 	EndBSPFile ();
 }
 

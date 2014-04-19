@@ -66,6 +66,8 @@
 static ConVar cl_SetupAllBones( "cl_SetupAllBones", "0" );
 ConVar r_sequence_debug( "r_sequence_debug", "" );
 
+static ConVar ae_item_glow_radius("ae_item_glow_radius", "128.0");
+
 // If an NPC is moving faster than this, he should play the running footstep sound
 const float RUN_SPEED_ESTIMATE_SQR = 150.0f * 150.0f;
 
@@ -172,6 +174,7 @@ IMPLEMENT_CLIENTCLASS_DT(C_BaseAnimating, DT_BaseAnimating, CBaseAnimating)
 	RecvPropInt(RECVINFO(m_nForceBone)),
 	RecvPropVector(RECVINFO(m_vecForce)),
 	RecvPropInt(RECVINFO(m_nSkin)),
+	RecvPropInt(RECVINFO(m_nGlowRadius)),
 	RecvPropInt(RECVINFO(m_nBody)),
 	RecvPropInt(RECVINFO(m_nHitboxSet)),
 
@@ -720,6 +723,9 @@ C_BaseAnimating::C_BaseAnimating() :
 	m_pStudioHdr = NULL;
 	m_hStudioHdr = MDLHANDLE_INVALID;
 
+	m_muzzleLightHandle = CLIENTSHADOW_INVALID_HANDLE;
+	m_muzzleLightTexture.Init(materials->FindTexture("effects/muzzleflash", TEXTURE_GROUP_OTHER, false));
+
 	m_bReceivedSequence = false;
 
 	m_boneIndexAttached = -1;
@@ -804,6 +810,9 @@ ShadowType_t C_BaseAnimating::ShadowCastType()
 
 	if ( IsEffectActive(EF_NODRAW | EF_NOSHADOW) )
 		return SHADOWS_NONE;
+
+	if ( IsEffectActive(EF_SHADOW_SIMPLE) )
+		return SHADOWS_SIMPLE;
 
 	if (pStudioHdr->GetNumSeq() == 0)
 		return SHADOWS_RENDER_TO_TEXTURE;
@@ -3300,30 +3309,74 @@ int C_BaseAnimating::InternalDrawModel( int flags )
 }
 
 extern ConVar muzzleflash_light;
+ConVar ae_muzzleflashrgb("ae_muzzleflashrgb", "255 128 32", FCVAR_CHEAT, "Colour of the muzzle flash");
+ConVar ae_muzzleflashbrightness("ae_muzzleflashbrightness", "0.5", FCVAR_CHEAT, "Intensity of the muzzle flash (Dx90 only)");
 
 void C_BaseAnimating::ProcessMuzzleFlashEvent()
 {
+	float muzzleflash_colour[3];
+	UTIL_StringToFloatArray(muzzleflash_colour, 3, ae_muzzleflashrgb.GetString());
+
 	// If we have an attachment, then stick a light on it.
 	if ( muzzleflash_light.GetBool() )
 	{
 		//FIXME: We should really use a named attachment for this
 		if ( m_Attachments.Count() > 0 )
 		{
-			Vector vAttachment;
-			QAngle dummyAngles;
-			GetAttachment( 1, vAttachment, dummyAngles );
+			if (engine->GetDXSupportLevel() < 90)
+			{
+				// Make an elight
+				Vector vAttachment;
+				QAngle dummyAngles;
+				GetAttachment( 1, vAttachment, dummyAngles );
 
-			// Make an elight
-			dlight_t *el = effects->CL_AllocElight( LIGHT_INDEX_MUZZLEFLASH + index );
-			el->origin = vAttachment;
-			el->radius = random->RandomInt( 32, 64 ); 
-			el->decay = el->radius / 0.05f;
-			el->die = gpGlobals->curtime + 0.05f;
-			el->color.r = 255;
-			el->color.g = 192;
-			el->color.b = 64;
-			el->color.exponent = 5;
+				dlight_t *el = effects->CL_AllocElight( LIGHT_INDEX_MUZZLEFLASH + index );
+				el->origin = vAttachment;
+				el->radius = random->RandomInt( 32, 64 ); 
+				el->decay = el->radius / 0.05f;
+				el->die = gpGlobals->curtime + 0.05f;
+				el->color.r = muzzleflash_colour[0];
+				el->color.g = muzzleflash_colour[1];
+				el->color.b = muzzleflash_colour[2];
+				el->color.exponent = 6;
+			}
+			else
+			{
+				FlashlightState_t state;
+
+				Vector vForward, vRight, vUp, vPos = GetAbsOrigin();
+				AngleVectors( GetAbsAngles(), &vForward, &vRight, &vUp );
+				state.m_vecLightOrigin = vPos;
+				BasisToQuaternion( vForward, vRight, vUp, state.m_quatOrientation );
+
+				state.m_pSpotlightTexture = m_muzzleLightTexture;
+				state.m_nSpotlightTextureFrame = 0;
+
+				state.m_fHorizontalFOVDegrees = random->RandomInt(70, 120);
+				state.m_fVerticalFOVDegrees = state.m_fHorizontalFOVDegrees;
+				state.m_Color[0] = (muzzleflash_colour[0] / 255.0f) * ae_muzzleflashbrightness.GetFloat();
+				state.m_Color[1] = (muzzleflash_colour[1] / 255.0f) * ae_muzzleflashbrightness.GetFloat();
+				state.m_Color[2] = (muzzleflash_colour[2] / 255.0f) * ae_muzzleflashbrightness.GetFloat();
+				state.m_fLinearAtten = 100.0f;
+				state.m_NearZ = 5.0f;
+				state.m_FarZ = 750.0f;
+
+				DestroyMuzzleLightHandle();
+
+				m_muzzleLightHandle = g_pClientShadowMgr->CreateFlashlight( state );
+				g_pClientShadowMgr->UpdateProjectedTexture( m_muzzleLightHandle, true );
+				m_flDestroyMuzzleLightHandle = gpGlobals->curtime + 0.05f;
+			}
 		}
+	}
+}
+
+void C_BaseAnimating::DestroyMuzzleLightHandle()
+{
+	if (m_muzzleLightHandle != CLIENTSHADOW_INVALID_HANDLE)
+	{
+		g_pClientShadowMgr->DestroyFlashlight(m_muzzleLightHandle);
+		m_muzzleLightHandle = CLIENTSHADOW_INVALID_HANDLE;
 	}
 }
 
@@ -4430,6 +4483,8 @@ void C_BaseAnimating::NotifyShouldTransmit( ShouldTransmitState_t state )
 		// will show up even if he isn't firing now.
 		DisableMuzzleFlash();
 
+		GlowUnregister();
+
 		m_nPrevResetEventsParity = m_nResetEventsParity;
 		m_nEventSequence = GetSequence();
 	}
@@ -4903,8 +4958,52 @@ void C_BaseAnimating::Simulate()
 	{
 		ClearRagdoll();
 	}
+
+	if (m_flDestroyMuzzleLightHandle < gpGlobals->curtime)
+	{
+		DestroyMuzzleLightHandle();
+	}
+
+	RecalculateGlowState();
 }
 
+void C_BaseAnimating::RecalculateGlowState()
+{
+	if (m_nGlowRadius <= 0)
+	{
+		GlowUnregister();
+		return;
+	}
+
+	CBasePlayer *player = CBasePlayer::GetLocalPlayer();
+	float flDist = (GetAbsOrigin() - player->GetAbsOrigin()).LengthSqr();
+
+	if (flDist > Square(m_nGlowRadius))
+	{
+		GlowUnregister();
+		return;
+	}
+
+	GlowRegister();
+}
+
+void C_BaseAnimating::GlowRegister(void)
+{
+	if (!m_pEntGlowEffect)
+	{
+		m_pEntGlowEffect = (CEntGlowEffect*)g_pScreenSpaceEffects->GetScreenSpaceEffect("ge_entglow");
+		m_pEntGlowEffect->RegisterEnt(this);
+	}
+}
+
+void C_BaseAnimating::GlowUnregister(void)
+{
+	if (m_pEntGlowEffect)
+	{
+		m_pEntGlowEffect->DeregisterEnt(this);
+		m_pEntGlowEffect = NULL;
+	}
+}
 
 bool C_BaseAnimating::TestCollision( const Ray_t &ray, unsigned int fContentsMask, trace_t& tr )
 {

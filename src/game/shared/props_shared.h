@@ -67,7 +67,10 @@ enum propdata_interactions_t
 
 	PROPINTER_WORLD_BLOODSPLAT,			// "onworldimpact", "bloodsplat"
 	
-	PROPINTER_PHYSGUN_NOTIFY_CHILDREN,	// "onfirstimpact" cause attached flechettes to explode
+	//PROPINTER_PHYSGUN_NOTIFY_CHILDREN,	// "onfirstimpact" cause attached flechettes to explode
+	// - ae: this should not be in here, it's ep2 code. and it just lost me 4 hours of work...
+
+	PROPINTER_WORLD_FORCE_BREAK_GLASS,	// "forcebreakglass" "yes"
 
 	// If we get more than 32 of these, we'll need a different system
 

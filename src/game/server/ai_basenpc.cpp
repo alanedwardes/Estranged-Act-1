@@ -2914,8 +2914,8 @@ bool CAI_BaseNPC::PreThink( void )
 			g_AINextDisabledMessageTime = gpGlobals->curtime + 0.5f;
 
 			hudtextparms_s tTextParam;
-			tTextParam.x			= 0.7;
-			tTextParam.y			= 0.65;
+			tTextParam.x			= 0.5;
+			tTextParam.y			= 0.5;
 			tTextParam.effect		= 0;
 			tTextParam.r1			= 255;
 			tTextParam.g1			= 255;
@@ -2930,7 +2930,7 @@ bool CAI_BaseNPC::PreThink( void )
 			tTextParam.holdTime		= 0.6;
 			tTextParam.fxTime		= 0;
 			tTextParam.channel		= 1;
-			UTIL_HudMessageAll( tTextParam, "A.I. Disabled...\n" );
+			UTIL_HudMessageAll( tTextParam, "A.I. Disabled...\n", NULL );
 		}
 		SetActivity( ACT_IDLE );
 		return false;
@@ -6080,7 +6080,7 @@ void CAI_BaseNPC::ResolveActivityToSequence(Activity NewActivity, int &iSequence
 			static Activity lastWarnActivity;
 			static float timeLastWarn;
 
-			if ( ( pLastWarn != this && lastWarnActivity != translatedActivity ) || gpGlobals->curtime - timeLastWarn > 5.0 )
+			if ( ( ( pLastWarn != this && lastWarnActivity != translatedActivity ) || gpGlobals->curtime - timeLastWarn > 5.0 ) && !FStrEq( STRING( GetModelName() ), "models/props_junk/shoe001a.mdl" ) )
 			{
 				DevWarning( "%s:%s:%s has no sequence for act:%s\n", GetClassname(), GetDebugName(), STRING( GetModelName() ), ActivityList_NameForIndex(translatedActivity) );
 				pLastWarn = this;
@@ -11716,35 +11716,6 @@ void CAI_BaseNPC::CleanupScriptsOnTeleport( bool bEnrouteAsWell )
 
 		m_hCine->ScriptEntityCancel( m_hCine, true );
 	}
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-bool CAI_BaseNPC::HandleInteraction(int interactionType, void *data, CBaseCombatCharacter* sourceEnt)
-{
-#ifdef HL2_DLL
-	if ( interactionType == g_interactionBarnacleVictimGrab )
-	{
-		// Make the victim stop thinking so they're as good as dead without 
-		// shocking the system by destroying the entity.
-		StopLoopingSounds();
-		BarnacleDeathSound();
- 		SetThink( NULL );
-
-		// Gag the NPC so they won't talk anymore
-		AddSpawnFlags( SF_NPC_GAG );
-
-		// Drop any weapon they're holding
-		if ( GetActiveWeapon() )
-		{
-			Weapon_Drop( GetActiveWeapon() );
-		}
-
-		return true;
-	}
-#endif // HL2_DLL
-
-	return BaseClass::HandleInteraction( interactionType, data, sourceEnt );
 }
 
 CAI_BaseNPC *CAI_BaseNPC::GetInteractionPartner( void )

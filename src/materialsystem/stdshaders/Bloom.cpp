@@ -5,13 +5,13 @@
 // $NoKeywords: $
 //===========================================================================//
 
-#include "BaseVSShader.h"
+#include "basevsshader.h"
 
-#include "SDK_screenspaceeffect_vs20.inc"
-#include "SDK_Bloom_ps20.inc"
-#include "SDK_Bloom_ps20b.inc"
+#include "sdk_screenspaceeffect_vs20.inc"
+#include "sdk_bloom_ps20.inc"
+#include "sdk_bloom_ps20b.inc"
 
-BEGIN_VS_SHADER_FLAGS( SDK_Bloom, "Help for Bloom", SHADER_NOT_EDITABLE )
+BEGIN_VS_SHADER_FLAGS( sdk_bloom, "Help for Bloom", SHADER_NOT_EDITABLE )
 	BEGIN_SHADER_PARAMS
 		SHADER_PARAM( FBTEXTURE, SHADER_PARAM_TYPE_TEXTURE, "_rt_FullFrameFB", "" )
 		SHADER_PARAM( BLURTEXTURE, SHADER_PARAM_TYPE_TEXTURE, "_rt_SmallHDR0", "" )

@@ -1065,6 +1065,15 @@ bool CServerGameDLL::LevelInit( const char *pMapName, char const *pMapEntities, 
 	// clear any pending autosavedangerous
 	m_fAutoSaveDangerousTime = 0.0f;
 	m_fAutoSaveDangerousMinHealthToCommit = 0.0f;
+
+	// Estranged - exec map.cfg
+	if (gpGlobals->eLoadType == MapLoad_NewGame)
+	{
+		char szMapCfg[MAX_MAP_NAME + 8];
+		Q_snprintf(szMapCfg, sizeof(szMapCfg), "exec %s.cfg\n", gpGlobals->mapname.ToCStr());
+		engine->ServerCommand(szMapCfg);
+	}
+
 	return true;
 }
 

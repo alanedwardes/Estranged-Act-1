@@ -1459,8 +1459,6 @@ public:
 	void				InputGagEnable( inputdata_t &inputdata ) { AddSpawnFlags(SF_NPC_GAG); }
 	void				InputGagDisable( inputdata_t &inputdata ) { RemoveSpawnFlags(SF_NPC_GAG); }
 
-	bool				HandleInteraction(int interactionType, void *data, CBaseCombatCharacter* sourceEnt);
-
 	virtual void		InputOutsideTransition( inputdata_t &inputdata );
 	virtual void		InputInsideTransition( inputdata_t &inputdata );
 

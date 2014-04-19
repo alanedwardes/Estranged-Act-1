@@ -71,6 +71,8 @@ CBaseCombatWeapon::CBaseCombatWeapon()
 	m_fMaxRange1		= 1024;
 	m_fMaxRange2		= 1024;
 
+	m_bInZoom			= false;
+
 	m_bReloadsSingly	= false;
 
 	// Defaults to zero
@@ -84,6 +86,7 @@ CBaseCombatWeapon::CBaseCombatWeapon()
 	m_iClip2 = -1;
 	m_iPrimaryAmmoType = -1;
 	m_iSecondaryAmmoType = -1;
+
 #endif
 
 #if !defined( CLIENT_DLL )
@@ -127,6 +130,8 @@ void CBaseCombatWeapon::Activate( void )
 #ifndef CLIENT_DLL
 	if ( GetOwnerEntity() )
 		return;
+
+	SetGlow( !HasSpawnFlags( SF_WEAPON_NO_PLAYER_PICKUP ) );
 
 	if ( g_pGameRules->IsAllowedToSpawn( this ) == false )
 	{
@@ -298,6 +303,8 @@ void CBaseCombatWeapon::Precache( void )
 		Warning( "Error reading weapon data file for: %s\n", GetClassname() );
 	//	Remove( );	//don't remove, this gets released soon!
 	}
+
+	PrecacheScriptSound("estranged.last_bullets_click");
 }
 
 //-----------------------------------------------------------------------------
@@ -370,6 +377,11 @@ int CBaseCombatWeapon::GetMaxClip2( void ) const
 int CBaseCombatWeapon::GetDefaultClip1( void ) const
 {
 	return GetWpnData().iDefaultClip1;
+}
+
+int CBaseCombatWeapon::GetScopeAmount( void ) const
+{
+	return GetWpnData().iScopeFOV;
 }
 
 //-----------------------------------------------------------------------------
@@ -667,6 +679,12 @@ void CBaseCombatWeapon::Drop( const Vector &vecVelocity )
 	//If it was dropped then there's no need to respawn it.
 	AddSpawnFlags( SF_NORESPAWN );
 
+	// Stop zooming
+	if ( m_bInZoom )
+	{
+		ToggleZoom();
+	}
+
 	StopAnimation();
 	StopFollowingEntity( );
 	SetMoveType( MOVETYPE_FLYGRAVITY );
@@ -700,6 +718,9 @@ void CBaseCombatWeapon::Drop( const Vector &vecVelocity )
 	SetNextThink( gpGlobals->curtime + 1.0f );
 	SetOwnerEntity( NULL );
 	SetOwner( NULL );
+
+	// Allow weapon to glow
+	SetGlow( !HasSpawnFlags( SF_WEAPON_NO_PLAYER_PICKUP ) );
 
 	// If we're not allowing to spawn due to the gamerules,
 	// remove myself when I'm dropped by an NPC.
@@ -942,7 +963,7 @@ void CBaseCombatWeapon::RescindReloadHudHint()
 void CBaseCombatWeapon::SetPickupTouch( void )
 {
 #if !defined( CLIENT_DLL )
-	SetTouch(&CBaseCombatWeapon::DefaultTouch);
+	//SetTouch(&CBaseCombatWeapon::DefaultTouch);
 
 	if ( gpGlobals->maxClients > 1 )
 	{
@@ -1389,8 +1410,8 @@ bool CBaseCombatWeapon::DefaultDeploy( char *szViewModel, char *szWeaponModel, i
 
 	// Weapons that don't autoswitch away when they run out of ammo 
 	// can still be deployed when they have no ammo.
-	if ( !HasAnyAmmo() && AllowsAutoSwitchFrom() )
-		return false;
+	//if ( !HasAnyAmmo() && AllowsAutoSwitchFrom() )
+	//	return false;
 
 	CBasePlayer *pOwner = ToBasePlayer( GetOwner() );
 	if ( pOwner )
@@ -1476,16 +1497,18 @@ bool CBaseCombatWeapon::Holster( CBaseCombatWeapon *pSwitchingTo )
 		pOwner->SetNextAttack( gpGlobals->curtime + flSequenceDuration );
 	}
 
-	// If we don't have a holster anim, hide immediately to avoid timing issues
-	if ( !flSequenceDuration )
-	{
-		SetWeaponVisible( false );
-	}
-	else
-	{
-		// Hide the weapon when the holster animation's finished
-		SetContextThink( &CBaseCombatWeapon::HideThink, gpGlobals->curtime + flSequenceDuration, HIDEWEAPON_THINK_CONTEXT );
-	}
+	SetWeaponVisible( false );
+
+	//// If we don't have a holster anim, hide immediately to avoid timing issues
+	//if ( !flSequenceDuration )
+	//{
+	//	SetWeaponVisible( false );
+	//}
+	//else
+	//{
+	//	// Hide the weapon when the holster animation's finished
+	//	SetContextThink( &CBaseCombatWeapon::HideThink, gpGlobals->curtime + flSequenceDuration, HIDEWEAPON_THINK_CONTEXT );
+	//}
 
 	// if we were displaying a hud hint, squelch it.
 	if (m_flHudHintMinDisplayTime && gpGlobals->curtime < m_flHudHintMinDisplayTime)
@@ -1526,6 +1549,12 @@ void CBaseCombatWeapon::InputHideWeapon( inputdata_t &inputdata )
 	{
 		SetWeaponVisible( false );
 	}
+}
+
+void CBaseCombatWeapon::InputAllowPlayerPickup(inputdata_t &inputdata)
+{
+	RemoveSpawnFlags( SF_WEAPON_NO_PLAYER_PICKUP );
+	SetGlow( true );
 }
 #endif
 
@@ -1643,6 +1672,39 @@ void CBaseCombatWeapon::ItemPreFrame( void )
 #endif
 }
 
+void CBaseCombatWeapon::ToggleZoom( void )
+{
+	CBasePlayer *pPlayer = ToBasePlayer( GetOwner() );
+	
+	if ( pPlayer == NULL )
+		return;
+
+	if ( m_bInZoom )
+	{
+		if ( pPlayer->SetFOV( this, 0, 0.2f ) )
+		{
+			m_bInZoom = false;
+		}
+	}
+	else
+	{
+		if ( pPlayer->SetFOV( this, GetScopeAmount(), 0.1f ) )
+		{
+			m_bInZoom = true;
+		}
+	}
+}
+
+void CBaseCombatWeapon::CheckZoomToggle( void )
+{
+	CBasePlayer *pPlayer = ToBasePlayer( GetOwner() );
+
+	if ( pPlayer->m_afButtonPressed & IN_ATTACK2 )
+	{
+		ToggleZoom();
+	}
+}
+
 //====================================================================================
 // WEAPON BEHAVIOUR
 //====================================================================================
@@ -1652,6 +1714,15 @@ void CBaseCombatWeapon::ItemPostFrame( void )
 	if (!pOwner)
 		return;
 
+	// Estranged: If we're zoomed, and it's not this class
+	// zooming, don't fire, and don't process the zoom event
+	CBaseEntity *pZoomOwner = pOwner->GetZoomOwner();
+	if (pZoomOwner && pZoomOwner != this)
+	{
+		return;
+	}
+
+	CheckZoomToggle();
 	UpdateAutoFire();
 
 	//Track the duration of the fire
@@ -1743,6 +1814,12 @@ void CBaseCombatWeapon::ItemPostFrame( void )
 
 			PrimaryAttack();
 
+			// Estranged - last few bullets? Click sound.
+			if (UsesClipsForAmmo1() && m_iClip1 <= 3)
+			{
+				EmitSound("estranged.last_bullets_click", gpGlobals->curtime + 0.1f, NULL);
+			}
+
 			if ( AutoFiresFullClip() )
 			{
 				m_bFiringWholeClip = true;
@@ -1801,6 +1878,7 @@ void CBaseCombatWeapon::HandleFireOnEmpty()
 //-----------------------------------------------------------------------------
 void CBaseCombatWeapon::ItemBusyFrame( void )
 {
+	CheckZoomToggle();
 	UpdateAutoFire();
 }
 
@@ -2582,6 +2660,7 @@ BEGIN_DATADESC( CBaseCombatWeapon )
 	DEFINE_FIELD( m_flNextSecondaryAttack, FIELD_TIME ),
 	DEFINE_FIELD( m_flTimeWeaponIdle, FIELD_TIME ),
 
+	DEFINE_FIELD( m_bInZoom, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_bInReload, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_bFireOnEmpty, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_hOwner, FIELD_EHANDLE ),
@@ -2645,6 +2724,7 @@ BEGIN_DATADESC( CBaseCombatWeapon )
 	DEFINE_THINKFUNC( SetPickupTouch ),
 
 	DEFINE_THINKFUNC( HideThink ),
+	DEFINE_INPUTFUNC( FIELD_VOID, "AllowPlayerPickup", InputAllowPlayerPickup ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "HideWeapon", InputHideWeapon ),
 
 	// Outputs

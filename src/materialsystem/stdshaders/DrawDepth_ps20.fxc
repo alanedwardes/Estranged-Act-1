@@ -1,0 +1,16 @@
+#include "common_ps_fxc.h"
+
+sampler	s_buffer		: register( s0 );
+
+float	factor		: register( c0 );
+
+struct PS_INPUT
+{
+	float2 texCoords : TEXCOORD0;
+};
+
+float4 main(PS_INPUT i) : COLOR
+{
+	float4 tex = tex2D(s_buffer,i.texCoords) / factor;
+	return float4(tex);
+}

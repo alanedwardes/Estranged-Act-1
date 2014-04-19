@@ -24,7 +24,7 @@
 
 static ConVar cl_playerspraydisable( "cl_playerspraydisable", "0", FCVAR_CLIENTDLL | FCVAR_ARCHIVE, "Disable player sprays." );
 
-#ifndef _XBOX
+#ifdef GOAWAYHORRIBLEHORRIBLECODE
 CLIENTEFFECT_REGISTER_BEGIN( PrecachePlayerDecal )
 CLIENTEFFECT_MATERIAL( "decals/playerlogo01" )
 #if !defined(HL2_DLL) || defined(HL2MP)

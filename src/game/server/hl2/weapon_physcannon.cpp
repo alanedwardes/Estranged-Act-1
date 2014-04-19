@@ -945,10 +945,6 @@ float CGrabController::GetSavedMass( IPhysicsObject *pObject )
 //-----------------------------------------------------------------------------
 bool CGrabController::IsObjectAllowedOverhead( CBaseEntity *pEntity )
 {
-	// Allow combine balls overhead 
-	if( UTIL_IsCombineBallDefinite(pEntity) )
-		return true;
-
 	// Allow props that are specifically flagged as such
 	CPhysicsProp *pPhysProp = dynamic_cast<CPhysicsProp *>(pEntity);
 	if ( pPhysProp != NULL && pPhysProp->HasInteraction( PROPINTER_PHYSGUN_ALLOW_OVERHEAD ) )
@@ -1024,11 +1020,11 @@ void CPlayerPickupController::Init( CBasePlayer *pPlayer, CBaseEntity *pObject )
 		}
 	}
 
-	CHL2_Player *pOwner = (CHL2_Player *)ToBasePlayer( pPlayer );
-	if ( pOwner )
-	{
-		pOwner->EnableSprint( false );
-	}
+	//CHL2_Player *pOwner = (CHL2_Player *)ToBasePlayer( pPlayer );
+	//if ( pOwner )
+	//{
+	//	pOwner->EnableSprint( false );
+	//}
 
 	// If the target is debris, convert it to non-debris
 	if ( pObject->GetCollisionGroup() == COLLISION_GROUP_DEBRIS )
@@ -1393,8 +1389,8 @@ IMPLEMENT_SERVERCLASS_ST(CWeaponPhysCannon, DT_WeaponPhysCannon)
 	SendPropFloat( SENDINFO( m_flTimeForceView ) ),
 END_SEND_TABLE()
 
-LINK_ENTITY_TO_CLASS( weapon_physcannon, CWeaponPhysCannon );
-PRECACHE_WEAPON_REGISTER( weapon_physcannon );
+//LINK_ENTITY_TO_CLASS( weapon_physcannon, CWeaponPhysCannon );
+//PRECACHE_WEAPON_REGISTER( weapon_physcannon );
 
 BEGIN_DATADESC( CWeaponPhysCannon )
 
@@ -2425,7 +2421,7 @@ bool CWeaponPhysCannon::AttachObject( CBaseEntity *pObject, const Vector &vPosit
 		// NVNT set the players constant force to simulate holding mass
 		HapticSetConstantForce(pOwner,clamp(m_grabController.GetLoadWeight()*0.05,1,5)*Vector(0,-1,0));
 #endif
-		pOwner->EnableSprint( false );
+		//pOwner->EnableSprint( false );
 
 		float	loadWeight = ( 1.0f - GetLoadPercentage() );
 		float	maxSpeed = hl2_walkspeed.GetFloat() + ( ( hl2_normspeed.GetFloat() - hl2_walkspeed.GetFloat() ) * loadWeight );
@@ -2874,7 +2870,7 @@ void CWeaponPhysCannon::DetachObject( bool playSound, bool wasLaunched )
 	CHL2_Player *pOwner = (CHL2_Player *)ToBasePlayer( GetOwner() );
 	if( pOwner != NULL )
 	{
-		pOwner->EnableSprint( true );
+		//pOwner->EnableSprint( true );
 		pOwner->SetMaxSpeed( hl2_normspeed.GetFloat() );
 		
 		if( wasLaunched )

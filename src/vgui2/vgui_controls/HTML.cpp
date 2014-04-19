@@ -1062,6 +1062,7 @@ void HTML::OnKeyCodeReleased(KeyCode code)
 //-----------------------------------------------------------------------------
 void HTML::OnMouseWheeled(int delta)
 {	
+	delta *= 75;
 	if (_vbar && ( ( m_pComboBoxHost && !m_pComboBoxHost->IsVisible() ) ) )
 	{
 		int val = _vbar->GetValue();
@@ -1726,13 +1727,13 @@ bool HTML::OnStartRequest( const char *url, const char *target, const char *pchP
 	bool bURLHandled = false;
 	for (int i = 0; i < m_CustomURLHandlers.Count(); i++)
 	{
-		if (!Q_strnicmp(m_CustomURLHandlers[i].url,url, Q_strlen(m_CustomURLHandlers[i].url)))
+		if (!Q_strnicmp(m_CustomURLHandlers[i].url, url, Q_strlen(m_CustomURLHandlers[i].url)))
 		{
 			// we have a custom handler
 			Panel *targetPanel = m_CustomURLHandlers[i].hPanel;
 			if (targetPanel)
 			{
-				PostMessage(targetPanel, new KeyValues("CustomURL", "url", m_CustomURLHandlers[i].url ) );
+				PostMessage(targetPanel, new KeyValues("CustomURL", "url", url + strlen(m_CustomURLHandlers[i].url) + 3, "protocol", m_CustomURLHandlers[i].url));
 			}
 
 			bURLHandled = true;

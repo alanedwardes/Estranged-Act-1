@@ -342,6 +342,26 @@ bool CBaseEntity::KeyValue( const char *szKeyName, const char *szValue )
 		return true;
 	}
 
+	if (FStrEq(szKeyName, "disableinvr"))
+	{
+		int val = atoi(szValue);
+		if (val)
+		{
+			AddEffects(EF_DISABLE_IN_VR);
+		}
+		return true;
+	}
+
+	if ( FStrEq( szKeyName, "simpleshadows" ))
+	{
+		int val = atoi( szValue );
+		if (val)
+		{
+			AddEffects( EF_SHADOW_SIMPLE );
+		}
+		return true;
+	}
+
 	if ( FStrEq( szKeyName, "disableshadows" ))
 	{
 		int val = atoi( szValue );
@@ -532,6 +552,18 @@ bool CBaseEntity::GetKeyValue( const char *szKeyName, char *szValue, int iMaxLen
 	{
 		color32 tmp = GetRenderColor();
 		Q_snprintf( szValue, iMaxLen, "%d", tmp.a );
+		return true;
+	}
+
+	if (FStrEq(szKeyName, "disableinvr"))
+	{
+		Q_snprintf(szValue, iMaxLen, "%d", IsEffectActive(EF_DISABLE_IN_VR));
+		return true;
+	}
+
+	if ( FStrEq( szKeyName, "simpleshadows" ))
+	{
+		Q_snprintf( szValue, iMaxLen, "%d", IsEffectActive( EF_SHADOW_SIMPLE ) );
 		return true;
 	}
 
@@ -1129,13 +1161,18 @@ int CheckEntityVelocity( Vector &v )
 //-----------------------------------------------------------------------------
 void CBaseEntity::VPhysicsUpdate( IPhysicsObject *pPhysics )
 {
+	if (!pPhysics->IsMotionEnabled())
+	{
+		return; // We aren't eligble for a physics update
+	}
+
 	switch( GetMoveType() )
 	{
 	case MOVETYPE_VPHYSICS:
 		{
 			if ( GetMoveParent() )
 			{
-				DevWarning("Updating physics on object in hierarchy %s!\n", GetClassname());
+				DevWarning("Updating physics on object in hierarchy %s!\n", GetDebugName());
 				return;
 			}
 			Vector origin;

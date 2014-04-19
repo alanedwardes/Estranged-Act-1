@@ -54,10 +54,13 @@ public:
 	float		m_flStartPosition;		// Position of brush when spawned
 	float		m_flMoveDistance;		// Total distance the brush can move
 
+	bool		m_bOpenOnSpawn;
+
 	IPhysicsFluidController *m_pFluidController;
 
 	// Outputs
 	COutputEvent m_OnFullyOpen;
+	COutputEvent m_OnBlocked;
 	COutputEvent m_OnFullyClosed;
 };
 #endif // FUNC_MOVELINEAR_H

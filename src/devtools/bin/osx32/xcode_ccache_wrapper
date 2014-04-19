@@ -1,3 +1,5 @@
 #!/bin/bash
 
-exec $(dirname $0)/ccache "${DT_TOOLCHAIN_DIR}"/usr/bin/clang -Qunused-arguments "$@"
+# ae - this isn't working on the build rig. bypass ccache.
+#exec $(dirname $0)/ccache "${DT_TOOLCHAIN_DIR}"/usr/bin/clang -Qunused-arguments "$@"
+"${DT_TOOLCHAIN_DIR}"/usr/bin/clang -Qunused-arguments "$@"

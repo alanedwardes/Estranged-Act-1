@@ -1504,10 +1504,10 @@ CPrecipitation::CPrecipitation()
 
 void CPrecipitation::Spawn( void )
 {
-	PrecacheMaterial( "effects/fleck_ash1" );
-	PrecacheMaterial( "effects/fleck_ash2" );
-	PrecacheMaterial( "effects/fleck_ash3" );
-	PrecacheMaterial( "effects/ember_swirling001" );
+	//PrecacheMaterial( "effects/fleck_ash1" );
+	//PrecacheMaterial( "effects/fleck_ash2" );
+	//PrecacheMaterial( "effects/fleck_ash3" );
+	//PrecacheMaterial( "effects/ember_swirling001" );
 
 	Precache();
 	SetSolid( SOLID_NONE );							// Remove model & collisions

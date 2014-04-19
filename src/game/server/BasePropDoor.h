@@ -164,6 +164,8 @@ private:
 	void InputToggle(inputdata_t &inputdata);
 	void InputUnlock(inputdata_t &inputdata);
 
+	void InputOpenLocked(inputdata_t &inputdata);
+
 	void SetDoorBlocker( CBaseEntity *pBlocker );
 
 	void SetMaster( CBasePropDoor *pMaster ) { m_hMaster = pMaster; }
