@@ -25,7 +25,9 @@ On some systems it is also necessary to create a symbolic link from your system'
 * `ln -s /System/Library/Frameworks/OpenGL.framework/Headers GL`
 
 ### Linux with Make
-Change into the `src` directory, and run `./creategameprojects`. Next, change up a directory, and type `make -f src/games.mak`.
+Run `src/creategameprojects`. To build, type the following:
+
+* `make -f src/games.mak`.
 
 Similarly to the Xcode instructions above, it may be necessary to create a symbolic link from `src/public/GL` to your Linux distribution's OpenGL headers in order to build the shader project.
 
