@@ -17,6 +17,8 @@ game/estrangedact1/gamestate.txt
 game/estrangedact1/modelsounds.cache
 game/estrangedact1/sound/sound.cache
 game/estrangedact1/stats.txt
+game/estrangedact1/demoheader.tmp
+src/ipch/
 src/game/client/Release_mod_hl2/
 src/game/client/Debug_mod_hl2/
 src/game/server/Release_mod_hl2/
@@ -71,4 +73,3 @@ src/utils/vvis/Release/
 src/utils/vvis/Debug/
 src/utils/vvis_launcher/Release/
 src/utils/vvis_launcher/Debug/
-game/estrangedact1/demoheader.tmp
