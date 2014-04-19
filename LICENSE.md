@@ -1,3 +1,14 @@
+Estranged: Act I Code License
+========================
+
+This section of the license covers the code written by the Estranged: Act I team (referred to as "the code" in this section). The license covering the remainder of the codebase can be found under "Source 1 SDK License" below.
+
+The code contained in this repository can be distributed in both source code and object form, free of charge. It MAY NOT be sold, or otherwise exchanged for goods or monetary value.
+
+You agree that the "ESTRANGED" trade mark or logos CANNOT be used in your projects in any form, except to credit the original authors.
+
+In no event shall the Estranged: Act I team be liable for damages, including any direct, indirect, special, incidental, or consequential damages arising as a result of this license or using the works it covers.
+
 Source 1 SDK License
 ====================
 
