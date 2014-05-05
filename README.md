@@ -2,6 +2,10 @@
 
 Source code for the free Steam game, Estranged: Act I. Built with the publicly available [source-sdk-2013](https://github.com/ValveSoftware/source-sdk-2013) from [Valve](https://github.com/ValveSoftware).
 
+Video Tutorials
+---------------
+* Estranged: Act I Source Code - Downloading and Compiling: https://www.youtube.com/watch?v=WkKihL0VlN8
+
 Getting Started
 ---------------
 Once you've downloaded the code, head over to the src folder. You'll see two files, `creategameprojets` and `createallprojects`.
