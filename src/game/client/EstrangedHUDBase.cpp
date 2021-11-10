@@ -75,6 +75,16 @@ float EstrangedHUDBase::GetSectionHeight(float lower, float upper)
 	return ((min(max(lower, m_iPctFilled), upper) - lower) * float(m_iNumSectons)) / 100.0f;
 }
 
+float EstrangedHUDBase::GetNonSectionHeight(float lower, float upper)
+{
+	return ((min(max(lower, m_iPctFilled), upper) - lower)) / 100.0f;
+}
+
+float EstrangedHUDBase::GetPercentFilled()
+{
+	return m_iPctFilled;
+}
+
 void EstrangedHUDBase::SetMultiplier(int multipler)
 {
 	m_iMultiplier = multipler;
