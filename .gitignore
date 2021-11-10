@@ -73,7 +73,3 @@ src/utils/vvis/Release/
 src/utils/vvis/Debug/
 src/utils/vvis_launcher/Release/
 src/utils/vvis_launcher/Debug/
-
-src/dx9sdk/include/
-
-src/.vs/
