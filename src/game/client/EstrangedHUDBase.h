@@ -15,6 +15,8 @@ protected:
 	virtual	void	SetPercentFilled(int pPercent);
 	virtual	void	SetMultiplier(int multiplier);
 	virtual	float	GetSectionHeight(float lower, float upper);
+	virtual	float	GetNonSectionHeight(float lower, float upper);
+	virtual	float	GetPercentFilled();
 	virtual	void	DrawMultiplier();
 private:
 	CPanelAnimationVar(int, m_iMultiplierX, "muliplierxpos", "0");

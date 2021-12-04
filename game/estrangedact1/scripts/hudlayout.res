@@ -21,6 +21,16 @@ Resource/HudLayout.res
 		"BackgroundColour"		"75 75 75 50"
 		"CrossColour"			"150 25 25 255"
 	}
+	HudStamina
+	{
+		"fieldName"				"HudStamina"
+		"xpos"					"70"
+		"ypos"					"r70"
+		"wide"					"50"
+		"tall"					"50"
+		"BackgroundColour"		"75 75 75 50"
+		"StaminaColour"			"25 25 150 255"
+	}
 	HudWeaponAmmo
 	{
 		"fieldName" 			"HudWeaponAmmo"
@@ -34,7 +44,7 @@ Resource/HudLayout.res
 	HudFlashlightBattery
 	{
 		"fieldName" 			"HudFlashlightBattery"
-		"xpos"					"80"
+		"xpos"					"110"
 		"ypos"					"r70"
 		"muliplierxpos"			"25"
 		"muliplierypos"			"39"
