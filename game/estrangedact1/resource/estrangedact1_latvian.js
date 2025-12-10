@@ -121,7 +121,7 @@ ae.addLanguage("latvian", {
 	"ChrisLine2": "Es visu laiku saņemu tos ļoti neparastos e-pastus no kāda, kurš apgalvo, ka ir mans \"apbrīnotājs\", tie arī nāk no anonymous@arque.local.",
 	"ChrisLine3": "Šeit ir izvilkums no viena no tiem:",
 	"ChrisLine4": "Es novērtēju, ka mums nesen ir bijušas domstarpības, bet man ar šo vajag palīdzību... vispirms tas bija savādi, tagad tas pilnīgi baisi. Vai šī skaitās kā oficiāla sūdzība?",
-	"ChrisLine5": "Christian",
+	"ChrisLine5": "Kristiāns",
 	
 	"MeetMeTitle": "Kāpēc tu ar mani nesatikies?",
 	"MeetMeSummary": "Es biju viens pats tajā...",
@@ -148,7 +148,7 @@ ae.addLanguage("latvian", {
 	"DavidGravenTitle2": "Kastes",
 	"DavidGravenSummary1": "Viss kārtībā, izbaudi dienu :)",
 	"DavidGravenSummary2": "Vai varam pārvietot dažas no kastēm",
-	"DavidGravenEmail1": "Jono,",
+	"DavidGravenEmail1": "Džono,",
 	"DavidGravenEmail2": "Can we shift some of the boxes to the warehouse at Arque East? They say there are more to come but we can't fit many more in here - what with the large supply crates too. I'll speak to Jeff about it... they're meant to be taking some upstairs at some point.",
 	"DavidGravenEmail2": "Vai varam pārvietot dažas no kastēm uz Arque Austrumu noliktavu? Viņi saka, ka ir vēl vairāk, bet mēs šeit nevaram ievietot tik daudz - kā tas ir ar lielajām piegādes kastēm. Es par to runāšu ar Džefu... ir paredzēts, ka viņi kādā brīdī dažas nesīs augšstāvā.",
 	"DavidGravenSig": "Deivs",
