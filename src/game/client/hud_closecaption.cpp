@@ -22,6 +22,9 @@
 #include "filesystem.h"
 #include "datacache/idatacache.h"
 #include "SoundEmitterSystem/isoundemittersystembase.h"
+#include "sourcevr/isourcevirtualreality.h"
+
+#include "sourcevr/isourcevirtualreality.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -31,12 +34,12 @@
 extern ISoundEmitterSystemBase *soundemitterbase;
 
 // Marked as FCVAR_USERINFO so that the server can cull CC messages before networking them down to us!!!
-ConVar closecaption( "closecaption", "0", FCVAR_ARCHIVE | FCVAR_ARCHIVE_XBOX | FCVAR_USERINFO, "Enable close captioning." );
+ConVar closecaption( "closecaption", "1", FCVAR_ARCHIVE | FCVAR_ARCHIVE_XBOX | FCVAR_USERINFO, "Enable close captioning." );
 extern ConVar cc_lang;
 static ConVar cc_linger_time( "cc_linger_time", "1.0", FCVAR_ARCHIVE, "Close caption linger time." );
 static ConVar cc_predisplay_time( "cc_predisplay_time", "0.25", FCVAR_ARCHIVE, "Close caption delay before showing caption." );
 static ConVar cc_captiontrace( "cc_captiontrace", "1", 0, "Show missing closecaptions (0 = no, 1 = devconsole, 2 = show in hud)" );
-static ConVar cc_subtitles( "cc_subtitles", "0", FCVAR_ARCHIVE | FCVAR_ARCHIVE_XBOX, "If set, don't show sound effect captions, just voice overs (i.e., won't help hearing impaired players)." );
+static ConVar cc_subtitles( "cc_subtitles", "1", FCVAR_ARCHIVE | FCVAR_ARCHIVE_XBOX, "If set, don't show sound effect captions, just voice overs (i.e., won't help hearing impaired players)." );
 ConVar english( "english", "1", FCVAR_USERINFO, "If set to 1, running the english language set of assets." );
 static ConVar cc_smallfontlength( "cc_smallfontlength", "300", 0, "If text stream is this long, force usage of small font size." );
 
@@ -1070,6 +1073,11 @@ void CHudCloseCaption::Paint( void )
  
 	Color bgColor = GetBgColor();
    	bgColor[3] = m_flBackgroundAlpha;
+
+	if (UseVR())
+	{
+		bgColor = COLOR_BLACK;
+	}
 	
 	vgui::surface()->DrawSetColor(bgColor);
 	vgui::surface()->DrawFilledRect(rcText.left, max(rcText.top,0), rcText.left + rcText.right - rcText.left, max(rcText.top,0) + rcText.bottom - max(rcText.top,0));
@@ -1450,7 +1458,7 @@ void CHudCloseCaption::Process( const wchar_t *stream, float duration, const cha
 	}
 
 	// If subtitling, don't show sfx captions at all
-	if ( cc_subtitles.GetBool() && StreamHasCommand( stream, L"sfx" ) )
+	if ( cc_subtitles.GetBool() && StreamHasCommand( stream, L"sfx" ) || UseVR())
 	{
 		return;
 	}

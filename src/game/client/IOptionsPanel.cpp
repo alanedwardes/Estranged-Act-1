@@ -44,7 +44,6 @@ class COptionsPanel : public Frame
 		void				DrawOptionsItems(void);
 		void				DrawWheel(void);
 		void				DrawBuildLabel(void);
-		void				DrawStatsCheckbutton(void);
 		void				DrawHUDCheckbutton(void);
 		void				DrawCrosshairCheckbutton(void);
 		void				DrawGlowCheckButton(void);
@@ -58,7 +57,6 @@ class COptionsPanel : public Frame
  
 	private:
 		Label *m_pLabel;
-		CheckButton *m_pStatsEnabled;
 		CheckButton *m_pObjectivesEnabled;
 		CheckButton *m_pHUDEnabled;
 		CheckButton *m_pCrosshairEnabled;
@@ -95,7 +93,6 @@ COptionsPanel::COptionsPanel(VPANEL parent): BaseClass(NULL, "EstrangedOptions")
 
 void COptionsPanel::DrawOptionsItems()
 {
-	DrawStatsCheckbutton();
 	DrawHUDCheckbutton();
 	DrawCrosshairCheckbutton();
 	DrawGlowCheckButton();
@@ -106,11 +103,6 @@ void COptionsPanel::DrawOptionsItems()
 	DrawMotionBlurCheckbutton();
 	DrawFlashlightShadowsCheckbutton();
 	DrawGrainSlider();
-}
-
-void COptionsPanel::DrawStatsCheckbutton()
-{
-	m_pStatsEnabled = new CheckButton(this, "StatsEnabledCheckButton", "#Estranged_Stats_Enable");
 }
 
 void COptionsPanel::DrawHUDCheckbutton()
@@ -167,9 +159,6 @@ void COptionsPanel::DrawFlashlightShadowsCheckbutton()
 
 void COptionsPanel::LoadEstrangedSettings()
 {
-	ConVarRef ae_stats_enabled("ae_stats_enabled");
-	m_pStatsEnabled->SetSelected(ae_stats_enabled.GetBool());
-
 	ConVarRef ae_hud_enabled("ae_hud_enabled");
 	m_pHUDEnabled->SetSelected(ae_hud_enabled.GetBool());
 
@@ -210,9 +199,6 @@ void COptionsPanel::LoadEstrangedSettings()
 
 void COptionsPanel::SaveEstrangedSettings()
 {
-	ConVarRef ae_stats_enabled("ae_stats_enabled");
-	ae_stats_enabled.SetValue(m_pStatsEnabled->IsSelected());
-
 	ConVarRef ae_hud_enabled("ae_hud_enabled");
 	ae_hud_enabled.SetValue(m_pHUDEnabled->IsSelected());
 

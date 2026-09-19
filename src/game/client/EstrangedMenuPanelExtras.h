@@ -11,5 +11,4 @@ class EstrangedMenuPanelExtras : public EstrangedMenuPanel
 	public:
 		EstrangedMenuPanelExtras(vgui::Panel* parent);
 		virtual void OnCommand(const char*);
-		virtual void OpenAddress(wchar_t*);
 };

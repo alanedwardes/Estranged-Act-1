@@ -61,7 +61,7 @@ ConVar vr_debug_remote_cam_target_x( "vr_debug_remote_cam_target_x", "0.0" );
 ConVar vr_debug_remote_cam_target_y( "vr_debug_remote_cam_target_y", "0.0" );
 ConVar vr_debug_remote_cam_target_z( "vr_debug_remote_cam_target_z", "-50.0" );
 
-ConVar vr_translation_limit( "vr_translation_limit", "10.0", 0, "How far the in-game head will translate before being clamped." );
+ConVar vr_translation_limit( "vr_translation_limit", "100.0", 0, "How far the in-game head will translate before being clamped." );
 
 // HUD config values
 ConVar vr_render_hud_in_world( "vr_render_hud_in_world", "1" );
