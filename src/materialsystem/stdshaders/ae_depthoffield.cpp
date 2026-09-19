@@ -2,7 +2,7 @@
 
 #include "ishaderapiext.h"
 
-#include "sdk_screenspaceeffect_vs20.inc"
+#include "sdk_screenspaceeffect_vs30.inc"
 #include "ae_depthoffield_ps30.inc"
 
 static ConVar ae_dof_radius("ae_dof_radius","5.0f");
@@ -46,8 +46,8 @@ SHADER_DRAW
 		int vertexFlags = VERTEX_POSITION;
 		pShaderShadow->VertexShaderVertexFormat( vertexFlags, 1, NULL, 0 );
 
-		DECLARE_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20 );
-		SET_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20 );
+		DECLARE_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30 );
+		SET_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30 );
 
 		//Set Pixel shader
 		DECLARE_STATIC_PIXEL_SHADER( ae_depthoffield_ps30 );
@@ -84,8 +84,8 @@ SHADER_DRAW
 		};
 		pShaderAPI->SetPixelShaderConstant( 1, bokehInfo, 1 );
 
-		DECLARE_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20 );
-		SET_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20 );
+		DECLARE_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30 );
+		SET_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30 );
 
 		DECLARE_DYNAMIC_PIXEL_SHADER( ae_depthoffield_ps30 );
 		SET_DYNAMIC_PIXEL_SHADER_COMBO( DEBUG_VIS, ae_dof_debug_vis.GetBool() );

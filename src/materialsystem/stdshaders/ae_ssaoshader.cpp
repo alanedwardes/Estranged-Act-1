@@ -1,6 +1,6 @@
 #include "basevsshader.h"
 
-#include "sdk_screenspaceeffect_vs20.inc"
+#include "sdk_screenspaceeffect_vs30.inc"
 #include "ae_ssao_ps30.inc"
 //#include "ae_ssao_vs20.inc"
 
@@ -51,9 +51,9 @@ SHADER_DRAW
 		/*DECLARE_STATIC_VERTEX_SHADER( ae_ssao_vs20 );
 		SET_STATIC_VERTEX_SHADER( ae_ssao_vs20 );*/
 
-		// No need to use ae_ssao_vs20 because sdk_screenspaceeffect_vs20 exists
-		DECLARE_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20 );
-		SET_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20 );
+		// No need to use ae_ssao_vs20 because sdk_screenspaceeffect_vs30 exists
+		DECLARE_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30 );
+		SET_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30 );
 
 		//Set Pixel shader
 		/*if ( g_pHardwareConfig->SupportsPixelShaders_2_b() )
@@ -87,9 +87,9 @@ SHADER_DRAW
 		/*DECLARE_DYNAMIC_VERTEX_SHADER( ae_ssao_vs20 );
 		SET_DYNAMIC_VERTEX_SHADER( ae_ssao_vs20 );*/
 
-		// No need to use ae_ssao_vs20 because sdk_screenspaceeffect_vs20 exists
-		DECLARE_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20 );
-		SET_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20 );
+		// No need to use ae_ssao_vs20 because sdk_screenspaceeffect_vs30 exists
+		DECLARE_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30 );
+		SET_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30 );
 
 		//Set Pixel shader
 		//if ( g_pHardwareConfig->SupportsPixelShaders_2_b() )

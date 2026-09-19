@@ -16,14 +16,14 @@ struct PS_INPUT
  
 float FetchEyeZ(float2 uv)
 {
-        float z = tex2D(depthSampler, uv).r;
+        float z = tex2Dlod(depthSampler, float4(uv, 0.0f, 0.0f)).r;
         return z / 8.0f;
 }
  
 //-------------------------------------------------------------------------
 float BlurFunction(float2 uv, float r, float center_c, float center_d, inout float w_total)
 {
-        float c = tex2D(ssaoSampler, uv).r;
+        float c = tex2Dlod(ssaoSampler, float4(uv, 0.0f, 0.0f)).r;
         float d = FetchEyeZ(uv);
        
         float sigma = (g_BlurRadius + 1.0f) / 2.0f;

@@ -53,7 +53,8 @@ float3 UVToEye(float2 uv, float eye_z)
 float FetchEyeZ(float2 uv)
 {
 	//float z = tex2D(depthSampler, uv).a / 8.0f;
-	float z = tex2D(depthSampler, uv).r; //new fetch because of Source2013 R32F thingy
+	// tex2Dlod: called from inside dynamic loops, where gradient fetches are illegal in ps_3_0 (X6077)
+	float z = tex2Dlod(depthSampler, float4(uv, 0.0f, 0.0f)).r; //new fetch because of Source2013 R32F thingy
 	if(z==0.0f)
 	{
 		z=1.0f;

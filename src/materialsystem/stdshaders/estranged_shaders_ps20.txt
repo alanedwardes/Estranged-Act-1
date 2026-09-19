@@ -1,0 +1,24 @@
+//
+// Estranged custom shaders that are natively ps20/ps20b/ps2x (not SM3).
+// Build via _buildshaders_estranged.bat WITHOUT -force30, so filenames
+// aren't rewritten to _ps30 and stop matching their C++ shader proxies.
+//
+
+DrawDepth_ps20.fxc
+
+// Color grading
+ae_colorgrade_ps20.fxc
+
+// Lens flare
+ae_lensflare_ps2x.fxc
+ae_lensflare_ps20.fxc
+
+// Film grain
+ae_filmgrain_ps20.fxc
+
+// Outliner
+ae_outlinex_ps20.fxc
+ae_outliney_ps20.fxc
+
+// Screen tension
+ae_screentension_ps20b.fxc

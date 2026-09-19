@@ -1,0 +1,16 @@
+//
+// Estranged custom shaders that are natively Shader Model 3.0.
+// Build via _buildshaders_estranged.bat (uses -force30, correct for these).
+//
+
+// HBAO / SSAO
+// The screenspace VS must be compiled as vs_3_0: D3D9 forbids pairing
+// vs_2_0 with ps_3_0 pixel shaders (NVIDIA tolerates it, AMD/Intel reject the draw).
+sdk_screenspaceeffect_vs20.fxc
+ae_ssao_ps30.fxc
+ae_ssao_combine_ps30.fxc
+ae_ssao_blury_ps30.fxc
+ae_ssao_blurx_ps30.fxc
+
+// Depth of field
+ae_depthoffield_ps30.fxc

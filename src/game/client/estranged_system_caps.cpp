@@ -37,19 +37,6 @@ int CEstrangedSystemCaps::GetCaps( void )
 			systemCaps &= ~CAPS_ESTRANGED_DEPTHPASS;
 		}
 
-		// If we support fetch4 (ATI)
-		if ( g_pMaterialSystemHardwareConfig->SupportsFetch4() )
-		{
-			systemCaps &= ~CAPS_ESTRANGED_DEPTHPASS;
-		}
-
-		// If we use ATI depth formats
-		int shadowFilterMode = g_pMaterialSystemHardwareConfig->GetShadowFilterMode();
-		if ( shadowFilterMode != NVIDIA_PCF_POISSON && ( shadowFilterMode == ATI_NO_PCF_FETCH4 || shadowFilterMode == ATI_NOPCF ) )
-		{
-			systemCaps &= ~CAPS_ESTRANGED_DEPTHPASS;
-		}
-
 		// If we're not running with DirectX 9
 		if ( g_pMaterialSystemHardwareConfig->GetDXSupportLevel() < 90 )
 		{

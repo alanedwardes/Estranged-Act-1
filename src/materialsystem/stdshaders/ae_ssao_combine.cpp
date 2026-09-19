@@ -2,7 +2,7 @@
 
 //Ambient Occlusion Combine Shader
 
-#include "sdk_screenspaceeffect_vs20.inc"
+#include "sdk_screenspaceeffect_vs30.inc"
 #include "ae_ssao_combine_ps30.inc"
 
 BEGIN_VS_SHADER( AESSAOCombine, "Estranged SSAO Combine Shader" )
@@ -39,8 +39,8 @@ SHADER_DRAW
 		int fmt = VERTEX_POSITION;
 		pShaderShadow->VertexShaderVertexFormat( fmt, 1, NULL, 0 );
 
-		DECLARE_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20  );
-		SET_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20  );
+		DECLARE_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30  );
+		SET_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30  );
 
 		DECLARE_STATIC_PIXEL_SHADER( ae_ssao_combine_ps30 );
 		SET_STATIC_PIXEL_SHADER( ae_ssao_combine_ps30 );
@@ -50,8 +50,8 @@ SHADER_DRAW
 		BindTexture( SHADER_SAMPLER0, BASETEXTURE, -1 );
 		BindTexture( SHADER_SAMPLER1, SSAOTEXTURE, -1 );
 
-		DECLARE_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20 );
-		SET_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20 );
+		DECLARE_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30 );
+		SET_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30 );
 
 		DECLARE_DYNAMIC_PIXEL_SHADER( ae_ssao_combine_ps30 );
 		SET_DYNAMIC_PIXEL_SHADER( ae_ssao_combine_ps30 );

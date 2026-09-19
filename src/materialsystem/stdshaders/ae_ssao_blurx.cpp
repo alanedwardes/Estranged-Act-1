@@ -7,7 +7,7 @@
 // special thanks to the awesome shader god that provided us with the Fire of Knowledge
 // sir mister Drew Watts
 
-#include "sdk_screenspaceeffect_vs20.inc"
+#include "sdk_screenspaceeffect_vs30.inc"
 #include "ae_ssao_blurx_ps30.inc"
 
 //Allows us to define how sharp the blur will be
@@ -47,8 +47,8 @@ SHADER_DRAW
 		int fmt = VERTEX_POSITION;
 		pShaderShadow->VertexShaderVertexFormat( fmt, 1, NULL, 0 );
 
-		DECLARE_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20  );
-		SET_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20  );
+		DECLARE_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30  );
+		SET_STATIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30  );
 
 		DECLARE_STATIC_PIXEL_SHADER( ae_ssao_blurx_ps30 );
 		SET_STATIC_PIXEL_SHADER( ae_ssao_blurx_ps30 );
@@ -66,8 +66,8 @@ SHADER_DRAW
 		float vBlurSharpness[1] = {ae_ssao_blursharpness.GetFloat()};
 		pShaderAPI->SetPixelShaderConstant( 1,  vBlurSharpness,1 );
 
-		DECLARE_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20 );
-		SET_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs20 );
+		DECLARE_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30 );
+		SET_DYNAMIC_VERTEX_SHADER( sdk_screenspaceeffect_vs30 );
 
 		DECLARE_DYNAMIC_PIXEL_SHADER( ae_ssao_blurx_ps30 );
 		SET_DYNAMIC_PIXEL_SHADER( ae_ssao_blurx_ps30 );
